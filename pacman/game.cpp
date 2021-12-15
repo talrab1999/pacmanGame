@@ -291,7 +291,7 @@ Pair game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 	// blockages)
 	/*if (foundDest == false)
 		printf("Failed to find the Destination Cell\n");*/
-	//return;
+		//return;
 }
 
 char instructions[15][32] = {
