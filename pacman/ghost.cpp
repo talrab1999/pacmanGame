@@ -8,10 +8,12 @@ ghost::ghost()
 	setSymbol('$');
 	//setColor(Color::RED);
 }
+
 void ghost::reset1() {
 	setX(30);
 	setY(8);
 }
+
 void ghost::reset2() {
 	setX(15);
 	setY(8);
@@ -46,4 +48,9 @@ void ghost::move_rand(map& m)
 			direction = rand() % 4;
 		}
 	}
+}
+
+void ghost::move(short x, short y) {
+	setY(y);
+	setX(x);
 }

@@ -10,6 +10,7 @@ private:
 public:
 	ghost();
 	void move_rand(map&);
+	void move(short, short);
 	//make new reset that gets x,y
 	void reset1();
 	void reset2();

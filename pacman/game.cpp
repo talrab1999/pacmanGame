@@ -10,6 +10,8 @@ bool game::isUnBlocked(char grid[][COLS], int row, int col)
 	// Returns true if the cell is not blocked else false
 	if (grid[row][col] == '#')
 		return (false);
+	else if (grid[row][col] == '!')
+		return (false);
 	else
 		return (true);
 }
@@ -27,7 +29,7 @@ double game::calculateHValue(int row, int col, Pair dest)
 	return abs(row - dest.first) + abs(col - dest.second);
 }
 
-void game::tracePath(cell cellDetails[][COLS], Pair dest)
+Pair game::tracePath(cell cellDetails[][COLS], Pair dest)
 {
 	int row = dest.first;
 	int col = dest.second;
@@ -42,29 +44,30 @@ void game::tracePath(cell cellDetails[][COLS], Pair dest)
 		col = temp_col;
 	}
 	int i = 0;
+	Pair target;
 	Path.push(make_pair(row, col));
 	while (!Path.empty()) {
-		pair<int, int> p = Path.top();
+		Pair p = Path.top();
+		if (i == 1) {
+			target = p;
+		}
 		Path.pop();
 		//printf("-> (%d,%d) ", p.first, p.second);
-		gotoxy(p.second, p.first+1);
-		cout << "*";
+		//gotoxy(p.second, p.first+1);
+		//cout << "*";
 		i++;
-		if (i == 1) {
-
-		}
 	}
 
-	return;
+	return target;
 }
 
 // A Function to find the shortest path between
 // a given source cell to a destination cell according
 // to A* Search Algorithm
-void game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
+Pair game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 {
 	// If the source is out of range
-	if (isValid(src.first, src.second) == false) {
+	/*if (isValid(src.first, src.second) == false) {
 		printf("Source is invalid\n");
 		return;
 	}
@@ -85,7 +88,7 @@ void game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 	if (isDestination(src.first, src.second, dest) == true) {
 		printf("We are already at the destination\n");
 		return;
-	}
+	}*/
 
 	// Create a closed list and initialise it to false which
 	// means that no cell has been included yet This closed
@@ -134,7 +137,7 @@ void game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 	// We set this boolean value as false as initially
 	// the destination is not reached.
 	bool foundDest = false;
-
+	Pair target;
 	while (!openList.empty()) {
 		pPair p = *openList.begin();
 
@@ -160,9 +163,9 @@ void game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 				cellDetails[i - 1][j].parent_i = i;
 				cellDetails[i - 1][j].parent_j = j;
 				//printf("The destination cell is found\n");
-				tracePath(cellDetails, dest);
+				target = tracePath(cellDetails, dest);
 				foundDest = true;
-				return;
+				return target;
 			}
 			// If the successor is already on the closed
 			// list or if it is blocked, then ignore it.
@@ -201,9 +204,9 @@ void game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 				cellDetails[i + 1][j].parent_i = i;
 				cellDetails[i + 1][j].parent_j = j;
 				//printf("The destination cell is found\n");
-				tracePath(cellDetails, dest);
+				target = tracePath(cellDetails, dest);
 				foundDest = true;
-				return;
+				return target;
 			}
 
 			else if (closedList[i + 1][j] == false && isUnBlocked(grid, i + 1, j) == true) {
@@ -230,9 +233,9 @@ void game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 				cellDetails[i][j + 1].parent_i = i;
 				cellDetails[i][j + 1].parent_j = j;
 				//printf("The destination cell is found\n");
-				tracePath(cellDetails, dest);
+				target = tracePath(cellDetails, dest);
 				foundDest = true;
-				return;
+				return target;
 			}
 
 			else if (closedList[i][j + 1] == false && isUnBlocked(grid, i, j + 1) == true) {
@@ -259,9 +262,9 @@ void game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 				cellDetails[i][j - 1].parent_i = i;
 				cellDetails[i][j - 1].parent_j = j;
 				//printf("The destination cell is found\n");
-				tracePath(cellDetails, dest);
+				target = tracePath(cellDetails, dest);
 				foundDest = true;
-				return;
+				return target;
 			}
 
 			else if (closedList[i][j - 1] == false && isUnBlocked(grid, i, j - 1) == true) {
@@ -288,7 +291,7 @@ void game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 	// blockages)
 	/*if (foundDest == false)
 		printf("Failed to find the Destination Cell\n");*/
-	return;
+	//return;
 }
 
 char instructions[15][32] = {
@@ -457,13 +460,18 @@ void game::gameLoop() {
 	srand(time(0));
 	bool running1 = true;
 	bool running2 = true;
+	short nextX, nextY;
 	unsigned long long int frame = 0;   //can get realy high numbers...
 
 	pacman player1;
 	ghost Tinky_Winky;
 	ghost Po;
 	map h;
-	Pair src = make_pair(7, 15);
+	Pair move, src, dest;
+	h.fillmap();
+	h.fillboard();
+	player1.setLives(startLives);
+	/*Pair src = make_pair(7, 15);
 	Pair dest = make_pair(15, 15);
 	h.fillmap();
 	player1.setLives(startLives);
@@ -473,11 +481,11 @@ void game::gameLoop() {
 	printf("$");
 	gotoxy(15, 16);
 	printf("@");
-	aStarSearch(h.board, src, dest);
+	aStarSearch(h.board, src, dest);*/
 	
 
 
-	/*while (running2) {
+	while (running2) {
 		running1 = true;
 		char key1 = 0 , key2 = 0;
 		h.ShowMap();
@@ -544,11 +552,23 @@ void game::gameLoop() {
 			}
 
 			player1.display();
-
+			dest = make_pair(player1.getX() - 1, player1.getY());
 			if (frame % ghostspeed == 0) {
 				switch (numGhosts) {
-				case 2: Tinky_Winky.move_rand(h);
-				case 1: Po.move_rand(h);
+				case 2: 
+					//Tinky_Winky.move_rand(h);
+					src = make_pair(Tinky_Winky.getX() - 1, Tinky_Winky.getY());
+					move = aStarSearch(h.board, src, dest);
+					nextX = (short)move.first;
+					nextY = (short)move.second - 1;
+					Tinky_Winky.move(nextX, nextY);
+				case 1: 
+					//Po.move_rand(h);
+					src = make_pair(Po.getX() - 1, Po.getY());
+					move = aStarSearch(h.board, src, dest);
+					nextX = (short)move.first;
+					nextY = (short)move.second - 1;
+					Po.move(nextX, nextY);
 				}
 			}
 			switch (numGhosts) {
@@ -584,7 +604,7 @@ void game::gameLoop() {
 			frame++;
 		}
 	}
-	goToOption(0);*/
+	goToOption(0);
 }
 
 

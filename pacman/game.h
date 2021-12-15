@@ -46,6 +46,6 @@ public:
 	bool isUnBlocked(char grid[][COLS], int row, int col);
 	bool isDestination(int row, int col, Pair dest);
 	double calculateHValue(int row, int col, Pair dest);
-	void tracePath(cell cellDetails[][COLS], Pair dest);
-	void aStarSearch(char grid[][COLS], Pair src, Pair dest);
+	Pair tracePath(cell cellDetails[][COLS], Pair dest);
+	Pair aStarSearch(char grid[][COLS], Pair src, Pair dest);
 };
