@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="color.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="fruit.cpp" />
     <ClCompile Include="ghost.cpp" />
     <ClCompile Include="pacman.cpp" />
     <ClCompile Include="map.cpp" />
@@ -150,6 +151,7 @@
   <ItemGroup>
     <ClInclude Include="color.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="fruit.h" />
     <ClInclude Include="ghost.h" />
     <ClInclude Include="pacman.h" />
     <ClInclude Include="map.h" />
