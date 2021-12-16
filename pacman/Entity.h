@@ -12,11 +12,12 @@ using namespace std;
 class Entity {
 private:
 	short x, y, lives;
+	short lastmove;
 	char symbol;
 	Color color;
 public:
 	Entity();
-	Entity(short, short, short, char, Color);
+	Entity(short, short, short, char, short, Color);
 	void setX(short); 
 	void setY(short); 
 	short getX() const;
@@ -24,6 +25,8 @@ public:
 	void setLives(short); 
 	void setSymbol(char);   
 	void setColor(Color);
+	//move rand
+	void move_rand(map&);
 	//void setTextColor(Color);
 	short getLives() const;   
 	char getSymbol() const;

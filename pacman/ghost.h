@@ -5,13 +5,14 @@
 #include <cstdlib>
 class ghost :public Entity {
 private:
-	bool edible;
-	short lastmove;
+	//bool edible;
+	//short lastmove;
+	short difficulty;
 public:
 	ghost();
-	void move_rand(map&);
+	//void move_rand(map&);
 	void move(short, short);
 	//make new reset that gets x,y
-	void reset1();
-	void reset2();
+	void reset(int, int);
+	//void reset2();
 };

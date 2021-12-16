@@ -2,24 +2,24 @@
 
 ghost::ghost()
 {
-	lastmove = 0;
-	edible = 0;
+	//lastmove = 0;
+	//edible = 0;
 	setLives(1);
 	setSymbol('$');
 	//setColor(Color::RED);
 }
 
-void ghost::reset1() {
-	setX(30);
-	setY(7);
+void ghost::reset(int x, int y) {
+	setX(x);
+	setY(y);
 }
 
-void ghost::reset2() {
+/*void ghost::reset2() {
 	setX(15);
 	setY(7);
-}
+}*/
 
-void ghost::move_rand(map& m)
+/*void ghost::move_rand(map& m)
 {
 	short nextX = 0, nextY = 0;
 	short direction = lastmove;
@@ -48,7 +48,7 @@ void ghost::move_rand(map& m)
 			direction = rand() % 4;
 		}
 	}
-}
+}*/
 
 void ghost::move(short x, short y) {
 	setY(y);

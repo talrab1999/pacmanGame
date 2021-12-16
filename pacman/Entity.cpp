@@ -1,6 +1,7 @@
 #include "Entity.h"
 Entity::Entity()
 {
+	lastmove = 0;
 	x = 0;
 	y = 0;
 	lives = 1;
@@ -8,13 +9,44 @@ Entity::Entity()
 	//color = WHITE;
 }
 
-Entity::Entity(short X, short Y, short L, char S, Color COLOR)
+Entity::Entity(short X, short Y, short L, char S,short lastmove=0, Color COLOR)
 {
 	x = X;
 	y = Y;
 	lives = L;
 	symbol = S;
 	//color = COLOR;
+}
+
+void Entity::move_rand(map& m)
+{
+	short nextX = 0, nextY = 0;
+	short direction = lastmove;
+	while (true) {
+		switch (direction) {
+		case 0: nextY = getY() - 1;
+			nextX = getX();   
+			break;
+		case 1: nextY = getY() + 1; 
+			nextX = getX();  
+			break;
+		case 2: nextY = getY();  
+			nextX = getX() - 1;
+			break;
+		case 3: nextY = getY(); 
+			nextX = getX() + 1;
+			break;
+		}
+		if (m.getmapat(nextY, nextX) != '#' && m.getmapat(nextY, nextX) != '!') {
+			setY(nextY);
+			setX(nextX);
+			lastmove = direction;
+			break;
+		}
+		else {
+			direction = rand() % 4;
+		}
+	}
 }
 
 

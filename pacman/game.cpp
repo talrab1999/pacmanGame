@@ -480,10 +480,10 @@ void game::gameLoop() {
 
 	switch (numGhosts) {
 	case 2:
-		Tinky_Winky.reset2();
+		Tinky_Winky.reset(15,7);
 		Tinky_Winky.display();
 	case 1:
-		Po.reset1();
+		Po.reset(30,7);
 		Po.display();
 	}
 
@@ -602,10 +602,10 @@ void game::gameLoop() {
 			switch (numGhosts) {
 			case 2:
 				Tinky_Winky.display(h.getmapat(Tinky_Winky.getY(), Tinky_Winky.getX()));
-				Tinky_Winky.reset2();
+				Tinky_Winky.reset(15,7);
 			case 1:
 				Po.display(h.getmapat(Po.getY(), Po.getX()));
-				Po.reset1();
+				Po.reset(30,7);
 			}
 			if (player1.getLives() == 0)
 			{
