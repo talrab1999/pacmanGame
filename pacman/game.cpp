@@ -393,14 +393,15 @@ void game::clearScreen() const
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD position = { 0, 0 };
 	SetConsoleCursorPosition(hStdout, position);
-	for (short j = 0; j < 80; j++) {
+	/*for (short j = 0; j < 80; j++) {
 		for (short i = 0; i < 40; i++) {
 			position = { i, j };
 			cout << " ";
 		}
-	}
+	}*/
 	position = { 0,0 };
 	SetConsoleCursorPosition(hStdout, position);
+	system("CLS");
 }
 
 
@@ -468,22 +469,26 @@ void game::gameLoop() {
 	h.fillmap();
 	h.fillboard();
 	player1.setLives(startLives);
-	/*Pair src = make_pair(7, 15);
-	Pair dest = make_pair(15, 15);
-	h.fillmap();
-	player1.setLives(startLives);
-	h.fillboard();
-	h.test();
-	gotoxy(15, 8);
-	printf("$");
-	gotoxy(15, 16);
-	printf("@");
-	aStarSearch(h.board, src, dest);*/
-	
+	/////////
+	running1 = true;
+	char key1 = 's', key2 = 's';
+	h.ShowMap();
+	player1.displayLives(h);
 
+	player1.display();
+	h.setmapat(player1.getY(), player1.getX(), player1.getSymbol());
 
-	while (running2) {
-		running1 = true;
+	switch (numGhosts) {
+	case 2:
+		Tinky_Winky.reset2();
+		Tinky_Winky.display();
+	case 1:
+		Po.reset1();
+		Po.display();
+	}
+
+	/*while (running2) {
+		/*running1 = true;
 		char key1 = 's' , key2 = 's';
 		h.ShowMap();
 		player1.displayLives(h);
@@ -492,128 +497,129 @@ void game::gameLoop() {
 		h.setmapat(player1.getY(), player1.getX(), player1.getSymbol());
 
 		switch (numGhosts) {
-		case 2: 
+		case 2:
 			Tinky_Winky.reset2();
 			Tinky_Winky.display();
-		case 1: 
+		case 1:
 			Po.reset1();
 			Po.display();
+		}*/
+
+	while (running1)
+	{
+
+		player1.display(' ');
+		h.setmapat(player1.getY(), player1.getX(), ' ');
+		switch (numGhosts) {
+		case 2: Tinky_Winky.display(h.getmapat(Tinky_Winky.getY(), Tinky_Winky.getX()));
+		case 1: Po.display(h.getmapat(Po.getY(), Po.getX()));
+		}
+		checkInput = false;
+
+		if (_kbhit())
+			key1 = _getch();
+
+		while (checkInput == false) {
+			if (key1 == ESC) {
+				h.pause(h);
+				player1.display();
+				Tinky_Winky.display();
+				Po.display();
+				short flag;
+				flag = _getch();
+				while (flag != ESC)
+					flag = _getch();
+				Tinky_Winky.display(h.getmapat(Tinky_Winky.getY(), Tinky_Winky.getX()));
+				Po.display(h.getmapat(Po.getY(), Po.getX()));
+				key1 = key2;
+				h.unpause(h);
+			}
+
+			else if (key1 == 'w' || key1 == 'W')
+				player1.move_up(h);
+			else if (key1 == 'x' || key1 == 'X')
+				player1.move_down(h);
+			else if (key1 == 'a' || key1 == 'A')
+				player1.move_left(h);
+			else if (key1 == 'd' || key1 == 'D')
+				player1.move_right(h);
+			else if (key1 == 's' || key1 == 'S')
+				player1.stop(h);
+			else {
+				key1 = key2;
+				continue;
+			}
+			checkInput = true;
 		}
 
-		while (running1)
-		{
-			player1.display(' ');
-			h.setmapat(player1.getY(), player1.getX(), ' ');
+		key2 = key1;
+		player1.displayPoints(h);
+
+		if (player1.getDotsate() == 493) {
+			clearScreen();
+			displaywin();
+			running1 = false;
+			running2 = false;
+			break;
+		}
+
+		player1.display();
+		dest = make_pair(player1.getY(), player1.getX());
+		if (frame % ghostspeed == 0) {
 			switch (numGhosts) {
-			case 2: Tinky_Winky.display(h.getmapat(Tinky_Winky.getY(), Tinky_Winky.getX()));
-			case 1: Po.display(h.getmapat(Po.getY(), Po.getX()));
+			case 2:
+				//Tinky_Winky.move_rand(h);
+				src = make_pair(Tinky_Winky.getY(), Tinky_Winky.getX());
+				if (dest == src)
+					break;
+				move = aStarSearch(h.board, src, dest);
+				nextY = (short)move.first;
+				nextX = (short)move.second;
+				Tinky_Winky.move(nextX, nextY);
+			case 1:
+				//Po.move_rand(h);
+				src = make_pair(Po.getY(), Po.getX());
+				if (dest == src)
+					break;
+				move = aStarSearch(h.board, src, dest);
+				nextY = (short)move.first;
+				nextX = (short)move.second;
+				Po.move(nextX, nextY);
 			}
-			checkInput = false;
+		}
+		switch (numGhosts) {
+		case 2: Tinky_Winky.display();
+		case 1: Po.display();
+		}
 
-			if (_kbhit()) 
-				key1 = _getch();
-
-			while (checkInput == false) {
-				if (key1 == ESC) {
-					h.pause(h);
-					player1.display();
-					Tinky_Winky.display();
-					Po.display();
-					short flag;
-					flag = _getch();
-					while (flag != ESC)
-						flag = _getch();
-					Tinky_Winky.display(h.getmapat(Tinky_Winky.getY(), Tinky_Winky.getX()));
-					Po.display(h.getmapat(Po.getY(), Po.getX()));
-					key1 = key2;
-					h.unpause(h);
-				}
-
-				else if (key1 == 'w' || key1 == 'W')
-					player1.move_up(h);
-				else if (key1 == 'x' || key1 == 'X')
-					player1.move_down(h);
-				else if (key1 == 'a' || key1 == 'A')
-					player1.move_left(h);
-				else if (key1 == 'd' || key1 == 'D')
-					player1.move_right(h);
-				else if (key1 == 's' || key1 == 'S')
-					player1.stop(h);
-				else {
-					key1 = key2;
-					continue;
-				}
-				checkInput = true;
+		if ((Tinky_Winky.getX() == player1.getX() && Tinky_Winky.getY() == player1.getY()) || (Po.getX() == player1.getX() && Po.getY() == player1.getY()))
+		{
+			player1.setLives(player1.getLives() - 1);
+			Sleep(4000);
+			player1.displayLives(h);
+			key1 = 's';
+			player1.reset();
+			switch (numGhosts) {
+			case 2:
+				Tinky_Winky.display(h.getmapat(Tinky_Winky.getY(), Tinky_Winky.getX()));
+				Tinky_Winky.reset2();
+			case 1:
+				Po.display(h.getmapat(Po.getY(), Po.getX()));
+				Po.reset1();
 			}
-
-			key2 = key1;
-			player1.displayPoints(h);
-
-			if (player1.getDotsate() == 493) {
+			if (player1.getLives() == 0)
+			{
 				clearScreen();
-				displaywin();
-				running1 = false;
+				displaylose();
 				running2 = false;
+				running1 = false;
 				break;
 			}
-
-			player1.display();
-			dest = make_pair(player1.getY(), player1.getX());
-			if (frame % ghostspeed == 0) {
-				switch (numGhosts) {
-				case 2: 
-					//Tinky_Winky.move_rand(h);
-					src = make_pair(Tinky_Winky.getY(),Tinky_Winky.getX());
-					if (dest == src)
-						break;
-					move = aStarSearch(h.board, src, dest);
-					nextY = (short)move.first;
-					nextX = (short)move.second;
-					Tinky_Winky.move(nextX, nextY);
-				case 1: 
-					//Po.move_rand(h);
-					src = make_pair(Po.getY(), Po.getX());
-					if (dest == src)
-						break;
-					move = aStarSearch(h.board, src, dest);
-					nextY = (short)move.first;
-					nextX = (short)move.second;
-					Po.move(nextX, nextY);
-				}
-			}
-			switch (numGhosts) {
-			case 2: Tinky_Winky.display();
-			case 1: Po.display();
-			}
-
-			if ((Tinky_Winky.getX() == player1.getX() && Tinky_Winky.getY() == player1.getY()) || (Po.getX() == player1.getX() && Po.getY() == player1.getY()))
-			{
-				player1.setLives(player1.getLives() - 1);
-				Sleep(4000);
-				player1.displayLives(h);
-				key1 = 's';
-				player1.reset();
-				switch (numGhosts) {
-				case 2:
-					Tinky_Winky.display(h.getmapat(Tinky_Winky.getY(), Tinky_Winky.getX()));
-					Tinky_Winky.reset2();
-				case 1:
-					Po.display(h.getmapat(Po.getY(), Po.getX()));
-					Po.reset1();
-				}
-				if (player1.getLives() == 0)
-				{
-					clearScreen();
-					displaylose();
-					running2 = false;
-					running1 = false;
-					break;
-				}
-			}
-			Sleep(speed);
-			frame++;
 		}
+		Sleep(speed);
+		frame++;
 	}
+	//}
 	goToOption(0);
 }
 
