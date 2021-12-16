@@ -40,6 +40,15 @@ void pacman::displayLives(map& m)
 	}
 }
 
+/*void pacman::whathappened(map& m)
+{
+	gotoxy(m.getWidth() + 1, m.getHeight() - 3);
+	cout << "EAT???";
+	Sleep(4000);
+	gotoxy(m.getWidth() + 1, m.getHeight() - 3);
+	cout << "      ";
+}*/
+
 void pacman::reset()
 {
 	setX(13);

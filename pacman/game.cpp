@@ -24,7 +24,7 @@ bool game::isDestination(int row, int col, Pair dest)
 		return (false);
 }
 
-double game::calculateHValue(int row, int col, Pair dest)
+int game::calculateHValue(int row, int col, Pair dest)
 {
 	return abs(row - dest.first) + abs(col - dest.second);
 }
@@ -61,9 +61,6 @@ Pair game::tracePath(cell cellDetails[][COLS], Pair dest)
 	return target;
 }
 
-// A Function to find the shortest path between
-// a given source cell to a destination cell according
-// to A* Search Algorithm
 Pair game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 {
 	// If the source is out of range
@@ -104,9 +101,9 @@ Pair game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 
 	for (i = 0; i < ROWS; i++) {
 		for (j = 0; j < COLS; j++) {
-			cellDetails[i][j].f = FLT_MAX;
-			cellDetails[i][j].g = FLT_MAX;
-			cellDetails[i][j].h = FLT_MAX;
+			cellDetails[i][j].f = 1000;
+			cellDetails[i][j].g = 1000;
+			cellDetails[i][j].h = 1000;
 			cellDetails[i][j].parent_i = -1;
 			cellDetails[i][j].parent_j = -1;
 		}
@@ -114,9 +111,9 @@ Pair game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 
 	// Initialising the parameters of the starting node
 	i = src.first, j = src.second;
-	cellDetails[i][j].f = 0.0;
-	cellDetails[i][j].g = 0.0;
-	cellDetails[i][j].h = 0.0;
+	cellDetails[i][j].f = 0;
+	cellDetails[i][j].g = 0;
+	cellDetails[i][j].h = 0;
 	cellDetails[i][j].parent_i = i;
 	cellDetails[i][j].parent_j = j;
 
@@ -132,7 +129,7 @@ Pair game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 
 	// Put the starting cell on the open list and set its
 	// 'f' as 0
-	openList.insert(make_pair(0.0, make_pair(i, j)));
+	openList.insert(make_pair(0, make_pair(i, j)));
 
 	// We set this boolean value as false as initially
 	// the destination is not reached.
@@ -150,7 +147,7 @@ Pair game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 		closedList[i][j] = true;
 
 		// To store the 'g', 'h' and 'f' of the 8 successors
-		double gNew, hNew, fNew;
+		int gNew, hNew, fNew;
 
 		//----------- 1st Successor (up) ------------
 
@@ -165,13 +162,14 @@ Pair game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 				//printf("The destination cell is found\n");
 				target = tracePath(cellDetails, dest);
 				foundDest = true;
+				//free(cellDetails);
 				return target;
 			}
 			// If the successor is already on the closed
 			// list or if it is blocked, then ignore it.
 			// Else do the following
 			else if (closedList[i - 1][j] == false && isUnBlocked(grid, i - 1, j) == true) {
-				gNew = cellDetails[i][j].g + 1.0;
+				gNew = cellDetails[i][j].g + 1;
 				hNew = calculateHValue(i - 1, j, dest);
 				fNew = gNew + hNew;
 
@@ -206,11 +204,12 @@ Pair game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 				//printf("The destination cell is found\n");
 				target = tracePath(cellDetails, dest);
 				foundDest = true;
+				//free(cellDetails);
 				return target;
 			}
 
 			else if (closedList[i + 1][j] == false && isUnBlocked(grid, i + 1, j) == true) {
-				gNew = cellDetails[i][j].g + 1.0;
+				gNew = cellDetails[i][j].g + 1;
 				hNew = calculateHValue(i + 1, j, dest);
 				fNew = gNew + hNew;
 
@@ -235,11 +234,12 @@ Pair game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 				//printf("The destination cell is found\n");
 				target = tracePath(cellDetails, dest);
 				foundDest = true;
+				//free(cellDetails);
 				return target;
 			}
 
 			else if (closedList[i][j + 1] == false && isUnBlocked(grid, i, j + 1) == true) {
-				gNew = cellDetails[i][j].g + 1.0;
+				gNew = cellDetails[i][j].g + 1;
 				hNew = calculateHValue(i, j + 1, dest);
 				fNew = gNew + hNew;
 
@@ -264,11 +264,12 @@ Pair game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 				//printf("The destination cell is found\n");
 				target = tracePath(cellDetails, dest);
 				foundDest = true;
+				//free(cellDetails);
 				return target;
 			}
 
 			else if (closedList[i][j - 1] == false && isUnBlocked(grid, i, j - 1) == true) {
-				gNew = cellDetails[i][j].g + 1.0;
+				gNew = cellDetails[i][j].g + 1;
 				hNew = calculateHValue(i, j - 1, dest);
 				fNew = gNew + hNew;
 
@@ -284,11 +285,6 @@ Pair game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 		}
 	}
 
-	// When the destination cell is not found and the open
-	// list is empty, then we conclude that we failed to
-	// reach the destination cell. This may happen when the
-	// there is no way to destination cell (due to
-	// blockages)
 	/*if (foundDest == false)
 		printf("Failed to find the Destination Cell\n");*/
 	//return;
@@ -460,6 +456,7 @@ void game::gameLoop() {
 	srand(time(0));
 	bool running1 = true;
 	bool running2 = true;
+	bool checkInput;
 	short nextX, nextY;
 	unsigned long long int frame = 0;   //can get realy high numbers...
 
@@ -487,7 +484,7 @@ void game::gameLoop() {
 
 	while (running2) {
 		running1 = true;
-		char key1 = 0 , key2 = 0;
+		char key1 = 's' , key2 = 's';
 		h.ShowMap();
 		player1.displayLives(h);
 
@@ -511,34 +508,43 @@ void game::gameLoop() {
 			case 2: Tinky_Winky.display(h.getmapat(Tinky_Winky.getY(), Tinky_Winky.getX()));
 			case 1: Po.display(h.getmapat(Po.getY(), Po.getX()));
 			}
+			checkInput = false;
 
 			if (_kbhit()) 
 				key1 = _getch();
 
-			if (key1 == ESC) {
-				h.pause(h);
-				player1.display();
-				Tinky_Winky.display();
-				Po.display();
-				short flag;
-				flag = _getch();
-				while(flag != ESC)
+			while (checkInput == false) {
+				if (key1 == ESC) {
+					h.pause(h);
+					player1.display();
+					Tinky_Winky.display();
+					Po.display();
+					short flag;
 					flag = _getch();
-				Tinky_Winky.display(h.getmapat(Tinky_Winky.getY(), Tinky_Winky.getX()));
-				Po.display(h.getmapat(Po.getY(), Po.getX()));
-				key1 = key2;
-				h.unpause(h);
+					while (flag != ESC)
+						flag = _getch();
+					Tinky_Winky.display(h.getmapat(Tinky_Winky.getY(), Tinky_Winky.getX()));
+					Po.display(h.getmapat(Po.getY(), Po.getX()));
+					key1 = key2;
+					h.unpause(h);
+				}
+
+				else if (key1 == 'w' || key1 == 'W')
+					player1.move_up(h);
+				else if (key1 == 'x' || key1 == 'X')
+					player1.move_down(h);
+				else if (key1 == 'a' || key1 == 'A')
+					player1.move_left(h);
+				else if (key1 == 'd' || key1 == 'D')
+					player1.move_right(h);
+				else if (key1 == 's' || key1 == 'S')
+					player1.stop(h);
+				else {
+					key1 = key2;
+					continue;
+				}
+				checkInput = true;
 			}
-			else if (key1 == 'w' || key1 == 'W')
-				player1.move_up(h);
-			else if (key1 == 'x' || key1 == 'X')
-				player1.move_down(h);
-			else if (key1 == 'a' || key1 == 'A')
-				player1.move_left(h);
-			else if (key1 == 'd' || key1 == 'D') 
-				player1.move_right(h);
-			else if (key1 == 's' || key1 == 'S')
-				player1.stop(h);
 
 			key2 = key1;
 			player1.displayPoints(h);
@@ -552,22 +558,26 @@ void game::gameLoop() {
 			}
 
 			player1.display();
-			dest = make_pair(player1.getX() - 1, player1.getY());
+			dest = make_pair(player1.getY(), player1.getX());
 			if (frame % ghostspeed == 0) {
 				switch (numGhosts) {
 				case 2: 
 					//Tinky_Winky.move_rand(h);
-					src = make_pair(Tinky_Winky.getX() - 1, Tinky_Winky.getY());
+					src = make_pair(Tinky_Winky.getY(),Tinky_Winky.getX());
+					if (dest == src)
+						break;
 					move = aStarSearch(h.board, src, dest);
-					nextX = (short)move.first;
-					nextY = (short)move.second - 1;
+					nextY = (short)move.first;
+					nextX = (short)move.second;
 					Tinky_Winky.move(nextX, nextY);
 				case 1: 
 					//Po.move_rand(h);
-					src = make_pair(Po.getX() - 1, Po.getY());
+					src = make_pair(Po.getY(), Po.getX());
+					if (dest == src)
+						break;
 					move = aStarSearch(h.board, src, dest);
-					nextX = (short)move.first;
-					nextY = (short)move.second - 1;
+					nextY = (short)move.first;
+					nextX = (short)move.second;
 					Po.move(nextX, nextY);
 				}
 			}
@@ -576,12 +586,12 @@ void game::gameLoop() {
 			case 1: Po.display();
 			}
 
-			if ((Tinky_Winky.getX() == player1.getX() && Tinky_Winky.getY() == player1.getY())
-				|| (Po.getX() == player1.getX() && Po.getY() == player1.getY()))
+			if ((Tinky_Winky.getX() == player1.getX() && Tinky_Winky.getY() == player1.getY()) || (Po.getX() == player1.getX() && Po.getY() == player1.getY()))
 			{
 				player1.setLives(player1.getLives() - 1);
 				Sleep(4000);
 				player1.displayLives(h);
+				key1 = 's';
 				player1.reset();
 				switch (numGhosts) {
 				case 2:

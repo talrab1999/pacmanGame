@@ -11,12 +11,12 @@ ghost::ghost()
 
 void ghost::reset1() {
 	setX(30);
-	setY(8);
+	setY(7);
 }
 
 void ghost::reset2() {
 	setX(15);
-	setY(8);
+	setY(7);
 }
 
 void ghost::move_rand(map& m)

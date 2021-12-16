@@ -13,7 +13,7 @@ using namespace std;
 #include "map.h"
 
 typedef pair<int, int> Pair;
-typedef pair<double, pair<int, int> > pPair;
+typedef pair<int, pair<int, int> > pPair;
 
 struct cell {
 	int parent_i, parent_j;
@@ -45,7 +45,7 @@ public:
 	bool isValid(int row, int col);
 	bool isUnBlocked(char grid[][COLS], int row, int col);
 	bool isDestination(int row, int col, Pair dest);
-	double calculateHValue(int row, int col, Pair dest);
+	int calculateHValue(int row, int col, Pair dest);
 	Pair tracePath(cell cellDetails[][COLS], Pair dest);
 	Pair aStarSearch(char grid[][COLS], Pair src, Pair dest);
 };
