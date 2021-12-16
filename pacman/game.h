@@ -15,6 +15,12 @@ using namespace std;
 typedef pair<int, int> Pair;
 typedef pair<int, pair<int, int> > pPair;
 
+enum class e_GhostDiff {
+	BEST = 'a',
+	GOOD = 'b',
+	NOVICE = 'c'
+};
+
 struct cell {
 	int parent_i, parent_j;
 	double f, g, h;
@@ -30,7 +36,7 @@ private:
 	string filename;
 public:
 	game();
-	void gotoxy(int,int);
+	void gotoxy(int, int);
 	void displayChoices() const;
 	void displayChoices(short) const;
 	void goToOption(short);
@@ -48,4 +54,7 @@ public:
 	int calculateHValue(int row, int col, Pair dest);
 	Pair tracePath(cell cellDetails[][COLS], Pair dest);
 	Pair aStarSearch(char grid[][COLS], Pair src, Pair dest);
+	char chooseGhostsDifficulty();
+	void ghostMove(ghost&,map&, pacman&);
+	void BestMove(ghost&, map&, pacman&);
 };

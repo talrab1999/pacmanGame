@@ -9,7 +9,7 @@ Entity::Entity()
 	//color = WHITE;
 }
 
-Entity::Entity(short X, short Y, short L, char S,short lastmove=0, Color COLOR)
+Entity::Entity(short X, short Y, short L, char S,short lastmove=0, Color COLOR=BLACK)
 {
 	x = X;
 	y = Y;

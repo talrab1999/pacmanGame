@@ -454,23 +454,26 @@ void game::setFilename(string f) {
 }
 
 void game::gameLoop() {
+
+	char ghostDiff = chooseGhostsDifficulty();
 	srand(time(0));
 	bool running1 = true;
-	bool running2 = true;
+	//DELETE bool running2 = true;
 	bool checkInput;
-	short nextX, nextY;
+	short nextX, nextY;//Move to ghostMove();
 	unsigned long long int frame = 0;   //can get realy high numbers...
 
 	pacman player1;
-	ghost Tinky_Winky;
-	ghost Po;
+	ghost Tinky_Winky(ghostDiff);
+	ghost Po(ghostDiff);
 	map h;
-	Pair move, src, dest;
+	Pair move, src, dest;//Move to ghostMove();
 	h.fillmap();
 	h.fillboard();
 	player1.setLives(startLives);
+
 	/////////
-	running1 = true;
+	//DELETE running1 = true;
 	char key1 = 's', key2 = 's';
 	h.ShowMap();
 	player1.displayLives(h);
@@ -478,7 +481,7 @@ void game::gameLoop() {
 	player1.display();
 	h.setmapat(player1.getY(), player1.getX(), player1.getSymbol());
 
-	switch (numGhosts) {
+	switch (numGhosts) { //ResetsGhosts()
 	case 2:
 		Tinky_Winky.reset(15,7);
 		Tinky_Winky.display();
@@ -507,7 +510,6 @@ void game::gameLoop() {
 
 	while (running1)
 	{
-
 		player1.display(' ');
 		h.setmapat(player1.getY(), player1.getX(), ' ');
 		switch (numGhosts) {
@@ -559,33 +561,36 @@ void game::gameLoop() {
 			clearScreen();
 			displaywin();
 			running1 = false;
-			running2 = false;
+			//DELETE running2 = false;
 			break;
 		}
 
 		player1.display();
-		dest = make_pair(player1.getY(), player1.getX());
+		dest = make_pair(player1.getY(), player1.getX()); //Move to ghostMove();
 		if (frame % ghostspeed == 0) {
-			switch (numGhosts) {
-			case 2:
-				//Tinky_Winky.move_rand(h);
-				src = make_pair(Tinky_Winky.getY(), Tinky_Winky.getX());
-				if (dest == src)
-					break;
-				move = aStarSearch(h.board, src, dest);
-				nextY = (short)move.first;
-				nextX = (short)move.second;
-				Tinky_Winky.move(nextX, nextY);
-			case 1:
-				//Po.move_rand(h);
-				src = make_pair(Po.getY(), Po.getX());
-				if (dest == src)
-					break;
-				move = aStarSearch(h.board, src, dest);
-				nextY = (short)move.first;
-				nextX = (short)move.second;
-				Po.move(nextX, nextY);
-			}
+			ghostMove(Tinky_Winky, h, player1);
+			ghostMove(Po, h, player1);
+
+			//switch (numGhosts) {
+			//case 2:
+			//	//Tinky_Winky.move_rand(h);
+			//	src = make_pair(Tinky_Winky.getY(), Tinky_Winky.getX());
+			//	if (dest == src)
+			//		break;
+			//	move = aStarSearch(h.board, src, dest);
+			//	nextY = (short)move.first;
+			//	nextX = (short)move.second;
+			//	Tinky_Winky.move(nextX, nextY);
+			//case 1:
+			//	//Po.move_rand(h);
+			//	src = make_pair(Po.getY(), Po.getX());
+			//	if (dest == src)
+			//		break;
+			//	move = aStarSearch(h.board, src, dest);
+			//	nextY = (short)move.first;
+			//	nextX = (short)move.second;
+			//	Po.move(nextX, nextY);
+			//}
 		}
 		switch (numGhosts) {
 		case 2: Tinky_Winky.display();
@@ -611,7 +616,7 @@ void game::gameLoop() {
 			{
 				clearScreen();
 				displaylose();
-				running2 = false;
+				//DELETE running2 = false;
 				running1 = false;
 				break;
 			}
@@ -621,6 +626,77 @@ void game::gameLoop() {
 	}
 	//}
 	goToOption(0);
+}
+
+char game::chooseGhostsDifficulty() {
+	clearScreen();
+	cout << "Please select ghost difficulty:" << endl;
+	cout << "(a) BEST (b) GOOD and (c) NOVICE" << endl;
+	
+	char input;
+	cin >> input;
+
+	while (input != 'a' && input != 'b' && input != 'c') {
+		cout << "invalid Input" << endl;
+		cin >> input;
+	}
+	clearScreen();
+	return input;
+}
+
+void game::ghostMove(ghost& currGhost, map& h, pacman& player1) {
+
+	switch (currGhost.getDifficulty())
+	{
+		case int(e_GhostDiff::NOVICE) :
+		{
+			currGhost.move_rand(h);
+			break;
+		}
+		//Ghost difficulty is GOOD or BEST
+
+		case int(e_GhostDiff::GOOD) :
+		{
+			if (currGhost.getTurnCounter() % 20 == 0) {
+				currGhost.move_rand(h);
+				currGhost.setGoodCounter(1);
+				break;	//Move like NOVICE and exit switch
+			}
+			else if (1<=currGhost.getGoodCounter()&&
+						currGhost.getGoodCounter() <= 5) {
+				currGhost.move_rand(h);
+				currGhost.setGoodCounter(currGhost.getGoodCounter() + 1);
+				break; //Move like NOVICE and exit switch
+			}
+			if (currGhost.getGoodCounter() == 6) {
+				currGhost.setGoodCounter(0);
+				currGhost.setTurnCounter(1);
+			}
+			BestMove(currGhost, h, player1);
+			break;
+		}
+		case int(e_GhostDiff::BEST) :
+		{
+			BestMove(currGhost, h, player1);
+			break;
+		}
+	}
+	currGhost.setTurnCounter(currGhost.getTurnCounter() + 1);
+}
+
+void game::BestMove(ghost& currGhost, map&h, pacman& player1) {
+	Pair move, src, dest;
+	short nextX, nextY;
+	dest = make_pair(player1.getY(), player1.getX());
+
+	src = make_pair(currGhost.getY(), currGhost.getX());
+	if (dest == src)
+		return;
+
+	move = aStarSearch(h.board, src, dest);
+	nextY = (short)move.first;
+	nextX = (short)move.second;
+	currGhost.move(nextX, nextY);
 }
 
 

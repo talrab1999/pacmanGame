@@ -1,6 +1,6 @@
 #include "fruit.h"
 
-fruit::fruit()
+fruit::fruit(char diff = 'c') :ghost(diff)
 {
 	//lastmove = 0;
 	//edible = 0;
