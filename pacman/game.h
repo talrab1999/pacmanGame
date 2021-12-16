@@ -8,9 +8,9 @@ using namespace std;
 #include <conio.h>
 #include <stack>
 #include <set>
-#include "ghost.h"
 #include "pacman.h"
 #include "map.h"
+#include "fruit.h"
 
 typedef pair<int, int> Pair;
 typedef pair<int, pair<int, int> > pPair;

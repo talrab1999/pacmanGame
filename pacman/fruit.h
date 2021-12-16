@@ -3,7 +3,7 @@
 
 class fruit :public ghost{
 public:
-	fruit(char);
+	fruit(char c='c');
 	//-------------------SET----------------//
 	//void setRandSymbol() { setSymbol(fruitRandSymbol()); }		 //Sets Rand value between 5-9
 
