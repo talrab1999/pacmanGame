@@ -339,7 +339,7 @@ string game::choices[3] = {
 
 game::game()
 {
-	numGhosts = 2;
+	numGhosts = 3;
 	speed = 100;
 	ghostspeed = 2;      //means X2 slower than the pacman
 	startLives = 3;
@@ -628,7 +628,11 @@ void game::gameLoop() {
 			}
 		}
 		if (Dipsy.getX() == player1.getX() && Dipsy.getY() == player1.getY()){
-			player1.setPoints(player1.getDotsate() +short( Dipsy.getSymbol() + '0'));
+			int score = (Dipsy.getSymbol() - '0');
+			player1.setPoints(player1.getPoints() +score);
+		}
+		else if ((Tinky_Winky.getX() == Dipsy.getX() && Tinky_Winky.getY() == Dipsy.getY()) || (Po.getX() == Dipsy.getX() && Po.getY() == Dipsy.getY())) {
+
 		}
 		Sleep(speed);
 		frame++;
