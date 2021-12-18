@@ -7,7 +7,7 @@ map::map(string mapNum)
 	height = 19;
 	dotCounter = 0;
 	length = width * height;
-	filename = "map" + mapNum;
+	filename = "map" + mapNum+".screen";
 }
 
 void map::gotoxy(short i, short j) const

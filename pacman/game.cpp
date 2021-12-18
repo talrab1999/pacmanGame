@@ -332,9 +332,9 @@ char lose[9][63] = {
 	"##########################################################",
 };
 
-string game::choices[3] = {
+string game::choices[4] = {
 	"1 - Start a new game",
-	"2 - Choose map"
+	"2 - Choose map",
 	"8 - Instructions and keys",
 	"9 - Quit" };
 
@@ -344,6 +344,7 @@ game::game()
 	speed = 100;
 	ghostspeed = 2;      //means X2 slower than the pacman
 	startLives = 3;
+	oneMap = false;
 	//goToOption(0);
 }
 
@@ -380,6 +381,11 @@ void game::goToOption(int in)
 		break;
 	case 2:
 		chooseMap();
+		clearScreen();
+		gameLoop();
+		break;
+
+
 	case 8:
 		displayInstructions();
 		clearScreen();
@@ -458,7 +464,7 @@ void game::setFilename(string f) {
 }
 
 void game::gameLoop() {
-	//gameLoop(bool playOne)
+	
 	char ghostDiff = chooseGhostsDifficulty();
 	srand(time(0));
 	bool running1 = true;
@@ -470,10 +476,11 @@ void game::gameLoop() {
 	ghost Tinky_Winky(ghostDiff);
 	ghost Po(ghostDiff);
 	fruit Dipsy;
-		
-	//map h(choise)
-	map h;
-	Pair move, src, dest;//Move to ghostMove();
+	map h; 
+
+	if (oneMap)
+		h.setFilename(getFilename());
+
 	h.fillmap();
 	h.fillboard();
 	player1.setLives(startLives);
@@ -573,6 +580,12 @@ void game::gameLoop() {
 		if (player1.getDotsate() == h.getDots()) {
 			clearScreen();
 			displaywin();
+
+			/*if(oneMap)
+			continue;
+			running1 = false;
+*/
+
 			running1 = false;
 			break;
 		}
@@ -724,6 +737,8 @@ bool game::FruitMetEntity(ghost& Tinky_Winky, ghost& Po, fruit& Dipsy, pacman& p
 void game::chooseMap() {
 
 	string mapNum;
+
+	cout << "Please choose a map number: "<< endl;
 	cout << "1" << endl << "2" << endl << "3" << endl;
 	
 	cin >> mapNum;
@@ -731,6 +746,10 @@ void game::chooseMap() {
 		cout << "Please enter a number between 1-3" << endl;
 		cin >> mapNum;
 	}
-	filename = "map" + mapNum;
+	oneMap = true;
+	filename = "map" + mapNum + ".screen";
+	cout << "You chose map number:"<<mapNum<< endl<<"Good Luck!"<<endl;
+	system("pause");
+
 }
 

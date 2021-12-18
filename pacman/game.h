@@ -29,12 +29,13 @@ struct cell {
 
 class game {
 private:
-	static string choices[3];
+	static string choices[4];
 	enum {
 		ESC = 27,
 	};
 	short lastOption, startLives, numGhosts, ghostspeed, speed;
 	string filename;
+	bool oneMap;
 public:
 	game();
 	void gotoxy(int, int);
