@@ -574,7 +574,7 @@ void game::gameLoop() {
 		}
 
 		player1.display();
-		dest = make_pair(player1.getY(), player1.getX()); //Move to ghostMove();
+
 		if (frame % ghostspeed == 0) {
 			ghostMove(Tinky_Winky, h, player1);
 			ghostMove(Po, h, player1);
