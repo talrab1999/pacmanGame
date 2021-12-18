@@ -57,4 +57,5 @@ public:
 	char chooseGhostsDifficulty();
 	void ghostMove(ghost&,map&, pacman&);
 	void BestMove(ghost&, map&, pacman&);
+	bool FruitMetEntity(ghost&, ghost&,fruit&, pacman&, map&);
 };

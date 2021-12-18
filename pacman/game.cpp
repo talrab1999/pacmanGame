@@ -494,24 +494,6 @@ void game::gameLoop() {
 		Po.display();
 	}
 
-	/*while (running2) {
-		/*running1 = true;
-		char key1 = 's' , key2 = 's';
-		h.ShowMap();
-		player1.displayLives(h);
-
-		player1.display();
-		h.setmapat(player1.getY(), player1.getX(), player1.getSymbol());
-
-		switch (numGhosts) {
-		case 2:
-			Tinky_Winky.reset2();
-			Tinky_Winky.display();
-		case 1:
-			Po.reset1();
-			Po.display();
-	}*/
-
 	while (running1)
 	{
 		player1.display(' ');
@@ -575,8 +557,14 @@ void game::gameLoop() {
 		if (frame % ghostspeed == 0) {
 			ghostMove(Tinky_Winky, h, player1);
 			ghostMove(Po, h, player1);
-			if(Dipsy.getSleep() == false)
+			if (Dipsy.getSleep() == false) //Not asleep
 				ghostMove(Dipsy, h, player1);
+			else {	// asleep
+				if (Dipsy.getTurnCounter() == 10) {
+					Dipsy.wakeUpFruit();
+				}
+				Dipsy.setTurnCounter(Dipsy.getTurnCounter() + 1);
+			}
 		}
 		switch (numGhosts) {
 		case 3: Dipsy.display();
@@ -603,24 +591,18 @@ void game::gameLoop() {
 			{
 				clearScreen();
 				displaylose();
-				//DELETE running2 = false;
 				running1 = false;
 				break;
 			}
 		}
-		if (Dipsy.getX() == player1.getX() && Dipsy.getY() == player1.getY()){
-			int score = (Dipsy.getSymbol() - '0');
-			player1.setPoints(player1.getPoints() +score);
+		if (FruitMetEntity(Tinky_Winky,Po,Dipsy,player1,h)) { 
 			Dipsy.sleepFruit(h);
-		}
-		else if ((Tinky_Winky.getX() == Dipsy.getX() && Tinky_Winky.getY() == Dipsy.getY()) || (Po.getX() == Dipsy.getX() && Po.getY() == Dipsy.getY()) || Dipsy.getTurnCounter() == 25) {
-			Dipsy.sleepFruit(h);
-
+			Dipsy.resetCounter();
 		}
 		Sleep(speed);
 		frame++;
 	}
-	//}
+
 	goToOption(0);
 }
 
@@ -695,5 +677,16 @@ void game::BestMove(ghost& currGhost, map&h, pacman& player1) {
 	currGhost.move(nextX, nextY);
 }
 
+bool game::FruitMetEntity(ghost& Tinky_Winky, ghost& Po, fruit& Dipsy, pacman& player1, map& h) {
+	
+	if (Dipsy.getX() == player1.getX() && Dipsy.getY() == player1.getY()) { //Fruit met pacman
+		int score = (Dipsy.getSymbol() - '0');
+		player1.setPoints(player1.getPoints() + score);
+		return true;
+	
+	}
+	else if ((Tinky_Winky.getX() == Dipsy.getX() && Tinky_Winky.getY() == Dipsy.getY()) || (Po.getX() == Dipsy.getX() && Po.getY() == Dipsy.getY()) || Dipsy.getTurnCounter() == 25) {
+		return true;
+	}
 
-
+}

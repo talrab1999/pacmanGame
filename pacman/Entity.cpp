@@ -121,3 +121,8 @@ void Entity::replace() const {
 	gotoxy(x, y);
 }
 
+void Entity::reset(int x, int y) {
+	setX(x);
+	setY(y);
+}
+

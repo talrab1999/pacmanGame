@@ -34,4 +34,6 @@ public:
 	void display();
 	void display(char);
 	void replace() const;
+	void reset(int x, int y);
+	
 };

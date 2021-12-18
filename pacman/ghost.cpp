@@ -12,16 +12,6 @@ ghost::ghost(char diff)
 	//setColor(Color::RED);
 }
 
-void ghost::reset(int x, int y) {
-	setX(x);
-	setY(y);
-}
-
-/*void ghost::reset2() {
-	setX(15);
-	setY(7);
-}*/
-
 /*void ghost::move_rand(map& m)
 {
 	short nextX = 0, nextY = 0;
@@ -78,3 +68,6 @@ int ghost::getTurnCounter() {
 	return turnCounter;
 }
 
+void ghost::resetCounter() {
+	setTurnCounter(0);
+}

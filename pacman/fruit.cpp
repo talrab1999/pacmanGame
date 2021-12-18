@@ -17,7 +17,7 @@ void fruit::setRandomSymbol() {
 
 void fruit::sleepFruit(map& h) {
 	setSymbol(' ');
-	gotoxy(h.getWidth() + 1, 0);
+	reset(h.getWidth() + 1, 0);
 	setSleep(true);
 }
 
@@ -27,6 +27,12 @@ void fruit::setSleep(bool sleep) {
 
 bool fruit::getSleep() {
 	return sleep;
+}
+
+void fruit::wakeUpFruit() {
+	setSleep(false);
+	setRandomSymbol();
+	reset(15, 1);
 }
 
 
