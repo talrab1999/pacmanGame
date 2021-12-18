@@ -12,6 +12,7 @@ using namespace std;
 #include "map.h"
 #include "fruit.h"
 
+
 typedef pair<int, int> Pair;
 typedef pair<int, pair<int, int> > pPair;
 
@@ -39,7 +40,7 @@ public:
 	void gotoxy(int, int);
 	void displayChoices() const;
 	void displayChoices(short) const;
-	void goToOption(short);
+	void goToOption(int);
 	void clearScreen() const;
 	void displayInstructions() const;
 	void displaywin() const;

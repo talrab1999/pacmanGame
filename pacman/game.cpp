@@ -343,7 +343,7 @@ game::game()
 	speed = 100;
 	ghostspeed = 2;      //means X2 slower than the pacman
 	startLives = 3;
-	goToOption(0);
+	//goToOption(0);
 }
 
 void game::gotoxy(int x, int y)
@@ -366,9 +366,10 @@ void game::displayChoices(short curr) const {
 	}
 }
 
-void game::goToOption(short in)
+void game::goToOption(int in)
 {
 	clearScreen();
+
 	switch (in) {
 	case 0:
 		displayChoices();
@@ -376,12 +377,12 @@ void game::goToOption(short in)
 	case 1:
 		gameLoop();
 		break;
-	case 8: 
+	case 8:
 		displayInstructions();
 		clearScreen();
 		goToOption(0);
 		break;
-	case 9: 
+	case 9:
 		exit(0);
 		break;
 	}
@@ -473,8 +474,6 @@ void game::gameLoop() {
 	h.fillboard();
 	player1.setLives(startLives);
 
-	/////////
-	//DELETE running1 = true;
 	char key1 = 's', key2 = 's';
 	h.ShowMap();
 	player1.displayLives(h);
@@ -548,7 +547,6 @@ void game::gameLoop() {
 			clearScreen();
 			displaywin();
 			running1 = false;
-			//DELETE running2 = false;
 			break;
 		}
 
@@ -566,7 +564,13 @@ void game::gameLoop() {
 				Dipsy.setTurnCounter(Dipsy.getTurnCounter() + 1);
 			}
 		}
-		switch (numGhosts) {
+
+		if ((FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h) == true)) {
+			Dipsy.sleepFruit(h);
+			Dipsy.resetCounter();
+		}
+
+		switch (numGhosts) {  //Dipslays Ghosts and fruit
 		case 3: Dipsy.display();
 		case 2: Tinky_Winky.display();
 		case 1: Po.display();
@@ -579,7 +583,7 @@ void game::gameLoop() {
 			player1.displayLives(h);
 			key1 = 's';
 			player1.reset();
-			switch (numGhosts) {
+			switch (numGhosts-1) {
 			case 2:
 				Tinky_Winky.display(h.getmapat(Tinky_Winky.getY(), Tinky_Winky.getX()));
 				Tinky_Winky.reset(15, 7);
@@ -595,14 +599,10 @@ void game::gameLoop() {
 				break;
 			}
 		}
-		if ((FruitMetEntity(Tinky_Winky,Po,Dipsy,player1,h) == true)) { 
-			Dipsy.sleepFruit(h);
-			Dipsy.resetCounter();
-		}
+		
 		Sleep(speed);
 		frame++;
 	}
-
 	goToOption(0);
 }
 
