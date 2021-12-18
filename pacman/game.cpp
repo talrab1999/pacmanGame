@@ -539,8 +539,31 @@ void game::gameLoop() {
 			}
 			checkInput = true;
 		}
-
 		key2 = key1;
+
+		if ((Tinky_Winky.getX() == player1.getX() && Tinky_Winky.getY() == player1.getY()) || (Po.getX() == player1.getX() && Po.getY() == player1.getY()))
+		{
+			player1.setLives(player1.getLives() - 1);
+			Sleep(4000);
+			player1.displayLives(h);
+			key1 = 's';
+			player1.reset();
+			switch (numGhosts - 1) {
+			case 2:
+				Tinky_Winky.display(h.getmapat(Tinky_Winky.getY(), Tinky_Winky.getX()));
+				Tinky_Winky.reset(15, 7);
+			case 1:
+				Po.display(h.getmapat(Po.getY(), Po.getX()));
+				Po.reset(30, 7);
+			}
+			if (player1.getLives() == 0)
+			{
+				clearScreen();
+				displaylose();
+				running1 = false;
+				continue;
+			}
+		}
 		player1.displayPoints(h);
 
 		if (player1.getDotsate() == 493) {
@@ -555,6 +578,10 @@ void game::gameLoop() {
 		if (frame % ghostspeed == 0) {
 			ghostMove(Tinky_Winky, h, player1);
 			ghostMove(Po, h, player1);
+			if ((FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h) == true)) {
+				Dipsy.sleepFruit(h);
+				Dipsy.resetCounter();
+			}
 			if (Dipsy.getSleep() == false) //Not asleep
 				ghostMove(Dipsy, h, player1);
 			else {	// asleep
@@ -565,10 +592,10 @@ void game::gameLoop() {
 			}
 		}
 
-		if ((FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h) == true)) {
+		/*if ((FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h) == true)) {
 			Dipsy.sleepFruit(h);
 			Dipsy.resetCounter();
-		}
+		}*/
 
 		switch (numGhosts) {  //Dipslays Ghosts and fruit
 		case 3: Dipsy.display();
@@ -576,7 +603,7 @@ void game::gameLoop() {
 		case 1: Po.display();
 		}
 
-		if ((Tinky_Winky.getX() == player1.getX() && Tinky_Winky.getY() == player1.getY()) || (Po.getX() == player1.getX() && Po.getY() == player1.getY()))
+		/*if ((Tinky_Winky.getX() == player1.getX() && Tinky_Winky.getY() == player1.getY()) || (Po.getX() == player1.getX() && Po.getY() == player1.getY()))
 		{
 			player1.setLives(player1.getLives() - 1);
 			Sleep(4000);
@@ -598,7 +625,7 @@ void game::gameLoop() {
 				running1 = false;
 				break;
 			}
-		}
+		}*/
 		
 		Sleep(speed);
 		frame++;
