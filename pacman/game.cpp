@@ -334,6 +334,7 @@ char lose[9][63] = {
 
 string game::choices[3] = {
 	"1 - Start a new game",
+	"2 - Choose map"
 	"8 - Instructions and keys",
 	"9 - Quit" };
 
@@ -377,6 +378,8 @@ void game::goToOption(int in)
 	case 1:
 		gameLoop();
 		break;
+	case 2:
+		chooseMap();
 	case 8:
 		displayInstructions();
 		clearScreen();
@@ -455,11 +458,10 @@ void game::setFilename(string f) {
 }
 
 void game::gameLoop() {
-
+	//gameLoop(bool playOne)
 	char ghostDiff = chooseGhostsDifficulty();
 	srand(time(0));
 	bool running1 = true;
-	//DELETE bool running2 = true;
 	bool checkInput;
 	short nextX, nextY;//Move to ghostMove();
 	unsigned long long int frame = 0;   //can get realy high numbers...
@@ -468,6 +470,8 @@ void game::gameLoop() {
 	ghost Tinky_Winky(ghostDiff);
 	ghost Po(ghostDiff);
 	fruit Dipsy;
+		
+	//map h(choise)
 	map h;
 	Pair move, src, dest;//Move to ghostMove();
 	h.fillmap();
@@ -626,7 +630,7 @@ void game::gameLoop() {
 				break;
 			}
 		}*/
-		
+
 		Sleep(speed);
 		frame++;
 	}
@@ -717,4 +721,16 @@ bool game::FruitMetEntity(ghost& Tinky_Winky, ghost& Po, fruit& Dipsy, pacman& p
 	return false;
 }
 
+void game::chooseMap() {
+
+	string mapNum;
+	cout << "1" << endl << "2" << endl << "3" << endl;
+	
+	cin >> mapNum;
+	while (mapNum != "1" && mapNum != "2" && mapNum != "3") {
+		cout << "Please enter a number between 1-3" << endl;
+		cin >> mapNum;
+	}
+	filename = "map" + mapNum;
+}
 

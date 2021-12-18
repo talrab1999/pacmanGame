@@ -1,13 +1,13 @@
 
 #include "map.h"
 
-map::map()
+map::map(string mapNum)
 {
 	width = 61;
 	height = 19;
 	dotCounter = 0;
 	length = width * height;
-	filename = "map.txt";
+	filename = "map" + mapNum;
 }
 
 void map::gotoxy(short i, short j) const

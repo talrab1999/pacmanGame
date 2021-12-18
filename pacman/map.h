@@ -17,7 +17,7 @@ private:
 	vector<char> map_vec;
 
 public:
-	map();
+	map(string mapNum="1");
 	char board[ROWS][COLS];
 	void gotoxy(short, short) const;
 	short getWidth() const;
