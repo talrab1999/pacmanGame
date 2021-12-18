@@ -384,8 +384,6 @@ void game::goToOption(int in)
 		clearScreen();
 		gameLoop();
 		break;
-
-
 	case 8:
 		displayInstructions();
 		clearScreen();
@@ -403,12 +401,6 @@ void game::clearScreen() const
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD position = { 0, 0 };
 	SetConsoleCursorPosition(hStdout, position);
-	/*for (short j = 0; j < 80; j++) {
-		for (short i = 0; i < 40; i++) {
-			position = { i, j };
-			cout << " ";
-		}
-	}*/
 	position = { 0,0 };
 	SetConsoleCursorPosition(hStdout, position);
 	system("CLS");
@@ -469,7 +461,6 @@ void game::gameLoop() {
 	srand(time(0));
 	bool running1 = true;
 	bool checkInput;
-	short nextX, nextY;//Move to ghostMove();
 	unsigned long long int frame = 0;   //can get realy high numbers...
 
 	pacman player1;
@@ -569,6 +560,9 @@ void game::gameLoop() {
 			}
 			if (player1.getLives() == 0)
 			{
+				/*if(!oneGame)
+						game.setfilename(nextmap)
+						continue;	*/
 				clearScreen();
 				displaylose();
 				running1 = false;
@@ -577,17 +571,17 @@ void game::gameLoop() {
 		}
 		player1.displayPoints(h);
 
-		if (player1.getDotsate() == h.getDots()) {
+		if (player1.getDotsate() == h.getDots()-450) {
 			clearScreen();
 			displaywin();
 
-			/*if(oneMap)
+			/*if(!oneMap)
 			continue;
 			running1 = false;
 */
 
 			running1 = false;
-			break;
+			continue;
 		}
 
 		player1.display();
