@@ -29,10 +29,20 @@ bool fruit::getSleep() {
 	return sleep;
 }
 
-void fruit::wakeUpFruit() {
+void fruit::wakeUpFruit(map& h) {
+	int x, y;
+	x = rand() % 16 + 1;
+	y = rand() % 57 + 1;
+	while (h.board[x][y] != ' ') {
+		x = rand() % 16 + 1;
+		y = rand() % 57 + 1;
+	}
+	reset(y, x);
 	setSleep(false);
+	resetCounter();
+	gotoxy(h.getWidth() + 1, 0);
+	cout << "  ";
 	setRandomSymbol();
-	reset(15, 1);
 }
 
 

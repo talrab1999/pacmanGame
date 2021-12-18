@@ -8,7 +8,7 @@ public:
 	void sleepFruit(map&);
 	void setSleep(bool);
 	bool getSleep();
-	void wakeUpFruit();
+	void wakeUpFruit(map&);
 
 	//-------------------SET----------------//
 	//void setRandSymbol() { setSymbol(fruitRandSymbol()); }		 //Sets Rand value between 5-9

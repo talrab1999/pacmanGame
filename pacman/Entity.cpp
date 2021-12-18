@@ -1,7 +1,7 @@
 #include "Entity.h"
 Entity::Entity()
 {
-	lastmove = 0;
+	lastmove = 3;
 	x = 0;
 	y = 0;
 	lives = 1;

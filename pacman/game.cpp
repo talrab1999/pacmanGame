@@ -484,7 +484,7 @@ void game::gameLoop() {
 
 	switch (numGhosts) { //ResetsGhosts()
 	case 3:
-		Dipsy.reset(15, 1);
+		Dipsy.reset(15, 17);
 		Dipsy.display();
 	case 2:
 		Tinky_Winky.reset(15, 7);
@@ -560,8 +560,8 @@ void game::gameLoop() {
 			if (Dipsy.getSleep() == false) //Not asleep
 				ghostMove(Dipsy, h, player1);
 			else {	// asleep
-				if (Dipsy.getTurnCounter() == 10) {
-					Dipsy.wakeUpFruit();
+				if (Dipsy.getTurnCounter() == 50) {
+					Dipsy.wakeUpFruit(h);
 				}
 				Dipsy.setTurnCounter(Dipsy.getTurnCounter() + 1);
 			}
@@ -595,7 +595,7 @@ void game::gameLoop() {
 				break;
 			}
 		}
-		if (FruitMetEntity(Tinky_Winky,Po,Dipsy,player1,h)) { 
+		if ((FruitMetEntity(Tinky_Winky,Po,Dipsy,player1,h) == true)) { 
 			Dipsy.sleepFruit(h);
 			Dipsy.resetCounter();
 		}
@@ -683,10 +683,9 @@ bool game::FruitMetEntity(ghost& Tinky_Winky, ghost& Po, fruit& Dipsy, pacman& p
 		int score = (Dipsy.getSymbol() - '0');
 		player1.setPoints(player1.getPoints() + score);
 		return true;
-	
 	}
-	else if ((Tinky_Winky.getX() == Dipsy.getX() && Tinky_Winky.getY() == Dipsy.getY()) || (Po.getX() == Dipsy.getX() && Po.getY() == Dipsy.getY()) || Dipsy.getTurnCounter() == 25) {
+	else if ((Tinky_Winky.getX() == Dipsy.getX() && Tinky_Winky.getY() == Dipsy.getY()) || (Po.getX() == Dipsy.getX() && Po.getY() == Dipsy.getY()) || Dipsy.getTurnCounter() == 60) {
 		return true;
 	}
-
+	return false;
 }
