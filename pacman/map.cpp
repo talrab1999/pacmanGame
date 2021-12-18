@@ -5,6 +5,7 @@ map::map()
 {
 	width = 61;
 	height = 19;
+	dotCounter = 0;
 	length = width * height;
 	filename = "map.txt";
 }
@@ -69,8 +70,10 @@ void map::fillmap()
 	}
 	while (getline(INF, line)) {
 		for (short i = 0; i < width; i++) {
-			if (line[i] == ' ')
+			if (line[i] == ' ') {
 				line[i] = '.';
+				dotCounter++;
+			}
 			else if (line[i] == '%')
 				line[i] = ' ';
 		}
@@ -80,6 +83,11 @@ void map::fillmap()
 	}
 	INF.close();
 }
+
+short map::getDots() {
+	return dotCounter;
+}
+
 
 void map::fillboard() {
 

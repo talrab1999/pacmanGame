@@ -486,7 +486,7 @@ void game::gameLoop() {
 		Dipsy.reset(15, 17);
 		Dipsy.display();
 	case 2:
-		Tinky_Winky.reset(15, 7);
+		Tinky_Winky.reset(15, 1);
 		Tinky_Winky.display();
 	case 1:
 		Po.reset(30, 7);
@@ -551,7 +551,7 @@ void game::gameLoop() {
 			switch (numGhosts - 1) {
 			case 2:
 				Tinky_Winky.display(h.getmapat(Tinky_Winky.getY(), Tinky_Winky.getX()));
-				Tinky_Winky.reset(15, 7);
+				Tinky_Winky.reset(15, 1);
 			case 1:
 				Po.display(h.getmapat(Po.getY(), Po.getX()));
 				Po.reset(30, 7);
@@ -566,7 +566,7 @@ void game::gameLoop() {
 		}
 		player1.displayPoints(h);
 
-		if (player1.getDotsate() == 493) {
+		if (player1.getDotsate() == h.getDots()) {
 			clearScreen();
 			displaywin();
 			running1 = false;
@@ -716,3 +716,5 @@ bool game::FruitMetEntity(ghost& Tinky_Winky, ghost& Po, fruit& Dipsy, pacman& p
 	}
 	return false;
 }
+
+

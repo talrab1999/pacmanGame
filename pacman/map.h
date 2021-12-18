@@ -12,7 +12,7 @@ using namespace std;
 
 class map {
 private:
-	short width, height, length;
+	short width, height, length, dotCounter;
 	string filename;
 	vector<char> map_vec;
 
@@ -31,6 +31,7 @@ public:
 	void fillmap();
 	void ResetMap();
 	void ShowMap();
+	short getDots();
 	//testing
 	void test();
 	void fillboard();
