@@ -21,7 +21,7 @@ public:
 	void setDifficulty(char);
 	void setGoodCounter(int);
 	void setTurnCounter(int);
-	
+
 
 	char getDifficulty();
 	int getGoodCounter();

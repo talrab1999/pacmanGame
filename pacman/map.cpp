@@ -69,6 +69,12 @@ void map::fillmap()
 	}
 	while (getline(INF, line)) {
 		for (short i = 0; i < width; i++) {
+			if (line[i] == ' ')
+				line[i] = '.';
+			else if (line[i] == '%')
+				line[i] = ' ';
+		}
+		for (short i = 0; i < width; i++) {
 			map_vec.push_back(line[i]);
 		}
 	}
@@ -132,12 +138,12 @@ void map::ShowMap()
 }
 
 
-void map::pause(map& m) {
-	gotoxy(0, m.getHeight() + 1);
+void map::pause(map& h) {
+	gotoxy(0, h.getHeight() + 1);
 	cout << "Game paused, press ESC again to continue" << endl;
 }
 
-void map::unpause(map& m) {
-	gotoxy(0, m.getHeight() + 1);
+void map::unpause(map& h) {
+	gotoxy(0, h.getHeight() + 1);
 	cout << "                                           " << endl;
 }

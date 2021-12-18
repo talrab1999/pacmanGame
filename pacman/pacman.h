@@ -10,6 +10,7 @@ public:
 	pacman();
 	void setDotsate(short);
 	short getDotsate() const;
+	void setPoints(short);
 	short getPoints() const;
 	void displayPoints(map&) const;
 	void displayLives(map&);

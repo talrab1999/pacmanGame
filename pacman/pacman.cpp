@@ -21,6 +21,10 @@ short pacman::getDotsate() const
 	return dotsate;
 }
 
+void pacman::setPoints(short p) {
+	points = p;
+}
+
 short pacman::getPoints() const {
 	return points;
 }

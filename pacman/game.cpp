@@ -466,7 +466,7 @@ void game::gameLoop() {
 	pacman player1;
 	ghost Tinky_Winky(ghostDiff);
 	ghost Po(ghostDiff);
-	//fruit Dipsy;
+	fruit Dipsy;
 	map h;
 	Pair move, src, dest;//Move to ghostMove();
 	h.fillmap();
@@ -483,6 +483,9 @@ void game::gameLoop() {
 	h.setmapat(player1.getY(), player1.getX(), player1.getSymbol());
 
 	switch (numGhosts) { //ResetsGhosts()
+	case 3:
+		Dipsy.reset(15, 1);
+		Dipsy.display();
 	case 2:
 		Tinky_Winky.reset(15, 7);
 		Tinky_Winky.display();
@@ -507,13 +510,14 @@ void game::gameLoop() {
 		case 1:
 			Po.reset1();
 			Po.display();
-		}*/
+	}*/
 
 	while (running1)
 	{
 		player1.display(' ');
 		h.setmapat(player1.getY(), player1.getX(), ' ');
 		switch (numGhosts) {
+		case 3: Dipsy.display(h.getmapat(Dipsy.getY(), Dipsy.getX()));
 		case 2: Tinky_Winky.display(h.getmapat(Tinky_Winky.getY(), Tinky_Winky.getX()));
 		case 1: Po.display(h.getmapat(Po.getY(), Po.getX()));
 		}
@@ -571,7 +575,7 @@ void game::gameLoop() {
 		if (frame % ghostspeed == 0) {
 			ghostMove(Tinky_Winky, h, player1);
 			ghostMove(Po, h, player1);
-
+			ghostMove(Dipsy, h, player1);
 			//switch (numGhosts) {
 			//case 2:
 			//	//Tinky_Winky.move_rand(h);
@@ -594,9 +598,9 @@ void game::gameLoop() {
 			//}
 		}
 		switch (numGhosts) {
-		case 1: Tinky_Winky.display();
-		case 2: Po.display();
-		//case 3: Dipsy.display();
+		case 3: Dipsy.display();
+		case 2: Tinky_Winky.display();
+		case 1: Po.display();
 		}
 
 		if ((Tinky_Winky.getX() == player1.getX() && Tinky_Winky.getY() == player1.getY()) || (Po.getX() == player1.getX() && Po.getY() == player1.getY()))
@@ -623,9 +627,9 @@ void game::gameLoop() {
 				break;
 			}
 		}
-		/*if (Dipsy.getX() == player1.getX() && Dipsy.getY() == player1.getY()){
-			player1.setDotsate(player1.getDotsate() +short( Dipsy.getSymbol() + '0'));
-		}*/
+		if (Dipsy.getX() == player1.getX() && Dipsy.getY() == player1.getY()){
+			player1.setPoints(player1.getDotsate() +short( Dipsy.getSymbol() + '0'));
+		}
 		Sleep(speed);
 		frame++;
 	}
