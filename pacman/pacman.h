@@ -14,7 +14,6 @@ public:
 	short getPoints() const;
 	void displayPoints(map&) const;
 	void displayLives(map&);
-	void reset();
 	void move_up(map&);
 	void move_down(map&);
 	void move_left(map&);

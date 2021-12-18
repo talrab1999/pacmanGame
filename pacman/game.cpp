@@ -361,6 +361,7 @@ void game::displayChoices() const
 	for (auto x : choices)
 		cout << x << "\n";
 }
+
 void game::displayChoices(short curr) const {
 	for (auto x : choices) {
 		if (x != choices[curr])
@@ -395,7 +396,6 @@ void game::goToOption(int in)
 	}
 }
 
-
 void game::clearScreen() const
 {
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -405,7 +405,6 @@ void game::clearScreen() const
 	SetConsoleCursorPosition(hStdout, position);
 	system("CLS");
 }
-
 
 void game::displayInstructions() const
 {
@@ -456,11 +455,13 @@ void game::setFilename(string f) {
 }
 
 void game::gameLoop() {
-	
-	char ghostDiff = chooseGhostsDifficulty();
+
 	srand(time(0));
+	char ghostDiff = chooseGhostsDifficulty();
 	bool running1 = true;
 	bool checkInput;
+	char key1, key2;
+	int currMap = 1;
 	unsigned long long int frame = 0;   //can get realy high numbers...
 
 	pacman player1;
@@ -468,32 +469,13 @@ void game::gameLoop() {
 	ghost Po(ghostDiff);
 	fruit Dipsy;
 	map h; 
-
+	string mapNum;
+	
 	if (oneMap)
 		h.setFilename(getFilename());
 
-	h.fillmap();
-	h.fillboard();
-	player1.setLives(startLives);
+	prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2);
 
-	char key1 = 's', key2 = 's';
-	h.ShowMap();
-	player1.displayLives(h);
-
-	player1.display();
-	h.setmapat(player1.getY(), player1.getX(), player1.getSymbol());
-
-	switch (numGhosts) { //ResetsGhosts()
-	case 3:
-		Dipsy.reset(15, 17);
-		Dipsy.display();
-	case 2:
-		Tinky_Winky.reset(15, 1);
-		Tinky_Winky.display();
-	case 1:
-		Po.reset(30, 7);
-		Po.display();
-	}
 
 	while (running1)
 	{
@@ -549,7 +531,7 @@ void game::gameLoop() {
 			Sleep(4000);
 			player1.displayLives(h);
 			key1 = 's';
-			player1.reset();
+			player1.reset(13,15);
 			switch (numGhosts - 1) {
 			case 2:
 				Tinky_Winky.display(h.getmapat(Tinky_Winky.getY(), Tinky_Winky.getX()));
@@ -560,28 +542,44 @@ void game::gameLoop() {
 			}
 			if (player1.getLives() == 0)
 			{
-				/*if(!oneGame)
-						game.setfilename(nextmap)
-						continue;	*/
 				clearScreen();
 				displaylose();
+				oneMap = false;
 				running1 = false;
 				continue;
+				
 			}
 		}
 		player1.displayPoints(h);
 
-		if (player1.getDotsate() == h.getDots()-450) {
-			clearScreen();
-			displaywin();
-
-			/*if(!oneMap)
-			continue;
-			running1 = false;
-*/
-
-			running1 = false;
-			continue;
+		if (player1.getDotsate() == h.getDots()) {
+			if (oneMap == false) {
+				clearScreen();
+				currMap++;
+				if (currMap == 4) {
+					displaywin();
+					running1 = false;
+					continue;
+				}
+				cout << "Good luck in the next map" << endl;
+				system("pause");
+				clearScreen();
+				//need to find a better way to initialize mapNum
+				if (currMap == 2)
+					mapNum = "2";
+				else
+					mapNum = "3";
+				h.setFilename(mapNum);
+				prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2);
+				continue;
+			}
+			else {
+				clearScreen();
+				displaywin();
+				oneMap = false;
+				running1 = false;
+				continue;
+			}
 		}
 
 		player1.display();
@@ -642,6 +640,31 @@ void game::gameLoop() {
 		frame++;
 	}
 	goToOption(0);
+}
+
+void game::prepareForNewGame(map& h, pacman& player1, ghost& Dipsy, ghost& Tinky_Winky, ghost& Po, char& key1, char& key2) {
+	h.fillmap();
+	h.fillboard();
+
+	key1 = 's', key2 = 's';
+	h.ShowMap();
+	player1.setDotsate(0);
+	player1.displayLives(h);
+	player1.reset(13, 15);
+	player1.display();
+	h.setmapat(player1.getY(), player1.getX(), player1.getSymbol());
+
+	switch (numGhosts) { //ResetsGhosts()
+	case 3:
+		Dipsy.reset(15, 17);
+		Dipsy.display();
+	case 2:
+		Tinky_Winky.reset(15, 1);
+		Tinky_Winky.display();
+	case 1:
+		Po.reset(30, 7);
+		Po.display();
+	}
 }
 
 char game::chooseGhostsDifficulty() {
@@ -741,7 +764,7 @@ void game::chooseMap() {
 		cin >> mapNum;
 	}
 	oneMap = true;
-	filename = "map" + mapNum + ".screen";
+	filename = mapNum;
 	cout << "You chose map number:"<<mapNum<< endl<<"Good Luck!"<<endl;
 	system("pause");
 

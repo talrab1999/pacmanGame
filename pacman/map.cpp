@@ -7,7 +7,7 @@ map::map(string mapNum)
 	height = 19;
 	dotCounter = 0;
 	length = width * height;
-	filename = "map" + mapNum+".screen";
+	setFilename(mapNum);
 }
 
 void map::gotoxy(short i, short j) const
@@ -52,9 +52,9 @@ void map::setHeight(short h)
 	height = h;
 }
 
-void map::setFilename(string f)
+void map::setFilename(string mapNum)
 {
-	filename = f;
+	filename = "map" + mapNum + ".screen";
 }
 
 void map::setmapat(short y, short x, char c) {
@@ -63,6 +63,8 @@ void map::setmapat(short y, short x, char c) {
 
 void map::fillmap()
 {
+	setDots(0);
+	map_vec.clear();
 	ifstream INF(filename);
 	string line = "";
 	if (!INF) {
@@ -84,10 +86,17 @@ void map::fillmap()
 	INF.close();
 }
 
+void map::freemap() {
+	map_vec.clear();
+}
+
 short map::getDots() {
 	return dotCounter;
 }
 
+void map::setDots(short) {
+	dotCounter = 0;
+}
 
 void map::fillboard() {
 

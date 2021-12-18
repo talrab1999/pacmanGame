@@ -29,9 +29,11 @@ public:
 	void setFilename(string);
 	void setmapat(short, short, char);
 	void fillmap();
+	void freemap();
 	void ResetMap();
 	void ShowMap();
 	short getDots();
+	void setDots(short);
 	//testing
 	void test();
 	void fillboard();

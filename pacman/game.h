@@ -49,6 +49,7 @@ public:
 	string getFilename() const;
 	void setFilename(string);
 	void gameLoop();
+	void prepareForNewGame(map&, pacman&, ghost&, ghost&, ghost&, char&, char&);
 	//pathfinding
 	bool isValid(int row, int col);
 	bool isUnBlocked(char grid[][COLS], int row, int col);

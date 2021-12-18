@@ -53,11 +53,6 @@ void pacman::displayLives(map& m)
 	cout << "      ";
 }*/
 
-void pacman::reset()
-{
-	setX(13);
-	setY(15);
-}
 
 void pacman::move_up(map& m)
 {
