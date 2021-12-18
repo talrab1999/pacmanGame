@@ -1,6 +1,6 @@
 #pragma once
-#include "Entity.h"
 #include "map.h"
+#include "Entity.h"
 #include <time.h>
 #include <cstdlib>
 class ghost :public Entity {

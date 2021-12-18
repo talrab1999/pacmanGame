@@ -575,27 +575,8 @@ void game::gameLoop() {
 		if (frame % ghostspeed == 0) {
 			ghostMove(Tinky_Winky, h, player1);
 			ghostMove(Po, h, player1);
-			ghostMove(Dipsy, h, player1);
-			//switch (numGhosts) {
-			//case 2:
-			//	//Tinky_Winky.move_rand(h);
-			//	src = make_pair(Tinky_Winky.getY(), Tinky_Winky.getX());
-			//	if (dest == src)
-			//		break;
-			//	move = aStarSearch(h.board, src, dest);
-			//	nextY = (short)move.first;
-			//	nextX = (short)move.second;
-			//	Tinky_Winky.move(nextX, nextY);
-			//case 1:
-			//	//Po.move_rand(h);
-			//	src = make_pair(Po.getY(), Po.getX());
-			//	if (dest == src)
-			//		break;
-			//	move = aStarSearch(h.board, src, dest);
-			//	nextY = (short)move.first;
-			//	nextX = (short)move.second;
-			//	Po.move(nextX, nextY);
-			//}
+			if(Dipsy.getSleep() == false)
+				ghostMove(Dipsy, h, player1);
 		}
 		switch (numGhosts) {
 		case 3: Dipsy.display();
@@ -630,8 +611,10 @@ void game::gameLoop() {
 		if (Dipsy.getX() == player1.getX() && Dipsy.getY() == player1.getY()){
 			int score = (Dipsy.getSymbol() - '0');
 			player1.setPoints(player1.getPoints() +score);
+			Dipsy.sleepFruit(h);
 		}
-		else if ((Tinky_Winky.getX() == Dipsy.getX() && Tinky_Winky.getY() == Dipsy.getY()) || (Po.getX() == Dipsy.getX() && Po.getY() == Dipsy.getY())) {
+		else if ((Tinky_Winky.getX() == Dipsy.getX() && Tinky_Winky.getY() == Dipsy.getY()) || (Po.getX() == Dipsy.getX() && Po.getY() == Dipsy.getY()) || Dipsy.getTurnCounter() == 25) {
+			Dipsy.sleepFruit(h);
 
 		}
 		Sleep(speed);

@@ -4,6 +4,10 @@
 class fruit :public ghost{
 public:
 	fruit(char c='c');
+	void setRandomSymbol();
+	void sleepFruit(map&);
+	void setSleep(bool);
+	bool getSleep();
 	//-------------------SET----------------//
 	//void setRandSymbol() { setSymbol(fruitRandSymbol()); }		 //Sets Rand value between 5-9
 
@@ -15,6 +19,6 @@ public:
 	//void fruitDissapear() { setSymbol('%'); }					//OPTION 1: method that changes the fruit symbol to space.
 
 private:
-	bool m_metEntity;
+	bool sleep;
 };
 
