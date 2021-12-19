@@ -34,23 +34,26 @@ private:
 		ESC = 27,
 	};
 	short lastOption, startLives, numGhosts, ghostspeed, speed;
-	string filename;
+	string mapNum;
+	
 	bool oneMap;
 public:
 	game();
 	void gotoxy(int, int);
 	void displayChoices() const;
 	void displayChoices(short) const;
-	void goToOption(int&);
+	void goToOption(char&);
 	void clearScreen() const;
 	void displayInstructions() const;
 	void displaywin() const;
 	void displaylose() const;
-	string getFilename() const;
-	void setFilename(string);
+	string getmapNum() const;
+	void setmapNum(string);
 	void gameLoop();
 	void prepareForNewGame(map&, pacman&, ghost&, ghost&, ghost&, char&, char&);
-	bool didGhostEatPacman(map&, pacman&, ghost&, ghost&, char&, char&, bool&, bool&);
+	bool didGhostEatPacman(map&, pacman&, ghost&, ghost&, char&, char&, bool&);
+	bool getOneMap() const;
+	void setOneMap(bool);
 	
 	//pathfinding
 	bool isValid(int row, int col);

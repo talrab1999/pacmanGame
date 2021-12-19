@@ -35,5 +35,7 @@ public:
 	void display(char);
 	void replace() const;
 	void reset(int x, int y);
+	void setLastMove();
+
 	
 };

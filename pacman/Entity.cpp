@@ -126,3 +126,6 @@ void Entity::reset(int x, int y) {
 	setY(y);
 }
 
+void Entity::setLastMove() {
+	lastmove = rand() % 4;
+}

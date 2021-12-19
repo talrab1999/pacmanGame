@@ -4,10 +4,12 @@ using namespace std;
 
 void main()
 {
-	game Game;
-	int input = 0;
+	srand(time(0));
 
-	while (input != -1) {
+	game Game;
+	char input = 0;
+	
+	while (input != '9') {
 		Game.goToOption(input);
 		//cin >> input;
 	}

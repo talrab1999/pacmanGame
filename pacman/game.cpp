@@ -334,32 +334,35 @@ void game::displayChoices(short curr) const {
 	}
 }
 
-void game::goToOption(int &input)
+void game::goToOption(char &input)
 {
 	clearScreen();
 
 	switch (input) {
-	case 1:
+	case '1':
 		gameLoop();
-		input = 0;
+		input = '0';
 		break;
-	case 2:
+	case '2':
 		chooseMap();
 		clearScreen();
 		gameLoop();
-		input = 0;
+		input = '0';
 		break;
-	case 8:
+	case '8':
 		displayInstructions();
 		clearScreen();
-		input = 0;
+		input = '0';
 		break;
-	case 9:
-		input = -1;
+	case '9':
 		break;
 	default:
 		displayChoices();
-		cin >> input;
+		input = _getch();
+		while (input != '1' && input != '2' &&	input != '8' && input != '9') {
+			if (_kbhit())
+				input = _getch();
+		}
 		break;
 	}
 }
@@ -395,10 +398,7 @@ void game::displaywin() const
 		printf("%s\n", win[i]);
 		Sleep(100);
 	}
-	Sleep(1000);
-	cout << "\npress any key to go back to the menu..." << endl;
-	short flag;
-	flag = _getch();
+	system("pause");
 }
 
 void game::displaylose() const
@@ -407,24 +407,19 @@ void game::displaylose() const
 		printf("%s\n", lose[i]);
 		Sleep(100);
 	}
-	Sleep(1000);
-	cout << "\npress any key to go back to the menu..." << endl;
-	short flag;
-	flag = _getch();
-
+	system("pause");
 }
 
-string game::getFilename() const {
-	return filename;
+string game::getmapNum() const {
+	return mapNum;
 }
 
-void game::setFilename(string f) {
-	filename = f;
+void game::setmapNum(string f) {
+	mapNum = f;
 }
 
 void game::gameLoop() {
 
-	srand(time(0));
 	char ghostDiff = chooseGhostsDifficulty();
 	bool running1 = true;
 	bool checkInput;
@@ -436,11 +431,10 @@ void game::gameLoop() {
 	ghost Tinky_Winky(ghostDiff);
 	ghost Po(ghostDiff);
 	fruit Dipsy;
-	map h; 
-	string mapNum;
-	
-	if (oneMap)
-		h.setFilename(getFilename());
+	map h;
+
+	if (getOneMap())
+		h.setFilename(getmapNum());
 
 	prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2);
 
@@ -493,13 +487,13 @@ void game::gameLoop() {
 		}
 		key2 = key1;
 
-		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2, oneMap, running1) == true)
+		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2,running1) == true)
 		{
 			continue;
 		}
-		
-		if (player1.getDotsate() == h.getDots()-400) {
-			if (oneMap == false) {
+
+		if (player1.getDotsate() == h.getDots() - 350) {
+			if (getOneMap() == false) {
 				clearScreen();
 				currMap++;
 				if (currMap == 4) {
@@ -510,16 +504,15 @@ void game::gameLoop() {
 				cout << "Good luck in the next map" << endl;
 				system("pause");
 				clearScreen();
-				//need to find a better way to initialize mapNum
-				mapNum = to_string(currMap);
-				h.setFilename(mapNum);
+				setmapNum(to_string(currMap));
+				h.setFilename(getmapNum());
 				prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2);
 				continue;
 			}
 			else {
 				clearScreen();
 				displaywin();
-				oneMap = false;
+				setOneMap(false);
 				running1 = false;
 				continue;
 			}
@@ -548,7 +541,7 @@ void game::gameLoop() {
 			}
 		}
 
-		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2, oneMap, running1) == true)
+		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2,running1) == true)
 		{
 			continue;
 		}
@@ -564,10 +557,9 @@ void game::gameLoop() {
 		Sleep(speed);
 		frame++;
 	}
-	//goToOption(0);
 }
 
-bool game::didGhostEatPacman(map& h, pacman& player1, ghost& Tinky_Winky, ghost& Po, char& key1, char& key2, bool& oneMap, bool& running1) {
+bool game::didGhostEatPacman(map& h, pacman& player1, ghost& Tinky_Winky, ghost& Po, char& key1, char& key2,bool& running1) {
 	if ((Tinky_Winky.getX() == player1.getX() && Tinky_Winky.getY() == player1.getY()) || (Po.getX() == player1.getX() && Po.getY() == player1.getY()))
 	{
 		player1.setLives(player1.getLives() - 1);
@@ -587,7 +579,7 @@ bool game::didGhostEatPacman(map& h, pacman& player1, ghost& Tinky_Winky, ghost&
 		{
 			clearScreen();
 			displaylose();
-			oneMap = false;
+			setOneMap(false);
 			running1 = false;
 		}
 		return true;
@@ -641,6 +633,10 @@ void game::ghostMove(ghost& currGhost, map& h, pacman& player1) {
 	{
 		case int(e_GhostDiff::NOVICE) :
 		{
+			if (currGhost.getTurnCounter() == 20) {
+				currGhost.setLastMove();
+				currGhost.resetCounter();
+			}
 			currGhost.move_rand(h);
 			break;
 		}
@@ -705,8 +701,6 @@ bool game::FruitMetEntity(ghost& Tinky_Winky, ghost& Po, fruit& Dipsy, pacman& p
 
 void game::chooseMap() {
 
-	string mapNum;
-
 	cout << "Please choose a map number: "<< endl;
 	cout << "1" << endl << "2" << endl << "3" << endl;
 	
@@ -716,9 +710,14 @@ void game::chooseMap() {
 		cin >> mapNum;
 	}
 	oneMap = true;
-	filename = mapNum;
 	cout << "You chose map number:"<<mapNum<< endl<<"Good Luck!"<<endl;
 	system("pause");
 
 }
 
+bool game::getOneMap() const {
+	return oneMap;
+}
+void game::setOneMap(bool isOneMap) {
+	oneMap = isOneMap;
+}
