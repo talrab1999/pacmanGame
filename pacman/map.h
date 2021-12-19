@@ -7,7 +7,7 @@
 #include <vector>
 #include "color.h"
 using namespace std;
-#define ROWS 19
+#define ROWS 20
 #define COLS 61
 
 class map {
@@ -34,11 +34,7 @@ public:
 	void ShowMap();
 	short getDots();
 	void setDots(short);
-	//testing
-	void test();
-	//void fillboard();
-	//testing
-	void pause(map&);
-	void unpause(map&);
+	void pause(map&,int,int);
+	void unpause(map&, int, int);
 	string getFilename() const;
 };

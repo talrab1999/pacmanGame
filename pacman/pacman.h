@@ -12,8 +12,8 @@ public:
 	short getDotsate() const;
 	void setPoints(short);
 	short getPoints() const;
-	void displayPoints(map&) const;
-	void displayLives(map&);
+	void displayPoints(map&,int,int) const;
+	void displayLives(map&,int,int);
 	void move_up(map&);
 	void move_down(map&);
 	void move_left(map&);

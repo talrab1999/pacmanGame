@@ -57,6 +57,7 @@ public:
 	void setOneMap(bool);
 	void readEntities(map&, pacman&, ghost&, ghost&);
 	void setLegend(int,int);
+	Pair getLegend();
 	
 	//pathfinding
 	bool isValid(int row, int col);

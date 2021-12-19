@@ -77,8 +77,16 @@ void map::fillmap()
 				line[i] = '.';
 				dotCounter++;
 			}
+			if (line[0]=='&') {
+				i = width;
+			}
 		}
 		for (int j = 0; j < width; j++) {
+			if (line[0] == '&') {
+				board[z][j] = '&';
+				j = width;
+			}
+			else
 			board[z][j] = line[j];
 		}
 		for (short i = 0; i < width; i++) {
@@ -87,6 +95,13 @@ void map::fillmap()
 			else if (line[i] == '$') {
 				line[i] = '.';
 				dotCounter++;
+			}
+			else if (line[i] == '&') {
+				for (int i = 0; i < 3 * 20; i++) {
+					map_vec.push_back(' ');
+				}
+				i = width;
+				continue;
 			}
 			map_vec.push_back(line[i]);
 		}
@@ -149,12 +164,12 @@ void map::ShowMap()
 }
 
 
-void map::pause(map& h) {
-	gotoxy(0, h.getHeight() + 2);
+void map::pause(map& h,int x,int y) {
+	gotoxy(0,y + 2);
 	cout << "Game paused, press ESC again to continue" << endl;
 }
 
-void map::unpause(map& h) {
-	gotoxy(0, h.getHeight() + 2);
+void map::unpause(map& h, int x, int y) {
+	gotoxy(x, y+2);
 	cout << "                                           " << endl;
 }

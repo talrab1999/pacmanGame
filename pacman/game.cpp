@@ -310,7 +310,6 @@ game::game()
 	ghostspeed = 2;      //means X2 slower than the pacman
 	startLives = 3;
 	oneMap = false;
-	//goToOption(0);
 }
 
 void game::gotoxy(int x, int y)
@@ -455,7 +454,7 @@ void game::gameLoop() {
 
 		while (checkInput == false) {
 			if (key1 == ESC) {
-				h.pause(h);
+				h.pause(h,getLegend().first, getLegend().second);
 				player1.display();
 				Tinky_Winky.display();
 				Po.display();
@@ -466,7 +465,7 @@ void game::gameLoop() {
 				Tinky_Winky.display(h.getmapat(Tinky_Winky.getY(), Tinky_Winky.getX()));
 				Po.display(h.getmapat(Po.getY(), Po.getX()));
 				key1 = key2;
-				h.unpause(h);
+				h.unpause(h, getLegend().first, getLegend().second);
 			}
 
 			else if (key1 == 'w' || key1 == 'W')
@@ -549,7 +548,7 @@ void game::gameLoop() {
 		{
 			continue;
 		}
-		player1.displayPoints(h);
+		player1.displayPoints(h,getLegend().first,getLegend().second);
 		player1.display();
 
 		switch (numGhosts) {  //Dipslays Ghosts and fruit
@@ -568,7 +567,7 @@ bool game::didGhostEatPacman(map& h, pacman& player1, ghost& Tinky_Winky, ghost&
 	{
 		player1.setLives(player1.getLives() - 1);
 		Sleep(4000);
-		player1.displayLives(h);
+		player1.displayLives(h,getLegend().first, getLegend().second);
 		key1 = 's', key2='s';
 		player1.resetEntity();
 		switch (numGhosts - 1) {
@@ -597,12 +596,12 @@ void game::prepareForNewGame(map& h, pacman& player1, fruit& Dipsy, ghost& Tinky
 	key1 = 's', key2 = 's';
 	h.ShowMap();
 	player1.setDotsate(0);
-	player1.displayLives(h);
+	player1.displayLives(h, getLegend().first, getLegend().second);
 	player1.resetEntity();
 	player1.display();
 	h.setmapat(player1.getY(), player1.getX(), player1.getSymbol());
 
-	switch (numGhosts) { //ResetsGhosts()
+	switch (numGhosts) { //ResetsGhosts
 	case 3:
 		Dipsy.resetLocation(h);
 		Dipsy.display();
@@ -740,8 +739,10 @@ void game::readEntities(map& h, pacman& player1, ghost& ghost1, ghost& ghost2) {
 					ghost2.setDefault(j, i);
 				ghostCounter++;
 			}
-			/*else if (h.board[i][j] == '&')
-				setLegend(j, i);*/
+			else if (h.board[i][j] == '&') {
+				setLegend(j, i);
+				j = cols;
+			}
 		}
 	}
 }
@@ -749,5 +750,9 @@ void game::readEntities(map& h, pacman& player1, ghost& ghost1, ghost& ghost2) {
 void game::setLegend(int x, int y) {
 	legend.first = x;
 	legend.second = y;
+}
+
+Pair game::getLegend() {
+	return legend;
 }
 

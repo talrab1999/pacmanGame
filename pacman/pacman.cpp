@@ -29,16 +29,16 @@ short pacman::getPoints() const {
 	return points;
 }
 
-void pacman::displayPoints(map& m) const {
-	gotoxy(m.getWidth() + 1, m.getHeight());
+void pacman::displayPoints(map& m,int x, int y) const {
+	gotoxy(x, y+1);
 	cout << "Points: " << points;
 }
 
-void pacman::displayLives(map& m)
+void pacman::displayLives(map& m,int x, int y)
 {
-	gotoxy(m.getWidth() + 1, m.getHeight() - 1);
+	gotoxy(x,y);
 	cout << "Lives:                     ";
-	gotoxy(m.getWidth() + 8, m.getHeight() - 1);
+	gotoxy(x+8,y);
 	for (short i = this->getLives(); i > 0; i--) {
 		cout << "@ ";
 	}
