@@ -492,7 +492,7 @@ void game::gameLoop() {
 			continue;
 		}
 
-		if (player1.getDotsate() == h.getDots() - 350) {
+		if (player1.getDotsate() == h.getDots() - 1) {     
 			if (getOneMap() == false) {
 				clearScreen();
 				currMap++;
