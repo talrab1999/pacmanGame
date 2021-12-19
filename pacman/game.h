@@ -50,6 +50,8 @@ public:
 	void setFilename(string);
 	void gameLoop();
 	void prepareForNewGame(map&, pacman&, ghost&, ghost&, ghost&, char&, char&);
+	bool didGhostEatPacman(map&, pacman&, ghost&, ghost&, char&, char&, bool&, bool&);
+	
 	//pathfinding
 	bool isValid(int row, int col);
 	bool isUnBlocked(char grid[][COLS], int row, int col);

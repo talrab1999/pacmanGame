@@ -63,30 +63,7 @@ Pair game::tracePath(cell cellDetails[][COLS], Pair dest)
 
 Pair game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 {
-	// If the source is out of range
-	/*if (isValid(src.first, src.second) == false) {
-		printf("Source is invalid\n");
-		return;
-	}
-
-	// If the destination is out of range
-	if (isValid(dest.first, dest.second) == false) {
-		printf("Destination is invalid\n");
-		return;
-	}
-
-	// Either the source or the destination is blocked
-	if (isUnBlocked(grid, src.first, src.second) == false || isUnBlocked(grid, dest.first, dest.second) == false) {
-		printf("Source or the destination is blocked\n");
-		return;
-	}
-
-	// If the destination cell is the same as source cell
-	if (isDestination(src.first, src.second, dest) == true) {
-		printf("We are already at the destination\n");
-		return;
-	}*/
-
+	
 	// Create a closed list and initialise it to false which
 	// means that no cell has been included yet This closed
 	// list is implemented as a boolean 2D array
@@ -117,22 +94,10 @@ Pair game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 	cellDetails[i][j].parent_i = i;
 	cellDetails[i][j].parent_j = j;
 
-	/*
-	Create an open list having information as-
-	<f, <i, j>>
-	where f = g + h,
-	and i, j are the row and column index of that cell
-	Note that 0 <= i <= ROW-1 & 0 <= j <= COL-1
-	This open list is implemented as a set of pair of
-	pair.*/
 	set<pPair> openList;
 
-	// Put the starting cell on the open list and set its
-	// 'f' as 0
 	openList.insert(make_pair(0, make_pair(i, j)));
 
-	// We set this boolean value as false as initially
-	// the destination is not reached.
 	bool foundDest = false;
 	Pair target;
 	while (!openList.empty()) {
@@ -525,33 +490,11 @@ void game::gameLoop() {
 		}
 		key2 = key1;
 
-		if ((Tinky_Winky.getX() == player1.getX() && Tinky_Winky.getY() == player1.getY()) || (Po.getX() == player1.getX() && Po.getY() == player1.getY()))
+		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2, oneMap, running1) == true)
 		{
-			player1.setLives(player1.getLives() - 1);
-			Sleep(4000);
-			player1.displayLives(h);
-			key1 = 's';
-			player1.reset(13,15);
-			switch (numGhosts - 1) {
-			case 2:
-				Tinky_Winky.display(h.getmapat(Tinky_Winky.getY(), Tinky_Winky.getX()));
-				Tinky_Winky.reset(15, 1);
-			case 1:
-				Po.display(h.getmapat(Po.getY(), Po.getX()));
-				Po.reset(30, 7);
-			}
-			if (player1.getLives() == 0)
-			{
-				clearScreen();
-				displaylose();
-				oneMap = false;
-				running1 = false;
-				continue;
-				
-			}
+			continue;
 		}
-		player1.displayPoints(h);
-
+		
 		if (player1.getDotsate() == h.getDots()) {
 			if (oneMap == false) {
 				clearScreen();
@@ -565,10 +508,7 @@ void game::gameLoop() {
 				system("pause");
 				clearScreen();
 				//need to find a better way to initialize mapNum
-				if (currMap == 2)
-					mapNum = "2";
-				else
-					mapNum = "3";
+				mapNum = to_string(currMap);
 				h.setFilename(mapNum);
 				prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2);
 				continue;
@@ -582,7 +522,6 @@ void game::gameLoop() {
 			}
 		}
 
-		player1.display();
 
 		if (frame % ghostspeed == 0) {
 			ghostMove(Tinky_Winky, h, player1);
@@ -591,8 +530,13 @@ void game::gameLoop() {
 				Dipsy.sleepFruit(h);
 				Dipsy.resetCounter();
 			}
-			if (Dipsy.getSleep() == false) //Not asleep
+			if (Dipsy.getSleep() == false) { //Not asleep
 				ghostMove(Dipsy, h, player1);
+				if ((FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h) == true)) {
+					Dipsy.sleepFruit(h);
+					Dipsy.resetCounter();
+				}
+			}
 			else {	// asleep
 				if (Dipsy.getTurnCounter() == 50) {
 					Dipsy.wakeUpFruit(h);
@@ -601,10 +545,12 @@ void game::gameLoop() {
 			}
 		}
 
-		/*if ((FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h) == true)) {
-			Dipsy.sleepFruit(h);
-			Dipsy.resetCounter();
-		}*/
+		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2, oneMap, running1) == true)
+		{
+			continue;
+		}
+		player1.displayPoints(h);
+		player1.display();
 
 		switch (numGhosts) {  //Dipslays Ghosts and fruit
 		case 3: Dipsy.display();
@@ -612,36 +558,39 @@ void game::gameLoop() {
 		case 1: Po.display();
 		}
 
-		/*if ((Tinky_Winky.getX() == player1.getX() && Tinky_Winky.getY() == player1.getY()) || (Po.getX() == player1.getX() && Po.getY() == player1.getY()))
-		{
-			player1.setLives(player1.getLives() - 1);
-			Sleep(4000);
-			player1.displayLives(h);
-			key1 = 's';
-			player1.reset();
-			switch (numGhosts-1) {
-			case 2:
-				Tinky_Winky.display(h.getmapat(Tinky_Winky.getY(), Tinky_Winky.getX()));
-				Tinky_Winky.reset(15, 7);
-			case 1:
-				Po.display(h.getmapat(Po.getY(), Po.getX()));
-				Po.reset(30, 7);
-			}
-			if (player1.getLives() == 0)
-			{
-				clearScreen();
-				displaylose();
-				running1 = false;
-				break;
-			}
-		}*/
-
 		Sleep(speed);
 		frame++;
 	}
 	goToOption(0);
 }
 
+bool game::didGhostEatPacman(map& h, pacman& player1, ghost& Tinky_Winky, ghost& Po, char& key1, char& key2, bool& oneMap, bool& running1) {
+	if ((Tinky_Winky.getX() == player1.getX() && Tinky_Winky.getY() == player1.getY()) || (Po.getX() == player1.getX() && Po.getY() == player1.getY()))
+	{
+		player1.setLives(player1.getLives() - 1);
+		Sleep(4000);
+		player1.displayLives(h);
+		key1 = 's', key2='s';
+		player1.reset(13, 15);
+		switch (numGhosts - 1) {
+		case 2:
+			Tinky_Winky.display(h.getmapat(Tinky_Winky.getY(), Tinky_Winky.getX()));
+			Tinky_Winky.reset(15, 1);
+		case 1:
+			Po.display(h.getmapat(Po.getY(), Po.getX()));
+			Po.reset(30, 7);
+		}
+		if (player1.getLives() == 0)
+		{
+			clearScreen();
+			displaylose();
+			oneMap = false;
+			running1 = false;
+		}
+		return true;
+	}
+	return false;
+}
 void game::prepareForNewGame(map& h, pacman& player1, ghost& Dipsy, ghost& Tinky_Winky, ghost& Po, char& key1, char& key2) {
 	h.fillmap();
 	h.fillboard();
