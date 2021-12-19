@@ -491,8 +491,12 @@ void game::gameLoop() {
 		{
 			continue;
 		}
+		if ((FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h) == true)) {
+			Dipsy.sleepFruit(h);
+			Dipsy.resetCounter();
+		}
 
-		if (player1.getDotsate() == h.getDots() - 1) {     
+		if (player1.getDotsate() == h.getDots()) {     
 			if (getOneMap() == false) {
 				clearScreen();
 				currMap++;
@@ -566,14 +570,14 @@ bool game::didGhostEatPacman(map& h, pacman& player1, ghost& Tinky_Winky, ghost&
 		Sleep(4000);
 		player1.displayLives(h);
 		key1 = 's', key2='s';
-		player1.reset(13, 15);
+		player1.resetEntity();
 		switch (numGhosts - 1) {
 		case 2:
 			Tinky_Winky.display(h.getmapat(Tinky_Winky.getY(), Tinky_Winky.getX()));
-			Tinky_Winky.reset(15, 1);
+			Tinky_Winky.resetEntity();
 		case 1:
 			Po.display(h.getmapat(Po.getY(), Po.getX()));
-			Po.reset(30, 7);
+			Po.resetEntity();
 		}
 		if (player1.getLives() == 0)
 		{
@@ -586,27 +590,27 @@ bool game::didGhostEatPacman(map& h, pacman& player1, ghost& Tinky_Winky, ghost&
 	}
 	return false;
 }
-void game::prepareForNewGame(map& h, pacman& player1, ghost& Dipsy, ghost& Tinky_Winky, ghost& Po, char& key1, char& key2) {
+void game::prepareForNewGame(map& h, pacman& player1, fruit& Dipsy, ghost& Tinky_Winky, ghost& Po, char& key1, char& key2) {
 	h.fillmap();
-	h.fillboard();
+	readEntities(h, player1, Tinky_Winky, Po);
 
 	key1 = 's', key2 = 's';
 	h.ShowMap();
 	player1.setDotsate(0);
 	player1.displayLives(h);
-	player1.reset(13, 15);
+	player1.resetEntity();
 	player1.display();
 	h.setmapat(player1.getY(), player1.getX(), player1.getSymbol());
 
 	switch (numGhosts) { //ResetsGhosts()
 	case 3:
-		Dipsy.reset(15, 17);
+		Dipsy.resetLocation(h);
 		Dipsy.display();
 	case 2:
-		Tinky_Winky.reset(15, 1);
+		Tinky_Winky.resetEntity();
 		Tinky_Winky.display();
 	case 1:
-		Po.reset(30, 7);
+		Po.resetEntity();
 		Po.display();
 	}
 }
@@ -633,9 +637,8 @@ void game::ghostMove(ghost& currGhost, map& h, pacman& player1) {
 	{
 		case int(e_GhostDiff::NOVICE) :
 		{
-			if (currGhost.getTurnCounter() == 20) {
+			if (currGhost.getTurnCounter() % 20 == 0) {
 				currGhost.setLastMove();
-				currGhost.resetCounter();
 			}
 			currGhost.move_rand(h);
 			break;
@@ -720,4 +723,23 @@ bool game::getOneMap() const {
 }
 void game::setOneMap(bool isOneMap) {
 	oneMap = isOneMap;
+}
+
+void game::readEntities(map& h, pacman& player1, ghost& ghost1, ghost& ghost2) {
+	int rows = h.getHeight();
+	int cols = h.getWidth();
+	int ghostCounter = 0;
+	for (int i = 0; i <rows; i++) {
+		for (int j = 0; j < cols; j++) {
+			if (h.board[i][j] == '@')
+				player1.setDefault(j, i);
+			else if (h.board[i][j] == '$') {
+				if (ghostCounter == 0)
+					ghost1.setDefault(j, i);
+				else
+					ghost2.setDefault(j, i);
+				ghostCounter++;
+			}
+		}
+	}
 }

@@ -68,20 +68,29 @@ void map::fillmap()
 	ifstream INF(filename);
 	string line = "";
 	if (!INF) {
-		cout << "ERROR " << filename << " COULD NOT BE OPENED!";
+		cout << "ERROR map" << filename << ".screen COULD NOT BE OPENED!";
 	}
+	int z = 0;
 	while (getline(INF, line)) {
 		for (short i = 0; i < width; i++) {
 			if (line[i] == ' ') {
 				line[i] = '.';
 				dotCounter++;
 			}
-			else if (line[i] == '%')
-				line[i] = ' ';
+		}
+		for (int j = 0; j < width; j++) {
+			board[z][j] = line[j];
 		}
 		for (short i = 0; i < width; i++) {
+			if (line[i] == '%' || line[i] == '@')
+				line[i] = ' ';
+			else if (line[i] == '$') {
+				line[i] = '.';
+				dotCounter++;
+			}
 			map_vec.push_back(line[i]);
 		}
+		z++;
 	}
 	INF.close();
 }
@@ -98,21 +107,6 @@ void map::setDots(short) {
 	dotCounter = 0;
 }
 
-void map::fillboard() {
-
-	ifstream INF(filename);
-	string line = "";
-	if (!INF) {
-		cout << "ERROR " << filename << " COULD NOT BE OPENED!";
-	}
-	int i = 0;
-	while (getline(INF, line)) {
-		for (int j = 0; j < width; j++) {
-			board[i][j] = line[j];
-		}
-		i++;
-	}
-}
 
 void map::test() {
 	gotoxy(0, 0);

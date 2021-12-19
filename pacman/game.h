@@ -50,10 +50,11 @@ public:
 	string getmapNum() const;
 	void setmapNum(string);
 	void gameLoop();
-	void prepareForNewGame(map&, pacman&, ghost&, ghost&, ghost&, char&, char&);
+	void prepareForNewGame(map&, pacman&, fruit&, ghost&, ghost&, char&, char&);
 	bool didGhostEatPacman(map&, pacman&, ghost&, ghost&, char&, char&, bool&);
 	bool getOneMap() const;
 	void setOneMap(bool);
+	void readEntities(map&, pacman&, ghost&, ghost&);
 	
 	//pathfinding
 	bool isValid(int row, int col);

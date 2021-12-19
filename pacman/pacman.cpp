@@ -66,6 +66,10 @@ void pacman::move_up(map& m)
 	{
 		setY(getY() - 1);
 	}
+	else if (m.getmapat(getY() - 1, getX()) == '!')
+	{
+		setY(17);
+	}
 }
 
 void pacman::move_down(map& m)
@@ -79,6 +83,10 @@ void pacman::move_down(map& m)
 	else if (m.getmapat(getY() + 1, getX()) == ' ')
 	{
 		setY(getY() + 1);
+	}
+	else if (m.getmapat(getY() + 1, getX()) == '!')
+	{
+		setY(1);
 	}
 }
 

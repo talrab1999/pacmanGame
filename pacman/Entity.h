@@ -12,6 +12,7 @@ using namespace std;
 class Entity {
 private:
 	short x, y, lives;
+	short defaultX, defaultY;
 	short lastmove;
 	char symbol;
 	Color color;
@@ -35,7 +36,8 @@ public:
 	void display(char);
 	void replace() const;
 	void reset(int x, int y);
+	void resetEntity();
 	void setLastMove();
-
+	void setDefault(int, int);
 	
 };

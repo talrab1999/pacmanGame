@@ -15,9 +15,12 @@ void fruit::setRandomSymbol() {
 	setSymbol(sym);
 }
 
+
+
 void fruit::sleepFruit(map& h) {
 	setSymbol(' ');
-	reset(h.getWidth() + 1, 0);
+	setX(h.getWidth() + 1);
+	setY(0);
 	setSleep(true);
 }
 
@@ -30,14 +33,7 @@ bool fruit::getSleep() {
 }
 
 void fruit::wakeUpFruit(map& h) {
-	int x, y;
-	x = rand() % 16 + 1;
-	y = rand() % 57 + 1;
-	while (h.board[x][y] != ' ') {
-		x = rand() % 16 + 1;
-		y = rand() % 57 + 1;
-	}
-	reset(y, x);
+	resetLocation(h);
 	setSleep(false);
 	resetCounter();
 	gotoxy(h.getWidth() + 1, 0);
@@ -45,5 +41,15 @@ void fruit::wakeUpFruit(map& h) {
 	setRandomSymbol();
 }
 
+void fruit::resetLocation(map& h) {
+	int x, y;
+	x = rand() % 16 + 1;
+	y = rand() % 57 + 1;
+	while (h.board[x][y] != ' ' && h.board[x][y] != '.') {
+		x = rand() % 16 + 1;
+		y = rand() % 57 + 1;
+	}
+	reset(y, x);
+}
 
 
