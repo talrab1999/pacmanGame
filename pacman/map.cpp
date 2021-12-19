@@ -3,8 +3,8 @@
 
 map::map(string mapNum)
 {
-	width = 61;
-	height = 19;
+	width = COLS;
+	height = ROWS;
 	dotCounter = 0;
 	length = width * height;
 	setFilename(mapNum);
@@ -150,11 +150,11 @@ void map::ShowMap()
 
 
 void map::pause(map& h) {
-	gotoxy(0, h.getHeight() + 1);
+	gotoxy(0, h.getHeight() + 2);
 	cout << "Game paused, press ESC again to continue" << endl;
 }
 
 void map::unpause(map& h) {
-	gotoxy(0, h.getHeight() + 1);
+	gotoxy(0, h.getHeight() + 2);
 	cout << "                                           " << endl;
 }

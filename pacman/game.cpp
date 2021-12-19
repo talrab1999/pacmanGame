@@ -740,6 +740,14 @@ void game::readEntities(map& h, pacman& player1, ghost& ghost1, ghost& ghost2) {
 					ghost2.setDefault(j, i);
 				ghostCounter++;
 			}
+			/*else if (h.board[i][j] == '&')
+				setLegend(j, i);*/
 		}
 	}
 }
+
+void game::setLegend(int x, int y) {
+	legend.first = x;
+	legend.second = y;
+}
+

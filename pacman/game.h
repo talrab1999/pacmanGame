@@ -35,6 +35,7 @@ private:
 	};
 	short lastOption, startLives, numGhosts, ghostspeed, speed;
 	string mapNum;
+	Pair legend;
 	
 	bool oneMap;
 public:
@@ -55,6 +56,7 @@ public:
 	bool getOneMap() const;
 	void setOneMap(bool);
 	void readEntities(map&, pacman&, ghost&, ghost&);
+	void setLegend(int,int);
 	
 	//pathfinding
 	bool isValid(int row, int col);

@@ -16,6 +16,7 @@ private:
 	short lastmove;
 	char symbol;
 	Color color;
+
 public:
 	Entity();
 	Entity(short, short, short, char, short, Color);
