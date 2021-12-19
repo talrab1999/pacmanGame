@@ -41,7 +41,7 @@ public:
 	void gotoxy(int, int);
 	void displayChoices() const;
 	void displayChoices(short) const;
-	void goToOption(int);
+	void goToOption(int&);
 	void clearScreen() const;
 	void displayInstructions() const;
 	void displaywin() const;

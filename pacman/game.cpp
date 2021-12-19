@@ -334,40 +334,43 @@ void game::displayChoices(short curr) const {
 	}
 }
 
-void game::goToOption(int in)
+void game::goToOption(int &input)
 {
 	clearScreen();
 
-	switch (in) {
-	case 0:
-		displayChoices();
-		break;
+	switch (input) {
 	case 1:
 		gameLoop();
+		input = 0;
 		break;
 	case 2:
 		chooseMap();
 		clearScreen();
 		gameLoop();
+		input = 0;
 		break;
 	case 8:
 		displayInstructions();
 		clearScreen();
-		goToOption(0);
+		input = 0;
 		break;
 	case 9:
-		exit(0);
+		input = -1;
+		break;
+	default:
+		displayChoices();
+		cin >> input;
 		break;
 	}
 }
 
 void game::clearScreen() const
 {
-	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+	/*HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD position = { 0, 0 };
 	SetConsoleCursorPosition(hStdout, position);
 	position = { 0,0 };
-	SetConsoleCursorPosition(hStdout, position);
+	SetConsoleCursorPosition(hStdout, position);*/
 	system("CLS");
 }
 
@@ -495,7 +498,7 @@ void game::gameLoop() {
 			continue;
 		}
 		
-		if (player1.getDotsate() == h.getDots()) {
+		if (player1.getDotsate() == h.getDots()-400) {
 			if (oneMap == false) {
 				clearScreen();
 				currMap++;
@@ -561,7 +564,7 @@ void game::gameLoop() {
 		Sleep(speed);
 		frame++;
 	}
-	goToOption(0);
+	//goToOption(0);
 }
 
 bool game::didGhostEatPacman(map& h, pacman& player1, ghost& Tinky_Winky, ghost& Po, char& key1, char& key2, bool& oneMap, bool& running1) {
