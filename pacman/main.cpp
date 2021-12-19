@@ -11,6 +11,5 @@ void main()
 	
 	while (input != '9') {
 		Game.goToOption(input);
-		//cin >> input;
 	}
 }

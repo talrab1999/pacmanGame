@@ -122,18 +122,6 @@ void map::setDots(short) {
 	dotCounter = 0;
 }
 
-
-void map::test() {
-	gotoxy(0, 0);
-	for (int i = 0; i < height; i++) {
-		printf("\n");
-		for (int j = 0; j < width; j++) {
-			cout << board[i][j];
-		}
-	}
-
-}
-
 void map::ResetMap()
 {
 	map_vec.clear();

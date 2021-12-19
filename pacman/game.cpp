@@ -114,7 +114,7 @@ Pair game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 		// To store the 'g', 'h' and 'f' of the 8 successors
 		int gNew, hNew, fNew;
 
-		//----------- 1st Successor (up) ------------
+		//-----------(up) ------------
 
 		// Only process this cell if this is a valid one
 		if (isValid(i - 1, j) == true) {
@@ -124,10 +124,8 @@ Pair game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 				// Set the Parent of the destination cell
 				cellDetails[i - 1][j].parent_i = i;
 				cellDetails[i - 1][j].parent_j = j;
-				//printf("The destination cell is found\n");
 				target = tracePath(cellDetails, dest);
 				foundDest = true;
-				//free(cellDetails);
 				return target;
 			}
 			// If the successor is already on the closed
@@ -159,17 +157,15 @@ Pair game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 			}
 		}
 
-		//----------- 2nd Successor (down) ------------
+		//-----------(down) ------------
 
 		if (isValid(i + 1, j) == true) {
 
 			if (isDestination(i + 1, j, dest) == true) {
 				cellDetails[i + 1][j].parent_i = i;
 				cellDetails[i + 1][j].parent_j = j;
-				//printf("The destination cell is found\n");
 				target = tracePath(cellDetails, dest);
 				foundDest = true;
-				//free(cellDetails);
 				return target;
 			}
 
@@ -189,17 +185,15 @@ Pair game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 			}
 		}
 
-		//----------- 3rd Successor (right) ------------
+		//-----------(right) ------------
 
 		if (isValid(i, j + 1) == true) {
 
 			if (isDestination(i, j + 1, dest) == true) {
 				cellDetails[i][j + 1].parent_i = i;
 				cellDetails[i][j + 1].parent_j = j;
-				//printf("The destination cell is found\n");
 				target = tracePath(cellDetails, dest);
 				foundDest = true;
-				//free(cellDetails);
 				return target;
 			}
 
@@ -219,17 +213,15 @@ Pair game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 			}
 		}
 
-		//----------- 4th Successor (left) ------------
+		//-----------(left) ------------
 
 		if (isValid(i, j - 1) == true) {
 
 			if (isDestination(i, j - 1, dest) == true) {
 				cellDetails[i][j - 1].parent_i = i;
 				cellDetails[i][j - 1].parent_j = j;
-				//printf("The destination cell is found\n");
 				target = tracePath(cellDetails, dest);
 				foundDest = true;
-				//free(cellDetails);
 				return target;
 			}
 
@@ -249,10 +241,6 @@ Pair game::aStarSearch(char grid[][COLS], Pair src, Pair dest)
 			}
 		}
 	}
-
-	/*if (foundDest == false)
-		printf("Failed to find the Destination Cell\n");*/
-		//return;
 }
 
 char instructions[15][32] = {
@@ -271,7 +259,7 @@ char instructions[15][32] = {
 	"|#############################|",
 	"|  STAY     |     s or S      |",
 	"+#############################+"
-};
+}; //Displayes game keys
 
 char win[9][63] = {
 	"##########################################################",
@@ -338,27 +326,32 @@ void game::goToOption(char &input)
 	clearScreen();
 
 	switch (input) {
-	case '1':
+	case char(e_OptionInput::PLAY):
 		gameLoop();
-		input = '0';
+		input = char(e_OptionInput::DEFAULT);
 		break;
-	case '2':
+	case char(e_OptionInput::CHOOSE_MAP) :
 		chooseMap();
 		clearScreen();
 		gameLoop();
-		input = '0';
+		input = char(e_OptionInput::DEFAULT);
 		break;
-	case '8':
+	case char(e_OptionInput::INSTRUCTIONS) :
 		displayInstructions();
 		clearScreen();
-		input = '0';
+		input = char(e_OptionInput::DEFAULT);
 		break;
-	case '9':
+	case char(e_OptionInput::EXIT) :
 		break;
+
 	default:
 		displayChoices();
 		input = _getch();
-		while (input != '1' && input != '2' &&	input != '8' && input != '9') {
+		while (input != char(e_OptionInput::PLAY) 
+			&& input != char(e_OptionInput::CHOOSE_MAP)
+			&&	input != char(e_OptionInput::INSTRUCTIONS)
+			&& input != char(e_OptionInput::EXIT))
+		{
 			if (_kbhit())
 				input = _getch();
 		}
@@ -432,10 +425,10 @@ void game::gameLoop() {
 	fruit Dipsy;
 	map h;
 
-	if (getOneMap())
-		h.setFilename(getmapNum());
+	if (getOneMap()) 
+		h.setFilename(getmapNum()); //Choose specific map to play once
 
-	prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2);
+	prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2); 
 
 
 	while (running1)
@@ -452,8 +445,8 @@ void game::gameLoop() {
 		if (_kbhit())
 			key1 = _getch();
 
-		while (checkInput == false) {
-			if (key1 == ESC) {
+		while (checkInput == false) { //Check if user pressed invalid key
+			if (key1 == ESC) {	//If user pressed ESC
 				h.pause(h,getLegend().first, getLegend().second);
 				player1.display();
 				Tinky_Winky.display();
@@ -468,6 +461,7 @@ void game::gameLoop() {
 				h.unpause(h, getLegend().first, getLegend().second);
 			}
 
+			//Pacman move
 			else if (key1 == 'w' || key1 == 'W')
 				player1.move_up(h);
 			else if (key1 == 'x' || key1 == 'X')
@@ -495,10 +489,10 @@ void game::gameLoop() {
 			Dipsy.resetCounter();
 		}
 
-		if (player1.getDotsate() == h.getDots()) {     
+		if (player1.getDotsate() == h.getDots()) { //Check if game won     
 			if (getOneMap() == false) {
 				clearScreen();
-				currMap++;
+				currMap++; 
 				if (currMap == 4) {
 					displaywin();
 					running1 = false;
@@ -507,8 +501,8 @@ void game::gameLoop() {
 				cout << "Good luck in the next map" << endl;
 				system("pause");
 				clearScreen();
-				setmapNum(to_string(currMap));
-				h.setFilename(getmapNum());
+				setmapNum(to_string(currMap)); //Sets new map number
+				h.setFilename(getmapNum());    //Loades next map
 				prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2);
 				continue;
 			}
@@ -522,21 +516,21 @@ void game::gameLoop() {
 		}
 
 
-		if (frame % ghostspeed == 0) {
+		if (frame % ghostspeed == 0) { //Every Second frame ghosts move
 			ghostMove(Tinky_Winky, h, player1);
 			ghostMove(Po, h, player1);
 			if ((FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h) == true)) {
 				Dipsy.sleepFruit(h);
 				Dipsy.resetCounter();
 			}
-			if (Dipsy.getSleep() == false) { //Not asleep
+			if (Dipsy.getSleep() == false) { //Fruit not asleep
 				ghostMove(Dipsy, h, player1);
 				if ((FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h) == true)) {
 					Dipsy.sleepFruit(h);
 					Dipsy.resetCounter();
 				}
 			}
-			else {	// asleep
+			else {	// Fruit asleep
 				if (Dipsy.getTurnCounter() == 50) {
 					Dipsy.wakeUpFruit(h);
 				}
@@ -564,11 +558,12 @@ void game::gameLoop() {
 
 bool game::didGhostEatPacman(map& h, pacman& player1, ghost& Tinky_Winky, ghost& Po, char& key1, char& key2,bool& running1) {
 	if ((Tinky_Winky.getX() == player1.getX() && Tinky_Winky.getY() == player1.getY()) || (Po.getX() == player1.getX() && Po.getY() == player1.getY()))
-	{
+	{	//If reached this point, one life is lost
 		player1.setLives(player1.getLives() - 1);
 		Sleep(4000);
 		player1.displayLives(h,getLegend().first, getLegend().second);
 		key1 = 's', key2='s';
+		//Resets Entities
 		player1.resetEntity();
 		switch (numGhosts - 1) {
 		case 2:
@@ -578,7 +573,7 @@ bool game::didGhostEatPacman(map& h, pacman& player1, ghost& Tinky_Winky, ghost&
 			Po.display(h.getmapat(Po.getY(), Po.getX()));
 			Po.resetEntity();
 		}
-		if (player1.getLives() == 0)
+		if (player1.getLives() == 0)	//Check if Game lost
 		{
 			clearScreen();
 			displaylose();
@@ -590,6 +585,7 @@ bool game::didGhostEatPacman(map& h, pacman& player1, ghost& Tinky_Winky, ghost&
 	return false;
 }
 void game::prepareForNewGame(map& h, pacman& player1, fruit& Dipsy, ghost& Tinky_Winky, ghost& Po, char& key1, char& key2) {
+	//Resets the map and the entities to their default locations
 	h.fillmap();
 	readEntities(h, player1, Tinky_Winky, Po);
 
@@ -622,7 +618,10 @@ char game::chooseGhostsDifficulty() {
 	char input;
 	cin >> input;
 
-	while (input != 'a' && input != 'b' && input != 'c') {
+	while (input != char(e_GhostDiff::BEST)
+		&& input != char(e_GhostDiff::GOOD)
+		&& input != char(e_GhostDiff::NOVICE)) 
+	{
 		cout << "invalid Input" << endl;
 		cin >> input;
 	}
@@ -636,7 +635,7 @@ void game::ghostMove(ghost& currGhost, map& h, pacman& player1) {
 	{
 		case int(e_GhostDiff::NOVICE) :
 		{
-			if (currGhost.getTurnCounter() % 20 == 0) {
+			if (currGhost.getTurnCounter() % 20 == 0) { //Random move every 20 turns
 				currGhost.setLastMove();
 			}
 			currGhost.move_rand(h);
@@ -646,25 +645,25 @@ void game::ghostMove(ghost& currGhost, map& h, pacman& player1) {
 
 		case int(e_GhostDiff::GOOD) :
 		{
-			if (currGhost.getTurnCounter() % 20 == 0) {
+			if (currGhost.getTurnCounter() % 20 == 0) {  //Every 20's turn act random for 5 turns
 				currGhost.move_rand(h);
 				currGhost.setGoodCounter(1);
 				break;	//Move like NOVICE and exit switch
 			}
-			else if (1<=currGhost.getGoodCounter()&&
-						currGhost.getGoodCounter() <= 5) {
+			else if (1<=currGhost.getGoodCounter()&& 
+						currGhost.getGoodCounter() <= 5) { 
 				currGhost.move_rand(h);
 				currGhost.setGoodCounter(currGhost.getGoodCounter() + 1);
 				break; //Move like NOVICE and exit switch
 			}
-			if (currGhost.getGoodCounter() == 6) {
+			if (currGhost.getGoodCounter() == 6) { //Moved rand for 5 turns, resets to "BEST" behavior
 				currGhost.setGoodCounter(0);
 				currGhost.setTurnCounter(1);
 			}
 			BestMove(currGhost, h, player1);
 			break;
 		}
-		case int(e_GhostDiff::BEST) :
+		case int(e_GhostDiff::BEST) : //Chasing Pacman
 		{
 			BestMove(currGhost, h, player1);
 			break;
@@ -695,7 +694,9 @@ bool game::FruitMetEntity(ghost& Tinky_Winky, ghost& Po, fruit& Dipsy, pacman& p
 		player1.setPoints(player1.getPoints() + score);
 		return true;
 	}
+	
 	else if ((Tinky_Winky.getX() == Dipsy.getX() && Tinky_Winky.getY() == Dipsy.getY()) || (Po.getX() == Dipsy.getX() && Po.getY() == Dipsy.getY()) || Dipsy.getTurnCounter() == 60) {
+		//If Fruit ran out of time or hit a ghost
 		return true;
 	}
 	return false;

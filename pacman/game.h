@@ -22,6 +22,14 @@ enum class e_GhostDiff {
 	NOVICE = 'c'
 };
 
+enum class e_OptionInput {
+	PLAY = '1',
+	CHOOSE_MAP = '2',
+	INSTRUCTIONS = '8',
+	EXIT = '9',
+	DEFAULT = '0'
+};
+
 struct cell {
 	int parent_i, parent_j;
 	double f, g, h;
@@ -40,6 +48,16 @@ private:
 	bool oneMap;
 public:
 	game();
+
+	void gameLoop();
+
+	//Map Functions
+	void chooseMap();
+	bool getOneMap() const;
+	void setOneMap(bool);
+	void readEntities(map&, pacman&, ghost&, ghost&);
+
+	//Menu Functions
 	void gotoxy(int, int);
 	void displayChoices() const;
 	void displayChoices(short) const;
@@ -50,26 +68,25 @@ public:
 	void displaylose() const;
 	string getmapNum() const;
 	void setmapNum(string);
-	void gameLoop();
 	void prepareForNewGame(map&, pacman&, fruit&, ghost&, ghost&, char&, char&);
 	bool didGhostEatPacman(map&, pacman&, ghost&, ghost&, char&, char&, bool&);
-	bool getOneMap() const;
-	void setOneMap(bool);
-	void readEntities(map&, pacman&, ghost&, ghost&);
+
 	void setLegend(int,int);
 	Pair getLegend();
+
+	//Ghost functions
+	char chooseGhostsDifficulty();
+	void ghostMove(ghost&, map&, pacman&);
+	void BestMove(ghost&, map&, pacman&);
+	bool FruitMetEntity(ghost&, ghost&, fruit&, pacman&, map&);
 	
-	//pathfinding
+	//Pathfinding functions
 	bool isValid(int row, int col);
 	bool isUnBlocked(char grid[][COLS], int row, int col);
 	bool isDestination(int row, int col, Pair dest);
 	int calculateHValue(int row, int col, Pair dest);
 	Pair tracePath(cell cellDetails[][COLS], Pair dest);
 	Pair aStarSearch(char grid[][COLS], Pair src, Pair dest);
-	char chooseGhostsDifficulty();
-	void ghostMove(ghost&,map&, pacman&);
-	void BestMove(ghost&, map&, pacman&);
-	bool FruitMetEntity(ghost&, ghost&,fruit&, pacman&, map&);
-	void chooseMap();
+	
 
 };
