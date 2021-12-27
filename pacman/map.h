@@ -7,8 +7,8 @@
 #include <vector>
 #include "color.h"
 using namespace std;
-#define ROWS 20
-#define COLS 61
+#define ROWS 25
+#define COLS 80
 
 class map {
 private:
@@ -29,6 +29,7 @@ public:
 	void setFilename(string);
 	void setmapat(short, short, char);
 	void fillmap();
+	void fixLine(int&, int&, string&);
 	void freemap();
 	void ResetMap();
 	void ShowMap();

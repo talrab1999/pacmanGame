@@ -3,10 +3,10 @@
 
 map::map(string mapNum)
 {
-	width = COLS;
+	/*width = COLS;
 	height = ROWS;
+	length = width * height;*/
 	dotCounter = 0;
-	length = width * height;
 	setFilename(mapNum);
 }
 
@@ -63,6 +63,7 @@ void map::setmapat(short y, short x, char c) {
 
 void map::fillmap()
 {
+	//resetBoard
 	setDots(0);
 	map_vec.clear();
 	ifstream INF(filename);
@@ -71,22 +72,16 @@ void map::fillmap()
 		cout << "ERROR map" << filename << ".screen COULD NOT BE OPENED!";
 	}
 	int z = 0;
+	bool isLegends = false;
+	int legendCounter = 0;
+	int legendIndex = 81;
 	while (getline(INF, line)) {
-		for (short i = 0; i < width; i++) {
-			if (line[i] == ' ') {
-				line[i] = '.';
-				dotCounter++;
-			}
-			if (line[0]=='&') {
-				i = width;
-			}
-		}
+		if (z == 0) {
+			width = line.size() + 1;
+		} 
+		// for loop fixes the line
+		fixLine(legendIndex, legendCounter, line);
 		for (int j = 0; j < width; j++) {
-			if (line[0] == '&') {
-				board[z][j] = '&';
-				j = width;
-			}
-			else
 			board[z][j] = line[j];
 		}
 		for (short i = 0; i < width; i++) {
@@ -94,9 +89,8 @@ void map::fillmap()
 				line[i] = ' ';
 			else if (line[i] == '$') {
 				line[i] = '.';
-				dotCounter++;
 			}
-			else if (line[i] == '&') {
+			else if (line.size() == 1) {
 				for (int i = 0; i < 3 * 20; i++) {
 					map_vec.push_back(' ');
 				}
@@ -107,8 +101,94 @@ void map::fillmap()
 		}
 		z++;
 	}
+	height = z;  
+	length = width * height;
 	INF.close();
 }
+
+void map::fixLine(int& legendIndex, int& legendCounter, string& line) {
+	for (short i = 0; i < width; i++) {
+		if (legendCounter && legendIndex == i) {
+			for (i; i < legendIndex + 20; i++)
+				line[i] = '%';
+			
+			legendCounter++;
+			if (legendCounter == 3)
+				legendCounter = 0;
+		}
+		if (line[i] == '&') {
+			if (line.size() == 1) {
+				legendIndex = i;
+				return;
+			}
+			legendIndex = i;
+			i++;
+			for (i; i <= legendIndex + 19; i++) {
+				line[i] = '%';
+			}
+
+			legendCounter = 1;
+		}
+		if (line[i] == ' ') {
+			line[i] = '.';
+			dotCounter++;
+		}
+	}
+}
+
+//void map::fillmap()
+//{
+//	//resetBoard
+//	setDots(0);
+//	map_vec.clear();
+//	ifstream INF(filename);
+//	string line = "";
+//	if (!INF) {
+//		cout << "ERROR map" << filename << ".screen COULD NOT BE OPENED!";
+//	}
+//	int z = 0;
+//	while (getline(INF, line)) {
+//		if (z == 0) {
+//			width = line.size() + 1;
+//		}
+//		for (short i = 0; i < width; i++) {
+//			if (line[i] == ' ') {
+//				line[i] = '.';
+//				dotCounter++;
+//			}
+//			if (line[0] == '&') {
+//				i = width;
+//			}
+//		}
+//		for (int j = 0; j < width; j++) {
+//			if (line[0] == '&') {
+//				board[z][j] = '&';
+//				j = width;
+//			}
+//			else
+//				board[z][j] = line[j];
+//		}
+//		for (short i = 0; i < width; i++) {
+//			if (line[i] == '%' || line[i] == '@')
+//				line[i] = ' ';
+//			else if (line[i] == '$') {
+//				line[i] = '.';
+//			}
+//			else if (line[i] == '&') {
+//				for (int i = 0; i < 3 * 20; i++) {
+//					map_vec.push_back(' ');
+//				}
+//				i = width;
+//				continue;
+//			}
+//			map_vec.push_back(line[i]);
+//		}
+//		z++;
+//	}
+//	height = z;
+//	length = width * height;
+//	INF.close();
+//}
 
 void map::freemap() {
 	map_vec.clear();
@@ -154,10 +234,10 @@ void map::ShowMap()
 
 void map::pause(map& h,int x,int y) {
 	gotoxy(0,y + 2);
-	cout << "Game paused, press ESC again to continue" << endl;
+	cout << "Game paused" << endl;
 }
 
 void map::unpause(map& h, int x, int y) {
 	gotoxy(x, y+2);
-	cout << "                                           " << endl;
+	cout << "               " << endl;
 }

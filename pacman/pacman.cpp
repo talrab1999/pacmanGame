@@ -37,21 +37,13 @@ void pacman::displayPoints(map& m,int x, int y) const {
 void pacman::displayLives(map& m,int x, int y)
 {
 	gotoxy(x,y);
-	cout << "Lives:                     ";
+	cout << "Lives:             ";
 	gotoxy(x+8,y);
 	for (short i = this->getLives(); i > 0; i--) {
 		cout << "@ ";
 	}
 }
 
-/*void pacman::whathappened(map& m)
-{
-	gotoxy(m.getWidth() + 1, m.getHeight() - 3);
-	cout << "EAT???";
-	Sleep(4000);
-	gotoxy(m.getWidth() + 1, m.getHeight() - 3);
-	cout << "      ";
-}*/
 
 
 void pacman::move_up(map& m)
