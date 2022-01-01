@@ -298,6 +298,7 @@ game::game()
 	ghostspeed = 2;      //means X2 slower than the pacman
 	startLives = 3;
 	oneMap = false;
+	mode = char(e_GameMode::SIMPLE);
 }
 
 void game::gotoxy(int x, int y)
@@ -410,7 +411,7 @@ void game::setmapNum(string f) {
 	mapNum = f;
 }
 
-void game::gameLoop() {
+void game::gameLoop(bool silent=false) {
 
 	char ghostDiff = chooseGhostsDifficulty();
 	bool running1 = true;
@@ -441,9 +442,12 @@ void game::gameLoop() {
 		case 1: Po.display(h.getmapat(Po.getY(), Po.getX()));
 		}
 		checkInput = false;
-
-		if (_kbhit())
-			key1 = _getch();
+		
+		//If load read from steps
+		//else
+			if (_kbhit())
+				key1 = _getch();
+		
 
 		while (checkInput == false) { //Check if user pressed invalid key
 			if (key1 == ESC) {	//If user pressed ESC
@@ -479,11 +483,12 @@ void game::gameLoop() {
 			checkInput = true;
 		}
 		key2 = key1;
+		//if (save) game.mode == "save" Save !load put move in steps file
 
 		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2,running1) == true)
 		{
 			continue;
-		}
+		} 
 		if ((FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h) == true)) {
 			Dipsy.sleepFruit(h);
 			Dipsy.resetCounter();
@@ -537,6 +542,8 @@ void game::gameLoop() {
 				Dipsy.setTurnCounter(Dipsy.getTurnCounter() + 1);
 			}
 		}
+		
+
 
 		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2,running1) == true)
 		{
@@ -757,3 +764,6 @@ Pair game::getLegend() {
 	return legend;
 }
 
+void game::setMode(char m) {
+	this->mode = m;
+}

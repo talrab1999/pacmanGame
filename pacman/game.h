@@ -30,6 +30,12 @@ enum class e_OptionInput {
 	DEFAULT = '0'
 };
 
+enum class e_GameMode {
+	SIMPLE = '0',
+	SAVE = '1',
+	LOAD = '2'
+};
+
 struct cell {
 	int parent_i, parent_j;
 	double f, g, h;
@@ -44,12 +50,13 @@ private:
 	short lastOption, startLives, numGhosts, ghostspeed, speed;
 	string mapNum;
 	Pair legend;
+	char mode;
 	
 	bool oneMap;
 public:
 	game();
 
-	void gameLoop();
+	void gameLoop(bool);
 
 	//Map Functions
 	void chooseMap();
@@ -70,7 +77,7 @@ public:
 	void setmapNum(string);
 	void prepareForNewGame(map&, pacman&, fruit&, ghost&, ghost&, char&, char&);
 	bool didGhostEatPacman(map&, pacman&, ghost&, ghost&, char&, char&, bool&);
-
+	void setMode(char);
 	void setLegend(int,int);
 	Pair getLegend();
 

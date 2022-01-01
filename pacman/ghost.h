@@ -10,6 +10,7 @@ private:
 	char difficulty;
 	int goodGhostCounter;
 	int turnCounter;
+	
 public:
 	ghost(char);
 	//void move_rand(map&);
