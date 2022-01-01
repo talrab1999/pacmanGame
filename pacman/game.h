@@ -56,7 +56,7 @@ private:
 public:
 	game();
 
-	void gameLoop(bool);
+	void gameLoop(bool silent = false);
 
 	//Map Functions
 	void chooseMap();
@@ -80,6 +80,9 @@ public:
 	void setMode(char);
 	void setLegend(int,int);
 	Pair getLegend();
+
+	//Pacman functions
+	bool pacmanMove(pacman&, char&, char&, map&);
 
 	//Ghost functions
 	char chooseGhostsDifficulty();

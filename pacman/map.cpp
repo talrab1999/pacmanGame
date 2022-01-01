@@ -233,7 +233,7 @@ void map::ShowMap()
 
 
 void map::pause(map& h,int x,int y) {
-	gotoxy(0,y + 2);
+	gotoxy(x,y + 2);
 	cout << "Game paused" << endl;
 }
 

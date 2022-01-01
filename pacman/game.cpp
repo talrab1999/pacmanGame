@@ -411,7 +411,7 @@ void game::setmapNum(string f) {
 	mapNum = f;
 }
 
-void game::gameLoop(bool silent=false) {
+void game::gameLoop(bool silent) {
 
 	char ghostDiff = chooseGhostsDifficulty();
 	bool running1 = true;
@@ -463,10 +463,11 @@ void game::gameLoop(bool silent=false) {
 				Po.display(h.getmapat(Po.getY(), Po.getX()));
 				key1 = key2;
 				h.unpause(h, getLegend().first, getLegend().second);
+				checkInput = true;
 			}
 
-			//Pacman move
-			else if (key1 == 'w' || key1 == 'W')
+			//////Pacman move
+		/*	else if (key1 == 'w' || key1 == 'W')
 				player1.move_up(h);
 			else if (key1 == 'x' || key1 == 'X')
 				player1.move_down(h);
@@ -480,7 +481,16 @@ void game::gameLoop(bool silent=false) {
 				key1 = key2;
 				continue;
 			}
-			checkInput = true;
+			
+			checkInput = true;*/
+
+			//If pacman moved func return true else when default func returns false
+
+			else if (pacmanMove(player1, key1, key2, h))
+					checkInput = true;
+				else
+					continue;
+			
 		}
 		key2 = key1;
 		//if (save) game.mode == "save" Save !load put move in steps file
@@ -524,6 +534,8 @@ void game::gameLoop(bool silent=false) {
 		if (frame % ghostspeed == 0) { //Every Second frame ghosts move
 			ghostMove(Tinky_Winky, h, player1);
 			ghostMove(Po, h, player1);
+
+			//if save game 
 			if ((FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h) == true)) {
 				Dipsy.sleepFruit(h);
 				Dipsy.resetCounter();
@@ -766,4 +778,45 @@ Pair game::getLegend() {
 
 void game::setMode(char m) {
 	this->mode = m;
+}
+
+bool game::pacmanMove(pacman& pacman, char& key1, char& key2,map& h) {
+	
+	int direction; 
+
+	switch (key1) {
+	case 'w': 	case 'W': 
+		pacman.move_up(h);
+		direction = 0;
+		break;
+
+	case 'x':case 'X':
+		pacman.move_down(h);
+		direction = 1;
+		break;
+
+	case 'a': 	case 'A':
+		pacman.move_left(h);
+		direction = 2;
+		break;
+
+	case 'd': 	case 'D':
+		pacman.move_right(h);
+		direction = 3;
+		break;
+
+	case 's': 	case 'S':
+		pacman.stop(h);
+		direction = 4;
+		break;
+
+	default:
+		key1 = key2;
+		return false;
+	}
+	
+	//if (this.mode==save)
+	//	writesteps[0]=direction;
+	return true;
+
 }

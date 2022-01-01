@@ -24,16 +24,16 @@ void Entity::move_rand(map& m)
 	short direction = lastmove;
 	while (true) {
 		switch (direction) {
-		case 0: nextY = getY() - 1;
+		case 0: nextY = getY() - 1; //UP
 			nextX = getX();   
 			break;
-		case 1: nextY = getY() + 1; 
+		case 1: nextY = getY() + 1; //Down
 			nextX = getX();  
 			break;
-		case 2: nextY = getY();  
+		case 2: nextY = getY();  //Left
 			nextX = getX() - 1;
 			break;
-		case 3: nextY = getY(); 
+		case 3: nextY = getY(); //Right
 			nextX = getX() + 1;
 			break;
 		}
