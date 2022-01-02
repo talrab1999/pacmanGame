@@ -518,7 +518,7 @@ void game::gameLoop(bool silent) {
 				clearScreen();
 				setmapNum(to_string(currMap)); //Sets new map number
 				h.setFilename(getmapNum());    //Loades next map
-				prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2);
+				prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2,frame);
 				continue;
 			}
 			else {

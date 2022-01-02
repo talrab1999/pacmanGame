@@ -33,7 +33,8 @@ enum class e_OptionInput {
 enum class e_GameMode {
 	SIMPLE = '0',
 	SAVE = '1',
-	LOAD = '2'
+	LOAD = '2',
+	LOAD_SILENT='3'
 };
 
 struct cell {
@@ -42,7 +43,8 @@ struct cell {
 };
 
 class game {
-private:
+protected:
+
 	static string choices[4];
 	enum {
 		ESC = 27,
@@ -51,12 +53,12 @@ private:
 	string mapNum;
 	Pair legend;
 	char mode;
-	
 	bool oneMap;
-public:
-	game();
 
-	void gameLoop(bool silent = false);
+public:
+
+	game();
+	virtual void gameLoop(bool silent = false);
 
 	//Map Functions
 	void chooseMap();
@@ -65,6 +67,7 @@ public:
 	void readEntities(map&, pacman&, ghost&, ghost&);
 
 	//Menu Functions
+	void runMenu();
 	void gotoxy(int, int);
 	void displayChoices() const;
 	void displayChoices(short) const;
