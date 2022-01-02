@@ -821,3 +821,11 @@ bool game::pacmanMove(pacman& pacman, char& key1, char& key2,map& h) {
 	return true;
 
 }
+
+void game::runMenu() {
+
+	char input = 0;
+	while (input != '9') {
+		this->goToOption(input);
+	}
+}

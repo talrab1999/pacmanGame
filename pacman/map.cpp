@@ -69,7 +69,8 @@ void map::fillmap()
 	ifstream INF(filename);
 	string line = "";
 	if (!INF) {
-		cout << "ERROR map" << filename << ".screen COULD NOT BE OPENED!";
+		cout << "ERROR " << filename << " COULD NOT BE OPENED!";
+		exit(0);
 	}
 	int z = 0;
 	bool isLegends = false;
@@ -83,12 +84,15 @@ void map::fillmap()
 		fixLine(legendIndex, legendCounter, line);
 		for (int j = 0; j < width; j++) {
 			board[z][j] = line[j];
+			if (line.size() == 1)
+				j = width;
 		}
 		for (short i = 0; i < width; i++) {
 			if (line[i] == '%' || line[i] == '@')
 				line[i] = ' ';
 			else if (line[i] == '$') {
 				line[i] = '.';
+				dotCounter++;
 			}
 			else if (line.size() == 1) {
 				for (int i = 0; i < 3 * 20; i++) {
