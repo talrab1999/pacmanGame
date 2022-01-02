@@ -418,7 +418,7 @@ void game::gameLoop(bool silent) {
 	bool checkInput;
 	char key1, key2;
 	int currMap = 1;
-	unsigned long long int frame = 0;   //can get realy high numbers...
+	unsigned long long int frame;   //can get realy high numbers...
 
 	pacman player1;
 	ghost Tinky_Winky(ghostDiff);
@@ -429,7 +429,7 @@ void game::gameLoop(bool silent) {
 	if (getOneMap()) 
 		h.setFilename(getmapNum()); //Choose specific map to play once
 
-	prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2); 
+	prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2, frame); 
 
 
 	while (running1)
@@ -603,11 +603,12 @@ bool game::didGhostEatPacman(map& h, pacman& player1, ghost& Tinky_Winky, ghost&
 	}
 	return false;
 }
-void game::prepareForNewGame(map& h, pacman& player1, fruit& Dipsy, ghost& Tinky_Winky, ghost& Po, char& key1, char& key2) {
+void game::prepareForNewGame(map& h, pacman& player1, fruit& Dipsy, ghost& Tinky_Winky, ghost& Po, char& key1, char& key2, unsigned long long int& frame) {
 	//Resets the map and the entities to their default locations
 	h.fillmap();
 	readEntities(h, player1, Tinky_Winky, Po);
 
+	frame = 0;
 	key1 = 's', key2 = 's';
 	h.ShowMap();
 	player1.setDotsate(0);
