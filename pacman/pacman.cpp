@@ -60,7 +60,11 @@ void pacman::move_up(map& m)
 	}
 	else if (m.getmapat(getY() - 1, getX()) == '!')
 	{
-		setY(17);
+		setY(m.getHeight() - 3);
+		if ((m.getmapat(getY(), getX()) == '.')) {
+			points++;
+			dotsate++;
+		}
 	}
 }
 
@@ -79,6 +83,10 @@ void pacman::move_down(map& m)
 	else if (m.getmapat(getY() + 1, getX()) == '!')
 	{
 		setY(1);
+		if ((m.getmapat(getY(), getX()) == '.')) {
+			points++;
+			dotsate++;
+		}
 	}
 }
 
@@ -96,7 +104,11 @@ void pacman::move_left(map& m)
 	}
 	else if (m.getmapat(getY(), getX() - 1) == '!')
 	{
-		setX(58);
+		setX(m.getWidth() - 3);
+		if ((m.getmapat(getY(), getX()) == '.')) {
+			points++;
+			dotsate++;
+		}
 	}
 }
 void pacman::move_right(map& m)
@@ -114,6 +126,10 @@ void pacman::move_right(map& m)
 	else if (m.getmapat(getY(), getX() + 1) == '!')
 	{
 		setX(1);
+		if ((m.getmapat(getY(), getX()) == '.')) {
+			points++;
+			dotsate++;
+		}
 	}
 
 }
