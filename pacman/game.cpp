@@ -429,9 +429,11 @@ void game::gameLoop(bool silent) {
 
 	getFiles();
 	
-	if (getOneMap())
+	if (getOneMap()) {
 		//TODO//Run on queue and pop until desired map "pacman_
+
 		h.setFilename(getmapNum()); //Choose specific map to play once
+	}
 	else
 		h.setFilename(screenFiles.front()); //Choose first map in alphabetical queue to play 
 
@@ -708,27 +710,46 @@ bool game::FruitMetEntity(ghost& Tinky_Winky, ghost& Po, fruit& Dipsy, pacman& p
 
 void game::chooseMap() {
 
-	cout << "Please choose a map number: "<< endl;
-	cout << "1" << endl << "2" << endl << "3" << endl;
-	
-	cin >> mapNum;
-	while (mapNum != "1" && mapNum != "2" && mapNum != "3") {
-		cout << "Please enter a number between 1-3" << endl;
-		cin >> mapNum;
-	}
-	oneMap = true;
-	cout << "You chose map number:"<<mapNum<< endl<<"Good Luck!"<<endl;
-	system("pause");
-	
-		/*
-		1.pacman_09
-		2.pacman_22
-		3.
-		4.
-		*/
+	getFiles();
+	queue<string> copyQ = screenFiles;
 
+	cout << "Please choose the number of the desired map: " << endl;
+
+	showq(screenFiles);
+
+	cin >> mapNum;
+	bool flag = false;
+
+	while (!flag){
+
+		if (!is_number(mapNum)) {
+			cout << "Invalid input " << endl;
+			cin >> mapNum;
+		}
+		else if (stoi(mapNum) > screenFiles.size()) {
+			cout << "Invalid input " << endl;
+			cin >> mapNum;
+		}
+		else
+			flag = true;
+	}
+
+	oneMap = true;
+
+	cout << "You chose map number:" << mapNum << endl << "Good Luck!" << endl;
+	system("pause");
+
+	/*
+	1.pacman_09
+	2.pacman_22
+	3.
+	4.
+	*/
 }
 
+bool game::is_number(const string& s) {
+	return !s.empty() && std::all_of(s.begin(), s.end(), ::isdigit);
+}
 bool game::getOneMap() const {
 	return oneMap;
 }
@@ -834,9 +855,19 @@ void game::getFiles() {
 void game::showq(queue<string> q)
 {
 	queue<string> g = q;
+	int i = 1;
 	while (!g.empty()) {
-		cout << '\t' << g.front();
+		cout << i << ". " << g.front() << endl;
 		g.pop();
+		i++;
 	}
 	cout << '\n';
+}
+
+string game::popQIndex(int index) {
+	
+	for (int i = 0; i < index; i++) {
+		screenFiles.pop();
+	}
+	return screenFiles.front();
 }

@@ -113,6 +113,8 @@ public:
 	
 	//Queue functions
 	void showq (queue<string> q);
+	string popQIndex(int i);
 
+	bool is_number(const string& s);
 
 };
