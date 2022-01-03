@@ -332,8 +332,8 @@ void game::goToOption(char &input)
 		gameLoop();
 		input = char(e_OptionInput::DEFAULT);
 		break;
-	case char(e_OptionInput::CHOOSE_MAP) :
-		chooseMap();
+		case char(e_OptionInput::CHOOSE_MAP) :
+		setOneMap(true);
 		clearScreen();
 		gameLoop();
 		input = char(e_OptionInput::DEFAULT);
@@ -419,20 +419,21 @@ void game::gameLoop(bool silent) {
 	bool checkInput;
 	char key1, key2;
 	unsigned long long int frame;   //can get realy high numbers...
-	int currMap = 1;
 
 	pacman player1;
 	ghost Tinky_Winky(ghostDiff);
 	ghost Po(ghostDiff);
 	fruit Dipsy;
 	map h;
-
-	getFiles();
+	
+	resetScreens();		//Resets Queue of Screens
+	getFiles();			//Fill Queue with screen files
 	
 	if (getOneMap()) {
-		//TODO//Run on queue and pop until desired map "pacman_
+		chooseMap();
+		string curr = showQIndex(stoi(mapNum));
 
-		h.setFilename(getmapNum()); //Choose specific map to play once
+		h.setFilename(curr); //Choose specific map to play once
 	}
 	else
 		h.setFilename(screenFiles.front()); //Choose first map in alphabetical queue to play 
@@ -493,8 +494,8 @@ void game::gameLoop(bool silent) {
 		if (player1.getDotsate() == h.getDots()) { //Check if game won     
 			if (getOneMap() == false) {
 				clearScreen();
-				currMap++; 
-				if (currMap == 4) {
+				screenFiles.pop();	
+				if (screenFiles.empty()) {
 					displaywin();
 					running1 = false;
 					continue;
@@ -502,8 +503,7 @@ void game::gameLoop(bool silent) {
 				cout << "Good luck in the next map" << endl;
 				system("pause");
 				clearScreen();
-				setmapNum(to_string(currMap)); //Sets new map number
-				h.setFilename(getmapNum());    //Loades next map
+				h.setFilename(screenFiles.front());    //Loades next map
 				prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2,frame);
 				continue;
 			}
@@ -521,7 +521,6 @@ void game::gameLoop(bool silent) {
 			ghostMove(Tinky_Winky, h, player1);
 			ghostMove(Po, h, player1);
 
-			//if save game 
 			if ((FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h) == true)) {
 				Dipsy.sleepFruit(h);
 				Dipsy.resetCounter();
@@ -541,7 +540,6 @@ void game::gameLoop(bool silent) {
 			}
 		}
 		
-
 
 		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2,running1) == true)
 		{
@@ -710,41 +708,38 @@ bool game::FruitMetEntity(ghost& Tinky_Winky, ghost& Po, fruit& Dipsy, pacman& p
 
 void game::chooseMap() {
 
-	getFiles();
 	queue<string> copyQ = screenFiles;
 
 	cout << "Please choose the number of the desired map: " << endl;
 
 	showq(screenFiles);
-
 	cin >> mapNum;
+
 	bool flag = false;
 
-	while (!flag){
+	while (!flag) {
 
 		if (!is_number(mapNum)) {
 			cout << "Invalid input " << endl;
 			cin >> mapNum;
 		}
-		else if (stoi(mapNum) > screenFiles.size()) {
-			cout << "Invalid input " << endl;
-			cin >> mapNum;
+		else {
+			int num = stoi(mapNum);
+			if (num > screenFiles.size() || num < 1) {
+				cout << "Invalid input " << endl;
+				cin >> mapNum;
+			}
+			else
+				flag = true;
+
 		}
-		else
-			flag = true;
 	}
+	
+	cout << "You chose option number: " << mapNum << endl << "Good Luck!" << endl;
 
-	oneMap = true;
-
-	cout << "You chose map number:" << mapNum << endl << "Good Luck!" << endl;
 	system("pause");
+	clearScreen();
 
-	/*
-	1.pacman_09
-	2.pacman_22
-	3.
-	4.
-	*/
 }
 
 bool game::is_number(const string& s) {
@@ -864,10 +859,15 @@ void game::showq(queue<string> q)
 	cout << '\n';
 }
 
-string game::popQIndex(int index) {
+string game::showQIndex(int index) {
 	
-	for (int i = 0; i < index; i++) {
+	for (int i = 1; i < index; i++) {
 		screenFiles.pop();
 	}
 	return screenFiles.front();
+}
+
+void game::resetScreens() {
+	screenFiles = {};	
+	numOfScreens = 0;
 }

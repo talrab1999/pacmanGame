@@ -52,10 +52,9 @@ void map::setHeight(short h)
 	height = h;
 }
 
-void map::setFilename(string mapNum)
+void map::setFilename(string fileName)
 {
-	filename = "pacman.0" + mapNum + ".screen";
-	
+	this->filename=fileName;
 }
 
 void map::setmapat(short y, short x, char c) {
