@@ -430,7 +430,7 @@ void game::gameLoop(bool silent) {
 	getFiles();
 	
 	if (getOneMap())
-		//TODO//Run on queue and pop until desired map
+		//TODO//Run on queue and pop until desired map "pacman_
 		h.setFilename(getmapNum()); //Choose specific map to play once
 	else
 		h.setFilename(screenFiles.front()); //Choose first map in alphabetical queue to play 
@@ -719,6 +719,13 @@ void game::chooseMap() {
 	oneMap = true;
 	cout << "You chose map number:"<<mapNum<< endl<<"Good Luck!"<<endl;
 	system("pause");
+	
+		/*
+		1.pacman_09
+		2.pacman_22
+		3.
+		4.
+		*/
 
 }
 

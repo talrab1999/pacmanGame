@@ -55,8 +55,8 @@ protected:
 	short lastOption, startLives, numGhosts, ghostspeed, speed;
 	Pair legend;
 	bool oneMap;
-
 	string mapNum;
+
 	char mode;
 
 	queue<string> screenFiles;
