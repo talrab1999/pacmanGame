@@ -54,7 +54,8 @@ void map::setHeight(short h)
 
 void map::setFilename(string mapNum)
 {
-	filename = "map" + mapNum + ".screen";
+	//filname = "map"+mapnum+".screen"
+	filename = mapNum ;
 }
 
 void map::setmapat(short y, short x, char c) {

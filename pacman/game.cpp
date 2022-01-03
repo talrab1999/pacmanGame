@@ -299,6 +299,7 @@ game::game()
 	startLives = 3;
 	oneMap = false;
 	mode = char(e_GameMode::SIMPLE);
+	numOfScreens = 0;
 }
 
 void game::gotoxy(int x, int y)
@@ -417,8 +418,8 @@ void game::gameLoop(bool silent) {
 	bool running1 = true;
 	bool checkInput;
 	char key1, key2;
-	int currMap = 1;
 	unsigned long long int frame;   //can get realy high numbers...
+	int currMap = 1;
 
 	pacman player1;
 	ghost Tinky_Winky(ghostDiff);
@@ -426,8 +427,13 @@ void game::gameLoop(bool silent) {
 	fruit Dipsy;
 	map h;
 
-	if (getOneMap()) 
+	getFiles();
+	
+	if (getOneMap())
+		//TODO//Run on queue and pop until desired map
 		h.setFilename(getmapNum()); //Choose specific map to play once
+	else
+		h.setFilename(screenFiles.front()); //Choose first map in alphabetical queue to play 
 
 	prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2, frame); 
 
@@ -443,11 +449,8 @@ void game::gameLoop(bool silent) {
 		}
 		checkInput = false;
 		
-		//If load read from steps
-		//else
-			if (_kbhit())
-				key1 = _getch();
-		
+		if (_kbhit())
+			key1 = _getch();
 
 		while (checkInput == false) { //Check if user pressed invalid key
 			if (key1 == ESC) {	//If user pressed ESC
@@ -466,26 +469,7 @@ void game::gameLoop(bool silent) {
 				checkInput = true;
 			}
 
-			//////Pacman move
-		/*	else if (key1 == 'w' || key1 == 'W')
-				player1.move_up(h);
-			else if (key1 == 'x' || key1 == 'X')
-				player1.move_down(h);
-			else if (key1 == 'a' || key1 == 'A')
-				player1.move_left(h);
-			else if (key1 == 'd' || key1 == 'D')
-				player1.move_right(h);
-			else if (key1 == 's' || key1 == 'S')
-				player1.stop(h);
-			else {
-				key1 = key2;
-				continue;
-			}
-			
-			checkInput = true;*/
-
-			//If pacman moved func return true else when default func returns false
-
+			//If pacman moved, return true ,if invalid key pressed returns false
 			else if (pacmanMove(player1, key1, key2, h))
 					checkInput = true;
 				else
@@ -493,7 +477,7 @@ void game::gameLoop(bool silent) {
 			
 		}
 		key2 = key1;
-		//if (save) game.mode == "save" Save !load put move in steps file
+		//TODO//if (save) game.mode == "save" Save !load put move in steps file
 
 		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2,running1) == true)
 		{
@@ -838,4 +822,14 @@ void game::getFiles() {
 			numOfScreens++;
 		}
 	}
+}
+
+void game::showq(queue<string> q)
+{
+	queue<string> g = q;
+	while (!g.empty()) {
+		cout << '\t' << g.front();
+		g.pop();
+	}
+	cout << '\n';
 }

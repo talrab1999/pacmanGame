@@ -8,6 +8,7 @@
 #include <Windows.h>
 #include <conio.h>
 #include <stack>
+#include <queue>
 #include <set>
 #include "pacman.h"
 #include "map.h"
@@ -52,11 +53,14 @@ protected:
 		ESC = 27,
 	};
 	short lastOption, startLives, numGhosts, ghostspeed, speed;
-	string mapNum;
 	Pair legend;
-	char mode;
 	bool oneMap;
 
+	string mapNum;
+	char mode;
+
+	queue<string> screenFiles;
+	int numOfScreens;
 
 public:
 
@@ -107,5 +111,8 @@ public:
 	//Files functions
 	void getFiles();
 	
+	//Queue functions
+	void showq (queue<string> q);
+
 
 };
