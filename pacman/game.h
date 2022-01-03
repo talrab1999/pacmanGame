@@ -1,9 +1,10 @@
 #pragma once
-using namespace std;
-#include <fstream>
-#include <iostream>
-#include <iomanip>
+
 #include <string>
+#include <iostream>
+#include <filesystem>
+#include <fstream>
+#include <iomanip>
 #include <Windows.h>
 #include <conio.h>
 #include <stack>
@@ -12,6 +13,7 @@ using namespace std;
 #include "map.h"
 #include "fruit.h"
 
+using namespace std;
 
 typedef pair<int, int> Pair;
 typedef pair<int, pair<int, int> > pPair;
@@ -55,6 +57,7 @@ protected:
 	char mode;
 	bool oneMap;
 
+
 public:
 
 	game();
@@ -71,7 +74,7 @@ public:
 	void gotoxy(int, int);
 	void displayChoices() const;
 	void displayChoices(short) const;
-	void goToOption(char&);
+	virtual void goToOption(char&);
 	void clearScreen() const;
 	void displayInstructions() const;
 	void displaywin() const;
@@ -100,6 +103,9 @@ public:
 	int calculateHValue(int row, int col, Pair dest);
 	Pair tracePath(cell cellDetails[][COLS], Pair dest);
 	Pair aStarSearch(char grid[][COLS], Pair src, Pair dest);
+
+	//Files functions
+	void getFiles();
 	
 
 };

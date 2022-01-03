@@ -829,3 +829,13 @@ void game::runMenu() {
 		this->goToOption(input);
 	}
 }
+
+void game::getFiles() {
+
+	for (const auto& entry : filesystem::directory_iterator(".")) {
+		if (entry.path().string().ends_with("screen")) {
+			screenFiles.push(entry.path().string());
+			numOfScreens++;
+		}
+	}
+}
