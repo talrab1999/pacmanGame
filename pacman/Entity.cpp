@@ -130,6 +130,12 @@ void Entity::setLastMove() {
 	lastmove = rand() % 4;
 }
 
+void Entity::setLastMove(int num) {
+	lastmove = num;
+}
+
+
+
 void Entity::setDefault(int defX, int defY) {
 	defaultX = defX;
 	defaultY= defY;
@@ -139,4 +145,9 @@ void Entity::resetEntity() {
 	setX(defaultX);
 	setY(defaultY);
 }
+
+short Entity::getLastMove() {
+	return lastmove;
+}
+
 

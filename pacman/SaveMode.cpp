@@ -54,17 +54,24 @@ void SaveMode::gameLoop(bool) {
 	fruit Dipsy;
 	map h;
 
+
+	string writeFile = "";
+	ofstream mySteps, myResult;
+	//writeFile.reserve(int(numGhosts) + 1);
+	
+
 	resetScreens();		//Resets Queue of Screens
 	getFiles();			//Fill Queue with screen files
 
 	h.setFilename(screenFiles.front()); //Choose first map in alphabetical queue to play 
 
 	prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2, frame);
-	prepareFilesForNewGame(screenFiles.front());
+	prepareFilesForNewGame(screenFiles.front(), mySteps, myResult);
 
 
 	while (running1)
 	{
+		//TODO// reset string
 		player1.display(' ');
 		h.setmapat(player1.getY(), player1.getX(), ' ');
 		switch (numGhosts) {
@@ -95,8 +102,10 @@ void SaveMode::gameLoop(bool) {
 			}
 
 			//If pacman moved, return true ,if invalid key pressed returns false
-			else if (pacmanMove(player1, key1, key2, h))
+			else if (pacmanMove(player1, key1, key2, h)) {
 				checkInput = true;
+				writeFile = to_string(player1.getLastMove());
+			}
 			else
 				continue;
 
@@ -113,7 +122,7 @@ void SaveMode::gameLoop(bool) {
 			Dipsy.resetCounter();
 		}
 
-		if (player1.getDotsate() == h.getDots() - 350) { //Check if game won     
+		if (player1.getDotsate() == h.getDots()) { //Check if game won     
 
 			clearScreen();
 			screenFiles.pop();
@@ -127,15 +136,15 @@ void SaveMode::gameLoop(bool) {
 			clearScreen();
 			h.setFilename(screenFiles.front());    //Loades next map
 			prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2, frame);
-			prepareFilesForNewGame(screenFiles.front());
+			prepareFilesForNewGame(screenFiles.front(),mySteps,myResult);
 			continue;
-
 		}
-
 
 		if (frame % ghostspeed == 0) { //Every Second frame ghosts move
 			ghostMove(Tinky_Winky, h, player1);
 			ghostMove(Po, h, player1);
+			writeFile+= to_string(Tinky_Winky.getLastMove());
+			writeFile+= to_string(Po.getLastMove());
 
 			if ((FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h) == true)) {
 				Dipsy.sleepFruit(h);
@@ -143,15 +152,22 @@ void SaveMode::gameLoop(bool) {
 			}
 			if (Dipsy.getSleep() == false) { //Fruit not asleep
 				ghostMove(Dipsy, h, player1);
+				writeFile += to_string(Dipsy.getLastMove());
+
 				if ((FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h) == true)) {
 					Dipsy.sleepFruit(h);
+					Dipsy.setLastMove(int(e_EntityAction::SLEEP));
 					Dipsy.resetCounter();
 				}
 			}
 			else {	// Fruit asleep
 				if (Dipsy.getTurnCounter() == 50) {
 					Dipsy.wakeUpFruit(h);
+					writeFile += to_string(int(e_EntityAction::WAKE_UP));
+					mySteps << writeFile<<" ";
+					mySteps << Dipsy.getX() << " " << Dipsy.getX() << " ";
 				}
+				writeFile += to_string(int(e_EntityAction::SLEEP));
 				Dipsy.setTurnCounter(Dipsy.getTurnCounter() + 1);
 			}
 		}
@@ -174,10 +190,8 @@ void SaveMode::gameLoop(bool) {
 		frame++;
 	}
 }
-void SaveMode::prepareFilesForNewGame(string fileName) {
-
-	ofstream mySteps;
-	ofstream myResult;
+void SaveMode::prepareFilesForNewGame(string fileName, ofstream& mySteps, ofstream& myResult)
+{
 
 	string fixName = fileName;
 	int i = 2;

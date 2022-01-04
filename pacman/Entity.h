@@ -9,6 +9,16 @@ using namespace std;
 
 /*Entity class includes either the pacman or the ghosts(maybe the food later)*/
 
+enum class e_EntityAction {
+	UP = 0,
+	DOWN = 1,
+	LEFT = 2,
+	RIGHT = 3,
+	STAY = 4,
+	WAKE_UP = 5,
+	SLEEP = 6
+};
+
 class Entity {
 private:
 	short x, y, lives;
@@ -39,6 +49,8 @@ public:
 	void reset(int x, int y);
 	void resetEntity();
 	void setLastMove();
+	void setLastMove(int);
+	short getLastMove();
 	void setDefault(int, int);
 	
 };

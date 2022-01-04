@@ -688,6 +688,7 @@ void game::BestMove(ghost& currGhost, map&h, pacman& player1) {
 	move = aStarSearch(h.board, src, dest);
 	nextY = (short)move.first;
 	nextX = (short)move.second;
+	calcDirection(currGhost, currGhost.getX(), currGhost.getY(), nextX, nextY);
 	currGhost.move(nextX, nextY);
 }
 
@@ -790,43 +791,37 @@ void game::setMode(char m) {
 
 bool game::pacmanMove(pacman& pacman, char& key1, char& key2,map& h) {
 	
-	int direction; 
-
 	switch (key1) {
 	case 'w': 	case 'W': 
 		pacman.move_up(h);
-		direction = 0;
+		pacman.setLastMove(0);
 		break;
 
 	case 'x':case 'X':
 		pacman.move_down(h);
-		direction = 1;
+		pacman.setLastMove(1);
 		break;
 
 	case 'a': 	case 'A':
 		pacman.move_left(h);
-		direction = 2;
+		pacman.setLastMove(2);
 		break;
 
 	case 'd': 	case 'D':
 		pacman.move_right(h);
-		direction = 3;
+		pacman.setLastMove(3);
 		break;
 
 	case 's': 	case 'S':
 		pacman.stop(h);
-		direction = 4;
+		pacman.setLastMove(4);
 		break;
 
 	default:
 		key1 = key2;
 		return false;
 	}
-	
-	//if (this.mode==save)
-	//	writesteps[0]=direction;
 	return true;
-
 }
 
 void game::runMenu() {
@@ -870,4 +865,19 @@ string game::showQIndex(int index) {
 void game::resetScreens() {
 	screenFiles = {};	
 	numOfScreens = 0;
+}
+
+void game::calcDirection(ghost& curr, int srcX, int srcY, int nextX, int nextY) {
+
+	if (srcX - nextX < 0) 
+		curr.setLastMove(int(e_EntityAction::RIGHT));
+	else if (srcX - nextX > 0)
+		curr.setLastMove(int(e_EntityAction::LEFT));
+	else if (srcY - nextY < 0)
+		curr.setLastMove(int(e_EntityAction::DOWN));
+	else if (srcY - nextY > 0)
+		curr.setLastMove(int(e_EntityAction::UP));
+	else 
+		curr.setLastMove(int(e_EntityAction::STAY));
+	
 }

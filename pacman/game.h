@@ -40,6 +40,8 @@ enum class e_GameMode {
 	LOAD_SILENT='3'
 };
 
+
+
 struct cell {
 	int parent_i, parent_j;
 	double f, g, h;
@@ -99,6 +101,8 @@ public:
 	void ghostMove(ghost&, map&, pacman&);
 	void BestMove(ghost&, map&, pacman&);
 	bool FruitMetEntity(ghost&, ghost&, fruit&, pacman&, map&);
+	void calcDirection(ghost&, int, int, int, int);
+
 	
 	//Pathfinding functions
 	bool isValid(int row, int col);
@@ -107,6 +111,7 @@ public:
 	int calculateHValue(int row, int col, Pair dest);
 	Pair tracePath(cell cellDetails[][COLS], Pair dest);
 	Pair aStarSearch(char grid[][COLS], Pair src, Pair dest);
+
 
 	//Files functions
 	void getFiles();
