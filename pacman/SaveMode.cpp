@@ -59,7 +59,6 @@ void SaveMode::gameLoop(bool) {
 	ofstream mySteps, myResult;
 	//writeFile.reserve(int(numGhosts) + 1);
 	
-
 	resetScreens();		//Resets Queue of Screens
 	getFiles();			//Fill Queue with screen files
 
@@ -68,10 +67,8 @@ void SaveMode::gameLoop(bool) {
 	prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2, frame);
 	prepareFilesForNewGame(screenFiles.front(), mySteps, myResult);
 
-
 	while (running1)
 	{
-		//TODO// reset string
 		player1.display(' ');
 		h.setmapat(player1.getY(), player1.getX(), ' ');
 		switch (numGhosts) {
@@ -148,6 +145,7 @@ void SaveMode::gameLoop(bool) {
 
 			if ((FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h) == true)) {
 				Dipsy.sleepFruit(h);
+				Dipsy.setLastMove(int(e_EntityAction::SLEEP));
 				Dipsy.resetCounter();
 			}
 			if (Dipsy.getSleep() == false) { //Fruit not asleep
@@ -163,16 +161,25 @@ void SaveMode::gameLoop(bool) {
 			else {	// Fruit asleep
 				if (Dipsy.getTurnCounter() == 50) {
 					Dipsy.wakeUpFruit(h);
-					writeFile += to_string(int(e_EntityAction::WAKE_UP));
-					mySteps << writeFile<<" ";
-					mySteps << Dipsy.getX() << " " << Dipsy.getX() << " ";
+					Dipsy.setLastMove(int(e_EntityAction::WAKE_UP));
+					writeFile += to_string(Dipsy.getLastMove());
+					writeFile+= " " + to_string(Dipsy.getY()) + " " + to_string(Dipsy.getX());
 				}
-				writeFile += to_string(int(e_EntityAction::SLEEP));
+				else
+					writeFile += to_string(Dipsy.getLastMove());
+
 				Dipsy.setTurnCounter(Dipsy.getTurnCounter() + 1);
 			}
 		}
+		else {
+			writeFile += "00";
+			if (Dipsy.getLastMove() == int(e_EntityAction::SLEEP))
+				writeFile += to_string(Dipsy.getLastMove());
+			else
+				writeFile += "0";
+		}
 
-
+	
 		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2, running1) == true)
 		{
 			continue;
@@ -186,10 +193,12 @@ void SaveMode::gameLoop(bool) {
 		case 1: Po.display();
 		}
 
+		mySteps << writeFile << " ";
 		Sleep(speed);
 		frame++;
 	}
 }
+
 void SaveMode::prepareFilesForNewGame(string fileName, ofstream& mySteps, ofstream& myResult)
 {
 
