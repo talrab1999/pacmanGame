@@ -54,10 +54,8 @@ void SaveMode::gameLoop(bool) {
 	fruit Dipsy;
 	map h;
 
-
 	string writeFile = "";
 	ofstream mySteps, myResult;
-	//writeFile.reserve(int(numGhosts) + 1);
 	
 	resetScreens();		//Resets Queue of Screens
 	getFiles();			//Fill Queue with screen files
@@ -108,7 +106,6 @@ void SaveMode::gameLoop(bool) {
 
 		}
 		key2 = key1;
-		//TODO//if (save) game.mode == "save" Save !load put move in steps file
 
 		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2, running1) == true)
 		{
@@ -116,6 +113,7 @@ void SaveMode::gameLoop(bool) {
 		}
 		if ((FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h) == true)) {
 			Dipsy.sleepFruit(h);
+			Dipsy.setLastMove(int(e_EntityAction::SLEEP));
 			Dipsy.resetCounter();
 		}
 
@@ -123,6 +121,7 @@ void SaveMode::gameLoop(bool) {
 
 			clearScreen();
 			screenFiles.pop();
+			mySteps.close();
 			if (screenFiles.empty()) {
 				displaywin();
 				running1 = false;
@@ -133,15 +132,15 @@ void SaveMode::gameLoop(bool) {
 			clearScreen();
 			h.setFilename(screenFiles.front());    //Loades next map
 			prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2, frame);
-			prepareFilesForNewGame(screenFiles.front(),mySteps,myResult);
+			prepareFilesForNewGame(screenFiles.front(), mySteps, myResult);
 			continue;
 		}
 
 		if (frame % ghostspeed == 0) { //Every Second frame ghosts move
 			ghostMove(Tinky_Winky, h, player1);
 			ghostMove(Po, h, player1);
-			writeFile+= to_string(Tinky_Winky.getLastMove());
-			writeFile+= to_string(Po.getLastMove());
+			writeFile += to_string(Tinky_Winky.getLastMove());
+			writeFile += to_string(Po.getLastMove());
 
 			if ((FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h) == true)) {
 				Dipsy.sleepFruit(h);
@@ -163,7 +162,7 @@ void SaveMode::gameLoop(bool) {
 					Dipsy.wakeUpFruit(h);
 					Dipsy.setLastMove(int(e_EntityAction::WAKE_UP));
 					writeFile += to_string(Dipsy.getLastMove());
-					writeFile+= " " + to_string(Dipsy.getY()) + " " + to_string(Dipsy.getX());
+					writeFile += " " + to_string(Dipsy.getY()) + " " + to_string(Dipsy.getX());
 				}
 				else
 					writeFile += to_string(Dipsy.getLastMove());
@@ -171,15 +170,17 @@ void SaveMode::gameLoop(bool) {
 				Dipsy.setTurnCounter(Dipsy.getTurnCounter() + 1);
 			}
 		}
-		else {
-			writeFile += "00";
-			if (Dipsy.getLastMove() == int(e_EntityAction::SLEEP))
+		else { //Not ghosts turn
+			writeFile += to_string(int(e_EntityAction::STAY));	//Ghost1 
+			writeFile += to_string(int(e_EntityAction::STAY));	//Ghost2 
+
+			if (Dipsy.getLastMove() == int(e_EntityAction::SLEEP))	//Fruit 
 				writeFile += to_string(Dipsy.getLastMove());
 			else
-				writeFile += "0";
+				writeFile += to_string(int(e_EntityAction::STAY));
 		}
 
-	
+
 		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2, running1) == true)
 		{
 			continue;
@@ -196,6 +197,11 @@ void SaveMode::gameLoop(bool) {
 		mySteps << writeFile << " ";
 		Sleep(speed);
 		frame++;
+
+		if (frame == 300) {
+			mySteps.close();
+			running1 = false;
+		}
 	}
 }
 
