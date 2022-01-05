@@ -12,7 +12,7 @@ private:
 	int turnCounter;
 	
 public:
-	ghost(char);
+	ghost(char diff='c');
 	//void move_rand(map&);
 	void move(short, short);
 

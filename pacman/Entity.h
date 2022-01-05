@@ -23,7 +23,7 @@ class Entity {
 private:
 	short x, y, lives;
 	short defaultX, defaultY;
-	short lastmove;
+	int lastmove;
 	char symbol;
 	Color color;
 

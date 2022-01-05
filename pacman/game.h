@@ -67,7 +67,7 @@ protected:
 public:
 
 	game();
-	virtual void gameLoop(bool silent = false);
+	virtual void gameLoop();
 
 	//Map Functions
 	void chooseMap();
@@ -88,9 +88,10 @@ public:
 	string getmapNum() const;
 	void setmapNum(string);
 	void prepareForNewGame(map&, pacman&, fruit&, ghost&, ghost&, char&, char&, unsigned long long int&);
-	bool didGhostEatPacman(map&, pacman&, ghost&, ghost&, char&, char&, bool&);
+	virtual bool didGhostEatPacman(map&, pacman&, ghost&, ghost&, char&, char&, bool&);
 	bool checkIfGameLost(pacman&, bool&);
 	void setMode(char);
+	char getMode();
 	void setLegend(int,int);
 	Pair getLegend();
 

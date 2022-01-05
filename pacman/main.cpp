@@ -26,13 +26,14 @@ void main(int argc, char** argv)
 		if (argc == 3) {
 			if (strcmp(argv[2], "[-silent]") == 0) {
 				Game->setMode(char(e_GameMode::LOAD_SILENT));
-				Game->gameLoop(true);
+				//Game->gameLoop();
 			}
 		}
 		else {
 			Game->setMode(char(e_GameMode::LOAD));
-			Game->gameLoop();
+			//Game->gameLoop();
 		}
+		Game->gameLoop();
 	}
 	delete Game;
 }

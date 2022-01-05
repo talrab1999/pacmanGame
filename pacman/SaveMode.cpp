@@ -40,7 +40,7 @@ void SaveMode::goToOption(char& input)
 
 
 
-void SaveMode::gameLoop(bool) {
+void SaveMode::gameLoop() {
 
 	char ghostDiff = chooseGhostsDifficulty();
 	bool running1 = true;

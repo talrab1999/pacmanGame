@@ -412,7 +412,7 @@ void game::setmapNum(string f) {
 	mapNum = f;
 }
 
-void game::gameLoop(bool silent) {
+void game::gameLoop() {
 
 	char ghostDiff = chooseGhostsDifficulty();
 	bool running1 = true;
@@ -796,6 +796,10 @@ Pair game::getLegend() {
 void game::setMode(char m) {
 	this->mode = m;
 }
+char game::getMode() {
+	return mode ;
+}
+
 
 bool game::pacmanMove(pacman& pacman, char& key1, char& key2,map& h) {
 	
