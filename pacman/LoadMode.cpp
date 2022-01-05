@@ -50,7 +50,7 @@ void LoadMode::gameLoop(bool silent) {
 
 		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2, running1) == true)
 		{
-			myResult << "D " << frame << "\n";
+			//myResult << "D " << frame << "\n";
 			if (checkIfGameLost(player1, running1) == true) {
 				mySteps.close();
 				myResult.close();
@@ -67,7 +67,7 @@ void LoadMode::gameLoop(bool silent) {
 
 			clearScreen();
 			screenFiles.pop();
-			myResult << "W " << frame << "\n";
+			//myResult << "W " << frame << "\n";
 			myResult.close();
 			mySteps.close();
 			if (screenFiles.empty()) {
@@ -80,7 +80,7 @@ void LoadMode::gameLoop(bool silent) {
 			clearScreen();
 			h.setFilename(screenFiles.front());    //Loades next map
 			prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2, frame);
-			prepareFilesForNewGame(screenFiles.front(), mySteps, myResult);
+			prepareFilesForLoadGame(screenFiles.front(), mySteps, myResult);
 			continue;
 		}
 
