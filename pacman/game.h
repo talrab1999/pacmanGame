@@ -89,6 +89,7 @@ public:
 	void setmapNum(string);
 	void prepareForNewGame(map&, pacman&, fruit&, ghost&, ghost&, char&, char&, unsigned long long int&);
 	bool didGhostEatPacman(map&, pacman&, ghost&, ghost&, char&, char&, bool&);
+	bool checkIfGameLost(pacman&, bool&);
 	void setMode(char);
 	void setLegend(int,int);
 	Pair getLegend();

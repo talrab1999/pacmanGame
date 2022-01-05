@@ -484,6 +484,7 @@ void game::gameLoop(bool silent) {
 
 		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2,running1) == true)
 		{
+			checkIfGameLost(player1, running1);
 			continue;
 		} 
 		if ((FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h) == true)) {
@@ -543,6 +544,7 @@ void game::gameLoop(bool silent) {
 
 		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2,running1) == true)
 		{
+			checkIfGameLost(player1, running1);
 			continue;
 		}
 		player1.displayPoints(h,getLegend().first,getLegend().second);
@@ -576,17 +578,23 @@ bool game::didGhostEatPacman(map& h, pacman& player1, ghost& Tinky_Winky, ghost&
 			Po.display(h.getmapat(Po.getY(), Po.getX()));
 			Po.resetEntity();
 		}
-		if (player1.getLives() == 0)	//Check if Game lost
-		{
-			clearScreen();
-			displaylose();
-			setOneMap(false);
-			running1 = false;
-		}
 		return true;
 	}
 	return false;
 }
+
+bool game::checkIfGameLost(pacman& player1, bool& running1) {
+	if (player1.getLives() == 0)	//Check if Game lost
+	{
+		clearScreen();
+		displaylose();
+		setOneMap(false);
+		running1 = false;
+		return true;
+	}
+	return false;
+}
+
 void game::prepareForNewGame(map& h, pacman& player1, fruit& Dipsy, ghost& Tinky_Winky, ghost& Po, char& key1, char& key2, unsigned long long int& frame) {
 	//Resets the map and the entities to their default locations
 	h.fillmap();

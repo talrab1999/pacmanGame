@@ -37,8 +37,9 @@ public:
 	void setLives(short); 
 	void setSymbol(char);   
 	void setColor(Color);
-	//move rand
+	//move 
 	void move_rand(map&);
+
 	//void setTextColor(Color);
 	short getLives() const;   
 	char getSymbol() const;

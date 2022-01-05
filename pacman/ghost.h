@@ -15,6 +15,7 @@ public:
 	ghost(char);
 	//void move_rand(map&);
 	void move(short, short);
+
 	void setDifficulty(char);
 	void setGoodCounter(int);
 	void setTurnCounter(int);

@@ -109,6 +109,11 @@ void SaveMode::gameLoop(bool) {
 
 		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2, running1) == true)
 		{
+			myResult << "D " << frame << "\n";
+			if (checkIfGameLost(player1, running1) == true) {
+				mySteps.close();
+				myResult.close();
+			}
 			continue;
 		}
 		if ((FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h) == true)) {
@@ -121,6 +126,8 @@ void SaveMode::gameLoop(bool) {
 
 			clearScreen();
 			screenFiles.pop();
+			myResult << "W " << frame << "\n";
+			myResult.close();
 			mySteps.close();
 			if (screenFiles.empty()) {
 				displaywin();
@@ -163,6 +170,7 @@ void SaveMode::gameLoop(bool) {
 					Dipsy.setLastMove(int(e_EntityAction::WAKE_UP));
 					writeFile += to_string(Dipsy.getLastMove());
 					writeFile += " " + to_string(Dipsy.getY()) + " " + to_string(Dipsy.getX());
+					Dipsy.setLastMove();
 				}
 				else
 					writeFile += to_string(Dipsy.getLastMove());
@@ -180,9 +188,16 @@ void SaveMode::gameLoop(bool) {
 				writeFile += to_string(int(e_EntityAction::STAY));
 		}
 
+		mySteps << writeFile << " ";
+		frame++;
 
 		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2, running1) == true)
 		{
+			myResult << "D " << frame << "\n";
+			if (checkIfGameLost(player1, running1) == true) {
+				mySteps.close();
+				myResult.close();
+			}
 			continue;
 		}
 		player1.displayPoints(h, getLegend().first, getLegend().second);
@@ -194,14 +209,13 @@ void SaveMode::gameLoop(bool) {
 		case 1: Po.display();
 		}
 
-		mySteps << writeFile << " ";
 		Sleep(speed);
-		frame++;
 
-		if (frame == 300) {
+		/*if (frame == 300) {
 			mySteps.close();
+			myResult.close();
 			running1 = false;
-		}
+		}*/
 	}
 }
 
