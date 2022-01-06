@@ -81,6 +81,8 @@ void SaveMode::gameLoop() {
 		if (_kbhit())
 			key1 = _getch();
 
+
+		//TODO - FIx Esc so frames wil bbe correct
 		while (checkInput == false) { //Check if user pressed invalid key
 			if (key1 == ESC) {	//If user pressed ESC
 				h.pause(h, getLegend().first, getLegend().second);
