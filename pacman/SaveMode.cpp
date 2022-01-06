@@ -130,7 +130,7 @@ void SaveMode::gameLoop() {
 
 			clearScreen();
 			screenFiles.pop();
-			mySteps << writeFile;
+			mySteps << writeFile + "446";
 			myResult << "W " << frame << "\n";
 			myResult.close();
 			mySteps.close();
