@@ -29,11 +29,13 @@ void LoadMode::gameLoop() {
 	prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2, frame);
 	prepareFilesForLoadGame(screenFiles.front(), mySteps, myResult);
 
+	//Read init fruit location from file.
+
 	while (running1 && !testFail)
 	{
 		getline(mySteps, readSteps, ' ');
 		readMoveFromSteps(readSteps, player1, Tinky_Winky, Po, Dipsy);
-
+		
 		h.setmapat(player1.getY(), player1.getX(), ' ');
 
 		if (!getSilent()) {
@@ -126,10 +128,10 @@ void LoadMode::gameLoop() {
 			}
 			else {
 				FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h);
-				//moveGhostWithDir(Dipsy, h);
+				moveGhostWithDir(Dipsy, h);
 				FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h);
 			}
-			//Dipsy.display();
+			Dipsy.display();
 		}
 
 		if (!getSilent()) {
@@ -138,12 +140,9 @@ void LoadMode::gameLoop() {
 			//Dipslays Ghosts 
 			Tinky_Winky.display();
 			Po.display();
-			Sleep(speed/4);
+			Sleep(speed);
 		}
-		
-
 	}
-
 }
 		
 

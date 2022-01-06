@@ -481,7 +481,6 @@ void game::gameLoop() {
 			
 		}
 		key2 = key1;
-		//TODO//if (save) game.mode == "save" Save !load put move in steps file
 
 		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2,running1) == true)
 		{
@@ -613,8 +612,12 @@ void game::prepareForNewGame(map& h, pacman& player1, fruit& Dipsy, ghost& Tinky
 
 	switch (numGhosts) { //ResetsGhosts
 	case 3:
-		Dipsy.resetLocation(h);
-		Dipsy.display();
+		/*Dipsy.resetLocation(h);
+		Dipsy.display();*/
+
+		Dipsy.sleepFruit(h);
+		Dipsy.setLastMove(int(e_EntityAction::SLEEP));
+		Dipsy.resetCounter();
 	case 2:
 		Tinky_Winky.resetEntity();
 		Tinky_Winky.display();
@@ -622,6 +625,8 @@ void game::prepareForNewGame(map& h, pacman& player1, fruit& Dipsy, ghost& Tinky
 		Po.resetEntity();
 		Po.display();
 	}
+
+	
 
 }
 

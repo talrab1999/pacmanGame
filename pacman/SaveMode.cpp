@@ -67,7 +67,8 @@ void SaveMode::gameLoop() {
 
 	while (running1)
 	{
-		
+		writeFile = "";
+
 		player1.display(' ');
 		h.setmapat(player1.getY(), player1.getX(), ' ');
 		switch (numGhosts) {
@@ -95,6 +96,7 @@ void SaveMode::gameLoop() {
 				key1 = key2;
 				h.unpause(h, getLegend().first, getLegend().second);
 				checkInput = true;
+				writeFile = to_string(player1.getLastMove());
 			}
 
 			//If pacman moved, return true ,if invalid key pressed returns false
