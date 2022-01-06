@@ -140,7 +140,7 @@ void LoadMode::gameLoop() {
 			//Dipslays Ghosts 
 			Tinky_Winky.display();
 			Po.display();
-			Sleep(speed);
+			Sleep(speed/8);
 		}
 	}
 }
