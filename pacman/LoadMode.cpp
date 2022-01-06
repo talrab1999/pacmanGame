@@ -51,13 +51,17 @@ void LoadMode::gameLoop() {
 			res = 'D';
 			readAndCheckResult(myResult, readResult, frame, testFail, res);
 			if (checkIfGameLost(player1, running1) == true) {
-				if (!myResult.eof()) {
+				if (!(getline(myResult, readResult).eof())) {
 					testFail = true;
+				}
+				else if(testFail == false) {
+					printRes(true, mySteps, myResult);
+					continue;
 				}
 			}
 
 			if (testFail == true) {
-				exitLoop(mySteps, myResult);
+				printRes(false,mySteps, myResult);
 				continue;
 			}
 		}
@@ -67,15 +71,18 @@ void LoadMode::gameLoop() {
 			clearScreen();
 			res = 'W';
 			readAndCheckResult(myResult, readResult, frame, testFail, res);
+			if (!(getline(myResult, readResult).eof())) {
+				testFail = true;
+			}
 			if (testFail == true) {
-				exitLoop(mySteps, myResult);
+				printRes(false,mySteps, myResult);
 				continue;
 			}
 			screenFiles.pop();
 			myResult.close();
 			mySteps.close();
 			if (screenFiles.empty()) {
-				cout << "Test Passed" << endl;
+				printRes(true, mySteps, myResult);
 				running1 = false;
 				continue;
 			}
@@ -97,10 +104,14 @@ void LoadMode::gameLoop() {
 				if (!(getline(myResult,readResult).eof())) {
 					testFail = true;
 				}
+				else if (testFail == false) {
+					printRes(true, mySteps, myResult);
+					continue;
+				}
 			}
 
 			if (testFail == true) {
-				exitLoop( mySteps, myResult);
+				printRes(false, mySteps, myResult);
 				continue;
 			}
 		}
@@ -127,7 +138,7 @@ void LoadMode::gameLoop() {
 			//Dipslays Ghosts 
 			Tinky_Winky.display();
 			Po.display();
-			Sleep(speed);
+			Sleep(speed/4);
 		}
 		
 
@@ -249,8 +260,12 @@ void LoadMode::readAndCheckResult(ifstream& myResult, string& readResult, unsign
 	}
 }
 
-void LoadMode::exitLoop(ifstream& mySteps, ifstream& myResult) {
-	cout << "Test Failed ";
+void LoadMode::printRes(bool didPass,ifstream& mySteps, ifstream& myResult) {
+	clearScreen();
+	if(!didPass)
+		cout << "Test Failed ";
+	else
+		cout << "Test Passed ";
 	mySteps.close();
 	myResult.close();
 }

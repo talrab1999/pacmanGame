@@ -14,7 +14,7 @@ public:
 	void setSilent(bool);
 	bool getSilent();
 	void readAndCheckResult(ifstream&, string&, unsigned long long int&, bool&, char&);
-	void exitLoop(ifstream&, ifstream&);
+	void printRes(bool,ifstream&, ifstream&);
 	void moveGhostWithDir(ghost&, map&);
 	void readMoveFromSteps(string&, pacman&, ghost&, ghost&, fruit&);
 private:

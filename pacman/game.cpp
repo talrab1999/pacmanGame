@@ -1,5 +1,16 @@
 #include "game.h"
 
+game::game()
+{
+	numGhosts = 3;
+	speed = 100;
+	ghostspeed = 2;      //means X2 slower than the pacman
+	startLives = 3;
+	oneMap = false;
+	mode = char(e_GameMode::SIMPLE);
+	numOfScreens = 0;
+}
+
 bool game::isValid(int row, int col)
 {
 	return (row >= 0) && (row < ROWS) && (col >= 0) && (col < COLS);
@@ -291,16 +302,6 @@ string game::choices[4] = {
 	"8 - Instructions and keys",
 	"9 - Quit" };
 
-game::game()
-{
-	numGhosts = 3;
-	speed = 100;
-	ghostspeed = 2;      //means X2 slower than the pacman
-	startLives = 3;
-	oneMap = false;
-	mode = char(e_GameMode::SIMPLE);
-	numOfScreens = 0;
-}
 
 void game::gotoxy(int x, int y)
 {
