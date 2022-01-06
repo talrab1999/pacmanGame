@@ -50,6 +50,7 @@ void fruit::resetLocation(map& h) {
 		y = rand() % 57 + 1;
 	}
 	reset(y, x);
+	setDefault(y, x);
 }
 
 

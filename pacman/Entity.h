@@ -51,7 +51,7 @@ public:
 	void resetEntity();
 	void setLastMove();
 	void setLastMove(int);
-	short getLastMove();
+	int getLastMove();
 	void setDefault(int, int);
 	
 };

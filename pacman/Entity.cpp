@@ -146,7 +146,7 @@ void Entity::resetEntity() {
 	setY(defaultY);
 }
 
-short Entity::getLastMove() {
+int Entity::getLastMove() {
 	return lastmove;
 }
 

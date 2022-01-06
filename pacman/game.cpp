@@ -484,7 +484,8 @@ void game::gameLoop() {
 
 		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2,running1) == true)
 		{
-			checkIfGameLost(player1, running1);
+			if(checkIfGameLost(player1, running1)==true)
+				displaylose();
 			continue;
 		} 
 		if ((FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h) == true)) {
@@ -544,7 +545,8 @@ void game::gameLoop() {
 
 		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2,running1) == true)
 		{
-			checkIfGameLost(player1, running1);
+			if(checkIfGameLost(player1, running1)==true)
+				displaylose();
 			continue;
 		}
 		player1.displayPoints(h,getLegend().first,getLegend().second);
@@ -587,7 +589,6 @@ bool game::checkIfGameLost(pacman& player1, bool& running1) {
 	if (player1.getLives() == 0)	//Check if Game lost
 	{
 		clearScreen();
-		displaylose();
 		setOneMap(false);
 		running1 = false;
 		return true;
@@ -620,6 +621,7 @@ void game::prepareForNewGame(map& h, pacman& player1, fruit& Dipsy, ghost& Tinky
 		Po.resetEntity();
 		Po.display();
 	}
+
 }
 
 char game::chooseGhostsDifficulty() {

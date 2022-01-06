@@ -67,6 +67,7 @@ void SaveMode::gameLoop() {
 
 	while (running1)
 	{
+		
 		player1.display(' ');
 		h.setmapat(player1.getY(), player1.getX(), ' ');
 		switch (numGhosts) {
@@ -111,6 +112,7 @@ void SaveMode::gameLoop() {
 		{
 			myResult << "D " << frame << "\n";
 			if (checkIfGameLost(player1, running1) == true) {
+				displaylose();
 				mySteps.close();
 				myResult.close();
 			}
@@ -195,6 +197,7 @@ void SaveMode::gameLoop() {
 		{
 			myResult << "D " << frame << "\n";
 			if (checkIfGameLost(player1, running1) == true) {
+				displaylose();
 				mySteps.close();
 				myResult.close();
 			}
