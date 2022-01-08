@@ -12,8 +12,8 @@ class SaveMode :public game
 {
 	~SaveMode() {}
 
-	void goToOption(char& input) override;
 	void gameLoop() override;
+	void goToOption(char& input) override;
 	void prepareFilesForNewGame(string, ofstream&, ofstream&);
 	
 };

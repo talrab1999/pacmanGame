@@ -131,7 +131,7 @@ void SaveMode::gameLoop() {
 			Dipsy.resetCounter();
 		}
 
-		if (player1.getDotsate() == h.getDots()-350) { //Check if game won     
+		if (player1.getDotsate() == h.getDots()) { //Check if game won     
 
 			clearScreen();
 			screenFiles.pop();

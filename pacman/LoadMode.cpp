@@ -131,22 +131,20 @@ void LoadMode::gameLoop() {
 				moveGhostWithDir(Dipsy, h);
 				FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h);
 			}
-			Dipsy.display();
+			if (!getSilent())
+				Dipsy.display();
 		}
 		frame++;
+
 		if (!getSilent()) {
 			player1.displayPoints(h, getLegend().first, getLegend().second);
 			player1.display();
+
 			//Dipslays Ghosts 
 			Tinky_Winky.display();
 			Po.display();
 			Sleep(speed/8);
 		}
-
-		if (frame == 378) {
-			continue;
-		}
-		
 	}
 }
 		

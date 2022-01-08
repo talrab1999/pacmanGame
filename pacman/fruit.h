@@ -4,22 +4,20 @@
 class fruit :public ghost{
 public:
 	fruit(char c='c');
+
+	//---------------SET----------------//
 	void setRandomSymbol();
-	void sleepFruit(map&);
 	void setSleep(bool);
+
+	//---------------GET----------------//
 	bool getSleep();
+
+	//-------------Methods------------//
+	void sleepFruit(map&);
 	void wakeUpFruit(map&);
 	void resetLocation(map&);
 
-	//-------------------SET----------------//
-
-	//-------------------GET----------------//
-	
-	//-------------------METHODS------------//
-
-
 private:
 	bool sleep;
-
 };
 

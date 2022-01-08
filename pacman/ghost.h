@@ -5,24 +5,24 @@
 #include <cstdlib>
 class ghost :public Entity {
 private:
-	//bool edible;
-	//short lastmove;
+
 	char difficulty;
 	int goodGhostCounter;
 	int turnCounter;
 	
 public:
 	ghost(char diff='c');
-	//void move_rand(map&);
-	void move(short, short);
 
+	void move(short, short);
+	void resetCounter();
+
+	///////////SET//////////
 	void setDifficulty(char);
 	void setGoodCounter(int);
 	void setTurnCounter(int);
 
-
+	///////////GET//////////
 	char getDifficulty();
 	int getGoodCounter();
 	int getTurnCounter();
-	void resetCounter();
 };

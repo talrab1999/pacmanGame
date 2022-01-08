@@ -597,37 +597,46 @@ bool game::checkIfGameLost(pacman& player1, bool& running1) {
 }
 
 void game::prepareForNewGame(map& h, pacman& player1, fruit& Dipsy, ghost& Tinky_Winky, ghost& Po, char& key1, char& key2, unsigned long long int& frame) {
+	
+	frame = 0;
+	key1 = 's', key2 = 's';
+
 	//Resets the map and the entities to their default locations
 	h.fillmap();
 	readEntities(h, player1, Tinky_Winky, Po);
 
-	frame = 0;
-	key1 = 's', key2 = 's';
-	h.ShowMap();
+	player1.resetEntity();
+	player1.setDotsate(0);
+
+	if (getMode() != char(e_GameMode::LOAD_SILENT)) {
+		h.ShowMap();
+		player1.displayLives(h, getLegend().first, getLegend().second);
+		player1.display();
+
+	}
+	/*h.ShowMap();
 	player1.setDotsate(0);
 	player1.displayLives(h, getLegend().first, getLegend().second);
 	player1.resetEntity();
-	player1.display();
+	player1.display();*/
+
 	h.setmapat(player1.getY(), player1.getX(), player1.getSymbol());
 
 	switch (numGhosts) { //ResetsGhosts
 	case 3:
-		/*Dipsy.resetLocation(h);
-		Dipsy.display();*/
-
 		Dipsy.sleepFruit(h);
 		Dipsy.setLastMove(int(e_EntityAction::SLEEP));
 		Dipsy.resetCounter();
 	case 2:
 		Tinky_Winky.resetEntity();
-		Tinky_Winky.display();
+		if (getMode() != char(e_GameMode::LOAD_SILENT))
+			Tinky_Winky.display();
+
 	case 1:
 		Po.resetEntity();
-		Po.display();
+		if (getMode() != char(e_GameMode::LOAD_SILENT))
+			Po.display();
 	}
-
-	
-
 }
 
 char game::chooseGhostsDifficulty() {
@@ -855,7 +864,8 @@ void game::runMenu() {
 void game::getFiles() {
 
 	for (const auto& entry : filesystem::directory_iterator(".")) {
-		if (entry.path().string().ends_with("screen")) {
+		//if (entry.path().string().ends_with("screen")) {
+		if (ends_with_screen(entry.path().string())){
 			screenFiles.push(entry.path().string());
 			numOfScreens++;
 		}
@@ -900,4 +910,9 @@ void game::calcDirection(ghost& curr, int srcX, int srcY, int nextX, int nextY) 
 	else 
 		curr.setLastMove(int(e_EntityAction::STAY));
 	
+}
+
+bool game::ends_with_screen(const string& fileName)
+{
+	return filesystem::path{ fileName }.extension() == ".screen";
 }

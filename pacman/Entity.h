@@ -30,28 +30,37 @@ private:
 public:
 	Entity();
 	Entity(short, short, short, char, short, Color);
-	void setX(short); 
-	void setY(short); 
-	short getX() const;
-	short getY() const; 
-	void setLives(short); 
-	void setSymbol(char);   
-	void setColor(Color);
-	//move 
-	void move_rand(map&);
 
-	//void setTextColor(Color);
-	short getLives() const;   
-	char getSymbol() const;
-	void gotoxy(short, short) const;
-	void display();
-	void display(char);
-	void replace() const;
-	void reset(int x, int y);
-	void resetEntity();
+	////Set Methods////
+	void setX(short);
+	void setY(short); 
+	void setLives(short);
+	void setSymbol(char);
+	void setColor(Color);
 	void setLastMove();
 	void setLastMove(int);
-	int getLastMove();
 	void setDefault(int, int);
+
+	////Get Methods////
+	short getX() const;
+	short getY() const; 
+	short getLives() const;
+	char getSymbol() const;
+	int getLastMove();
 	
+	////Move Methods////
+	void move_rand(map&);
+
+	////Location Methods////
+	void gotoxy(short, short) const;
+	void replace() const;
+
+	void display();
+	void display(char);
+
+	void reset(int x, int y);
+	void resetEntity();
+
+
+	//void setTextColor(Color);
 };
