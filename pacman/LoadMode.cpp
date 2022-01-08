@@ -69,7 +69,7 @@ void LoadMode::gameLoop() {
 		}
 
 
-		if (player1.getDotsate() == h.getDots()) { //Check if game won     
+		if (player1.getDotsate() == h.getDots()-350) { //Check if game won     
 			clearScreen();
 			res = 'W';
 			readAndCheckResult(myResult, readResult, frame, testFail, res);
@@ -140,7 +140,11 @@ void LoadMode::gameLoop() {
 			//Dipslays Ghosts 
 			Tinky_Winky.display();
 			Po.display();
-			Sleep(speed/20);
+			Sleep(speed/8);
+		}
+
+		if (frame == 337) {
+			continue;
 		}
 	}
 }

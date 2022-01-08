@@ -82,7 +82,7 @@ void SaveMode::gameLoop() {
 			key1 = _getch();
 
 
-		//TODO - FIx Esc so frames wil bbe correct
+		//TODO - Fix Esc so frames wil bbe correct
 		while (checkInput == false) { //Check if user pressed invalid key
 			if (key1 == ESC) {	//If user pressed ESC
 				h.pause(h, getLegend().first, getLegend().second);
@@ -95,14 +95,14 @@ void SaveMode::gameLoop() {
 					flag = _getch();
 				Tinky_Winky.display(h.getmapat(Tinky_Winky.getY(), Tinky_Winky.getX()));
 				Po.display(h.getmapat(Po.getY(), Po.getX()));
+				player1.display(' ');
+				h.setmapat(player1.getY(), player1.getX(), ' ');
 				key1 = key2;
 				h.unpause(h, getLegend().first, getLegend().second);
-				checkInput = true;
-				writeFile = to_string(player1.getLastMove());
 			}
 
 			//If pacman moved, return true ,if invalid key pressed returns false
-			else if (pacmanMove(player1, key1, key2, h)) {
+			if (pacmanMove(player1, key1, key2, h)) {
 				checkInput = true;
 				writeFile = to_string(player1.getLastMove());
 			}
@@ -128,7 +128,7 @@ void SaveMode::gameLoop() {
 			Dipsy.resetCounter();
 		}
 
-		if (player1.getDotsate() == h.getDots()) { //Check if game won     
+		if (player1.getDotsate() == h.getDots()-350) { //Check if game won     
 
 			clearScreen();
 			screenFiles.pop();

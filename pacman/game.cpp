@@ -474,10 +474,10 @@ void game::gameLoop() {
 			}
 
 			//If pacman moved, return true ,if invalid key pressed returns false
-			else if (pacmanMove(player1, key1, key2, h))
-					checkInput = true;
-				else
-					continue;
+			if (pacmanMove(player1, key1, key2, h))
+				checkInput = true;
+			else
+				continue;
 			
 		}
 		key2 = key1;
