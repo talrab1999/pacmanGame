@@ -115,6 +115,7 @@ void SaveMode::gameLoop() {
 
 		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2, running1) == true)
 		{
+			mySteps << writeFile + "446";
 			myResult << "D " << frame << "\n";
 			if (checkIfGameLost(player1, running1) == true) {
 				displaylose();

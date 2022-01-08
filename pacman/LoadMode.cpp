@@ -140,14 +140,13 @@ void LoadMode::gameLoop() {
 			//Dipslays Ghosts 
 			Tinky_Winky.display();
 			Po.display();
-			Sleep(speed/8);
+			Sleep(speed/2);
 		}
 
-		if (frame == 337) {
+		if (frame == 141) {
 			continue;
 		}
-		if (frame == 128)
-			continue;
+		
 	}
 }
 		
