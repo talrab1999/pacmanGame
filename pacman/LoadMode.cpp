@@ -143,7 +143,7 @@ void LoadMode::gameLoop() {
 			Sleep(speed/2);
 		}
 
-		if (frame == 141) {
+		if (frame == 378) {
 			continue;
 		}
 		
