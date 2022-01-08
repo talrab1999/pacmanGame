@@ -69,7 +69,7 @@ void LoadMode::gameLoop() {
 		}
 
 
-		if (player1.getDotsate() == h.getDots()) { //Check if game won     
+		if (player1.getDotsate() == h.getDots()-350) { //Check if game won     
 			clearScreen();
 			res = 'W';
 			readAndCheckResult(myResult, readResult, frame, testFail, res);
@@ -97,7 +97,7 @@ void LoadMode::gameLoop() {
 		moveGhostWithDir(Tinky_Winky, h);
 		moveGhostWithDir(Po, h);
 		//
-		frame++;
+	
 		//
 		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2, running1)) {
 			res = 'D';
@@ -133,7 +133,7 @@ void LoadMode::gameLoop() {
 			}
 			Dipsy.display();
 		}
-
+		frame++;
 		if (!getSilent()) {
 			player1.displayPoints(h, getLegend().first, getLegend().second);
 			player1.display();
@@ -142,6 +142,8 @@ void LoadMode::gameLoop() {
 			Po.display();
 			Sleep(speed/20);
 		}
+		if (frame == 128)
+			continue;
 	}
 }
 		

@@ -95,14 +95,15 @@ void SaveMode::gameLoop() {
 					flag = _getch();
 				Tinky_Winky.display(h.getmapat(Tinky_Winky.getY(), Tinky_Winky.getX()));
 				Po.display(h.getmapat(Po.getY(), Po.getX()));
+				player1.display(' ');
+				h.setmapat(player1.getY(), player1.getX(), ' ');
 				key1 = key2;
 				h.unpause(h, getLegend().first, getLegend().second);
 				checkInput = true;
-				writeFile = to_string(player1.getLastMove());
 			}
 
 			//If pacman moved, return true ,if invalid key pressed returns false
-			else if (pacmanMove(player1, key1, key2, h)) {
+			 if (pacmanMove(player1, key1, key2, h)) {
 				checkInput = true;
 				writeFile = to_string(player1.getLastMove());
 			}
@@ -128,7 +129,7 @@ void SaveMode::gameLoop() {
 			Dipsy.resetCounter();
 		}
 
-		if (player1.getDotsate() == h.getDots()) { //Check if game won     
+		if (player1.getDotsate() == h.getDots()-350) { //Check if game won     
 
 			clearScreen();
 			screenFiles.pop();
@@ -200,7 +201,7 @@ void SaveMode::gameLoop() {
 
 		if (didGhostEatPacman(h, player1, Tinky_Winky, Po, key1, key2, running1) == true)
 		{
-			myResult << "D " << frame << "\n";
+			myResult << "D " << frame-1 << "\n";
 			if (checkIfGameLost(player1, running1) == true) {
 				displaylose();
 				mySteps.close();
@@ -208,6 +209,7 @@ void SaveMode::gameLoop() {
 			}
 			continue;
 		}
+		
 		player1.displayPoints(h, getLegend().first, getLegend().second);
 		player1.display();
 
