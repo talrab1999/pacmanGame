@@ -1,0 +1,23 @@
+ID: 209399849
+ID: 205487515
+
+******save file instructions******
+STEPS FILE:
+0 UP
+1 DOWN
+2 LEFT
+3 RIGHT
+4 STAY
+5 FRUIT WAKE UP
+6 FRUIT SLEEP
+
+Each round we save to the file a 4 char lenth string that contains the entities actions.
+The order is pacman-->ghost1-->ghost2-->fruit.
+After fruit spawns (5 in the file) we write the cords of the spawn (row, col).
+
+RESULT FILE:
+When pacman dies we write 'D' to the file and the frame which it happened in.
+When pacman finishes a map we write 'W' to the file and the frame which it happened in.
+
+
+
