@@ -492,6 +492,7 @@ void game::gameLoop() {
 			continue;
 		} 
 		if ((FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h) == true)) {
+			Dipsy.setLastMove(int(e_EntityAction::SLEEP));
 			Dipsy.sleepFruit(h);
 			Dipsy.resetCounter();
 		}
@@ -529,18 +530,21 @@ void game::gameLoop() {
 
 			if ((FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h) == true)) {
 				Dipsy.sleepFruit(h);
+				Dipsy.setLastMove(int(e_EntityAction::SLEEP));
 				Dipsy.resetCounter();
 			}
 			if (Dipsy.getSleep() == false) { //Fruit not asleep
 				ghostMove(Dipsy, h, player1);
 				if ((FruitMetEntity(Tinky_Winky, Po, Dipsy, player1, h) == true)) {
 					Dipsy.sleepFruit(h);
+					Dipsy.setLastMove(int(e_EntityAction::SLEEP));
 					Dipsy.resetCounter();
 				}
 			}
 			else {	// Fruit asleep
 				if (Dipsy.getTurnCounter() == 50) {
 					Dipsy.wakeUpFruit(h);
+					Dipsy.setLastMove();
 				}
 				Dipsy.setTurnCounter(Dipsy.getTurnCounter() + 1);
 			}
