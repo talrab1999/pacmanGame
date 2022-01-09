@@ -427,6 +427,7 @@ void game::gameLoop() {
 	fruit Dipsy;
 	map h;
 	
+	chooseGameSpeed();
 	resetScreens();		//Resets Queue of Screens
 	getFiles();			//Fill Queue with screen files
 	
@@ -566,7 +567,7 @@ void game::gameLoop() {
 		case 1: Po.display();
 		}
 
-		Sleep(speed);
+		Sleep(getSpeed());
 		frame++;
 	}
 }
@@ -652,7 +653,7 @@ bool game::prepareForNewGame(map& h, pacman& player1, fruit& Dipsy, ghost& Tinky
 char game::chooseGhostsDifficulty() {
 	clearScreen();
 	cout << "Please select ghost difficulty:" << endl;
-	cout << "(a) BEST (b) GOOD and (c) NOVICE" << endl;
+	cout << "(a) BEST (b) GOOD (c) NOVICE" << endl;
 	
 	char input;
 	cin >> input;
@@ -942,4 +943,36 @@ void game::calcDirection(ghost& curr, int srcX, int srcY, int nextX, int nextY) 
 bool game::ends_with_screen(const string& fileName)
 {
 	return filesystem::path{ fileName }.extension() == ".screen";
+}
+
+void game::setSpeed(int speed) {
+	this->speed = speed;
+}
+
+void game::chooseGameSpeed() {
+	clearScreen();
+	cout << "Please select game speed:" << endl;
+	cout << "(1) FAST (2) NORMAL (3) SLOW" << endl;
+
+	char input;
+	cin >> input;
+	
+	while (input != char(e_speedChoise::FAST)
+		&& input != char(e_speedChoise::NORMAL)
+		&& input != char(e_speedChoise::SLOW))
+	{
+		cout << "invalid Input" << endl;
+		cin >> input;
+	}
+
+	switch (input) {
+	case '1': {setSpeed(int(e_GameSpeed::FAST)); break; }
+	case '2': {setSpeed(int(e_GameSpeed::NORMAL)); break; }
+	case '3': {setSpeed(int(e_GameSpeed::SLOW)); break; }
+	}
+	clearScreen();
+}
+
+int game::getSpeed() {
+	return speed;
 }

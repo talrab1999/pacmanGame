@@ -138,5 +138,3 @@ void Entity::resetEntity() {
 int Entity::getLastMove() {
 	return lastmove;
 }
-
-

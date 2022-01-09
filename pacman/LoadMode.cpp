@@ -18,7 +18,7 @@ void LoadMode::gameLoop() {
 	string readResult = "";
 	ifstream mySteps, myResult;
 
-
+	setSpeed(getSpeed() / 4);
 	setSilent(getMode() == char(e_GameMode::LOAD_SILENT));
 
 	resetScreens();		//Resets Queue of Screens
@@ -71,7 +71,7 @@ void LoadMode::gameLoop() {
 		}
 
 
-		if (player1.getDotsate() == h.getDots()-350) { //Check if game won     
+		if (player1.getDotsate() == h.getDots()) { //Check if game won     
 			clearScreen();
 			res = 'W';
 			readAndCheckResult(myResult, readResult, frame, testFail, res);
@@ -147,7 +147,7 @@ void LoadMode::gameLoop() {
 			//Dipslays Ghosts 
 			Tinky_Winky.display();
 			Po.display();
-			Sleep(speed/8);
+			Sleep(getSpeed());
 		}
 	}
 }

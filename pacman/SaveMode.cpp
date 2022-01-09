@@ -57,6 +57,7 @@ void SaveMode::gameLoop() {
 	string writeFile = "";
 	ofstream mySteps, myResult;
 	
+	chooseGameSpeed();
 	resetScreens();		//Resets Queue of Screens
 	getFiles();			//Fill Queue with screen files
 

@@ -19,6 +19,18 @@ using namespace std;
 typedef pair<int, int> Pair;
 typedef pair<int, pair<int, int> > pPair;
 
+enum class e_speedChoise {
+	FAST = '1',
+	NORMAL = '2',
+	SLOW = '3'
+};
+
+enum class e_GameSpeed {
+	FAST = 50,
+	NORMAL = 100,
+	SLOW = 200
+};
+
 enum class e_GhostDiff {
 	BEST = 'a',
 	GOOD = 'b',
@@ -55,13 +67,13 @@ protected:
 		ESC = 27,
 	};
 
-	short lastOption, startLives, numGhosts, ghostspeed, speed;
+	short lastOption, startLives, numGhosts, ghostspeed;
 	Pair legend;
 	bool oneMap;
 	string mapNum;
 	char mode;
 	queue<string> screenFiles;
-	int numOfScreens;
+	int numOfScreens, speed;
 
 public:
 
@@ -96,6 +108,10 @@ public:
 	void setLegend(int, int);
 	char getMode();
 	Pair getLegend();
+	void setSpeed(int);
+	int getSpeed();
+	void chooseGameSpeed();
+
 	bool prepareForNewGame(map&, pacman&, fruit&, ghost&, ghost&, char&, char&, unsigned long long int&);
 	virtual bool didGhostEatPacman(map&, pacman&, ghost&, ghost&, char&, char&, bool&);
 	bool checkIfGameLost(pacman&, bool&);
