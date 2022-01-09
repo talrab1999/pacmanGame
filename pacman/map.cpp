@@ -3,9 +3,6 @@
 
 map::map(string mapNum)
 {
-	/*width = COLS;
-	height = ROWS;
-	length = width * height;*/
 	dotCounter = 0;
 	setFilename(mapNum);
 }
@@ -167,15 +164,11 @@ void map::ShowMap()
 
 		if (i % width == 0)
 		{
-			//setTextColor(BLUE);
 			cout << "\n";
 		}
 		else
 		{
-			/*if(map_vec[i - 1] == '#')
-				setTextColor(BLUE);
-			else
-				setTextColor(WHITE);*/
+
 			cout << map_vec[i - 1];
 		}
 

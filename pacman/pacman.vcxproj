@@ -140,7 +140,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="color.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="fruit.cpp" />
     <ClCompile Include="ghost.cpp" />
@@ -152,7 +151,6 @@
     <ClCompile Include="SaveMode.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="color.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="fruit.h" />
     <ClInclude Include="ghost.h" />

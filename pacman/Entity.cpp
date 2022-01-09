@@ -6,16 +6,14 @@ Entity::Entity()
 	y = 0;
 	lives = 1;
 	symbol = '%';
-	//color = WHITE;
 }
 
-Entity::Entity(short X, short Y, short L, char S,short lastmove=0, Color COLOR=BLACK)
+Entity::Entity(short X, short Y, short L, char S,short lastmove=0)
 {
 	x = X;
 	y = Y;
 	lives = L;
 	symbol = S;
-	//color = COLOR;
 }
 
 void Entity::move_rand(map& m)
@@ -90,13 +88,6 @@ char Entity::getSymbol() const
 	return symbol;
 }
 
-void Entity::setColor(Color c) {
-	color = c;
-}
-
-/*void Entity::setTextColor(Color colorToSet) {
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (int)colorToSet);
-}*/
 
 void Entity::gotoxy(short i, short j) const
 {
@@ -107,13 +98,11 @@ void Entity::gotoxy(short i, short j) const
 
 void Entity::display() {
 	gotoxy(x, y);
-	//setTextColor(color);
 	cout << symbol;
 }
 
 void Entity::display(char c) {
 	gotoxy(x, y);
-	//setTextColor(color);
 	cout << c;
 }
 

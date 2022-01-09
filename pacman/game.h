@@ -76,7 +76,7 @@ public:
 	bool is_number(const string& s);
 	string getmapNum() const;
 	void setmapNum(string);
-	void readEntities(map&, pacman&, ghost&, ghost&);
+	bool readEntities(map&, pacman&, ghost&, ghost&);
 
 	//Menu Functions
 	void runMenu();
@@ -96,7 +96,7 @@ public:
 	void setLegend(int, int);
 	char getMode();
 	Pair getLegend();
-	void prepareForNewGame(map&, pacman&, fruit&, ghost&, ghost&, char&, char&, unsigned long long int&);
+	bool prepareForNewGame(map&, pacman&, fruit&, ghost&, ghost&, char&, char&, unsigned long long int&);
 	virtual bool didGhostEatPacman(map&, pacman&, ghost&, ghost&, char&, char&, bool&);
 	bool checkIfGameLost(pacman&, bool&);
 	

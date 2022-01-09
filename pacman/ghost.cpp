@@ -7,7 +7,6 @@ ghost::ghost(char diff)
 	setDifficulty(diff);
 	setGoodCounter(0);
 	setTurnCounter(1);
-	//setColor(Color::RED);
 }
 
 void ghost::move(short x, short y) {

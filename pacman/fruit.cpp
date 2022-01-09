@@ -2,12 +2,11 @@
 
 fruit::fruit(char diff) :ghost(diff)
 {
-	//lastmove = 0;
-	//edible = 0;
+
 	setLives(1);
 	setRandomSymbol();
 	setSleep(false);
-	//setColor(Color::RED);
+
 }
 
 void fruit::setRandomSymbol() {
@@ -43,11 +42,11 @@ void fruit::wakeUpFruit(map& h) {
 
 void fruit::resetLocation(map& h) {
 	int x, y;
-	x = rand() % 16 + 1;
-	y = rand() % 57 + 1;
+	x = rand() % h.getHeight() + 1;
+	y = rand() % h.getWidth() + 1;
 	while (h.board[x][y] != ' ' && h.board[x][y] != '.') {
-		x = rand() % 16 + 1;
-		y = rand() % 57 + 1;
+		x = rand() % h.getHeight() + 1;
+		y = rand() % h.getWidth() + 1;
 	}
 	reset(y, x);
 	setDefault(y, x);

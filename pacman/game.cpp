@@ -439,7 +439,8 @@ void game::gameLoop() {
 	else
 		h.setFilename(screenFiles.front()); //Choose first map in alphabetical queue to play 
 
-	prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2, frame); 
+	if (!prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2, frame))  
+		return;
 
 
 	while (running1)
@@ -508,7 +509,8 @@ void game::gameLoop() {
 				system("pause");
 				clearScreen();
 				h.setFilename(screenFiles.front());    //Loades next map
-				prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2,frame);
+				if (!prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2, frame))
+					return;
 				continue;
 			}
 			else {
@@ -598,7 +600,8 @@ bool game::checkIfGameLost(pacman& player1, bool& running1) {
 	return false;
 }
 
-void game::prepareForNewGame(map& h, pacman& player1, fruit& Dipsy, ghost& Tinky_Winky, ghost& Po, char& key1, char& key2, unsigned long long int& frame) {
+//if the map has invalid number of pacmans or ghosts it will return false, which will make the program go back to menu
+bool game::prepareForNewGame(map& h, pacman& player1, fruit& Dipsy, ghost& Tinky_Winky, ghost& Po, char& key1, char& key2, unsigned long long int& frame) {   
 	
 	frame = 0;
 	key1 = 's', key2 = 's';
@@ -607,7 +610,8 @@ void game::prepareForNewGame(map& h, pacman& player1, fruit& Dipsy, ghost& Tinky
 
 	//Resets the map and the entities to their default locations
 	h.fillmap();
-	readEntities(h, player1, Tinky_Winky, Po);
+	if (!readEntities(h, player1, Tinky_Winky, Po))
+		return false;
 
 	player1.resetEntity();
 	player1.setDotsate(0);
@@ -638,6 +642,7 @@ void game::prepareForNewGame(map& h, pacman& player1, fruit& Dipsy, ghost& Tinky
 		if (getMode() != char(e_GameMode::LOAD_SILENT))
 			Po.display();
 	}
+	return true;
 }
 
 char game::chooseGhostsDifficulty() {
@@ -779,7 +784,7 @@ void game::setOneMap(bool isOneMap) {
 	oneMap = isOneMap;
 }
 
-void game::readEntities(map& h, pacman& player1, ghost& ghost1, ghost& ghost2) {
+bool game::readEntities(map& h, pacman& player1, ghost& ghost1, ghost& ghost2) {
 	int rows = h.getHeight();
 	int cols = h.getWidth();
 	int ghostCounter = 0;
@@ -791,8 +796,9 @@ void game::readEntities(map& h, pacman& player1, ghost& ghost1, ghost& ghost2) {
 					player1.setDefault(j, i);
 				else {
 					clearScreen();
-					cout << "The map has invalid number of pacmans, the game will now proceed to exit\n";
-					exit(0);
+					cout << "The map has invalid number of pacmans, the game will now go back to the menu\n";
+					system("pause");
+					return false;
 				}
 				pacmanCounter++;
 			}
@@ -803,8 +809,9 @@ void game::readEntities(map& h, pacman& player1, ghost& ghost1, ghost& ghost2) {
 					ghost2.setDefault(j, i);
 				else {
 					clearScreen();
-					cout << "The map has invalid number of ghosts, the game will now proceed to exit\n";
-					exit(0);
+					cout << "The map has invalid number of ghosts, the game will now go back to the menu\n";
+					system("pause");
+					return false;
 				}				
 				ghostCounter++;
 			}
@@ -814,6 +821,7 @@ void game::readEntities(map& h, pacman& player1, ghost& ghost1, ghost& ghost2) {
 			}
 		}
 	}
+	return true;
 }
 
 void game::setLegend(int x, int y) {

@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 #include "map.h"
-#include "color.h"
 using namespace std;
 
 /*Entity class includes either the pacman or the ghosts(maybe the food later)*/
@@ -25,18 +24,16 @@ private:
 	short defaultX, defaultY;
 	int lastmove;
 	char symbol;
-	Color color;
 
 public:
 	Entity();
-	Entity(short, short, short, char, short, Color);
+	Entity(short, short, short, char, short);
 
 	////Set Methods////
 	void setX(short);
 	void setY(short); 
 	void setLives(short);
 	void setSymbol(char);
-	void setColor(Color);
 	void setLastMove();
 	void setLastMove(int);
 	void setDefault(int, int);
@@ -61,5 +58,4 @@ public:
 	void reset(int x, int y);
 	void resetEntity();
 
-	//void setTextColor(Color);
 };

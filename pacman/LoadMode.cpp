@@ -26,7 +26,9 @@ void LoadMode::gameLoop() {
 
 	h.setFilename(screenFiles.front()); //Choose first map in alphabetical queue to play 
 
-	prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2, frame);
+	if (!prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2, frame)) {
+		return;
+	}
 	prepareFilesForLoadGame(screenFiles.front(), mySteps, myResult);
 
 	//Read init fruit location from file.
@@ -89,7 +91,9 @@ void LoadMode::gameLoop() {
 				continue;
 			}
 			h.setFilename(screenFiles.front());    //Loades next map
-			prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2, frame);
+			if (!prepareForNewGame(h, player1, Dipsy, Tinky_Winky, Po, key1, key2, frame)) {
+				return;
+			}
 			prepareFilesForLoadGame(screenFiles.front(), mySteps, myResult);
 			continue;
 		}

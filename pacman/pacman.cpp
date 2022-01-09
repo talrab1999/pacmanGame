@@ -6,7 +6,6 @@ pacman::pacman()
 	setY(15);
 	setLives(3);
 	setSymbol('@');
-	//setColor(Color::YELLOW);
 	points = 0;
 	dotsate = 0;
 }

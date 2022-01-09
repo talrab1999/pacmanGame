@@ -20,6 +20,4 @@ public:
 	void move_right(map&);
 	void stop(map&);
 
-	//testing for bugs
-	//void whathappened(map& m);
 };

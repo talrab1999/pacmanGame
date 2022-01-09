@@ -5,7 +5,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "color.h"
 using namespace std;
 #define ROWS 25
 #define COLS 80
