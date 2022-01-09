@@ -16,12 +16,12 @@ public:
 	void move(short, short);
 	void resetCounter();
 
-	///////////SET//////////
+	//Set Methods
 	void setDifficulty(char);
 	void setGoodCounter(int);
 	void setTurnCounter(int);
 
-	///////////GET//////////
+	//Get Methods
 	char getDifficulty();
 	int getGoodCounter();
 	int getTurnCounter();

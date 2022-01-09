@@ -468,6 +468,8 @@ void game::gameLoop() {
 					flag = _getch();
 				Tinky_Winky.display(h.getmapat(Tinky_Winky.getY(), Tinky_Winky.getX()));
 				Po.display(h.getmapat(Po.getY(), Po.getX()));
+				player1.display(' ');
+				h.setmapat(player1.getY(), player1.getX(), ' ');
 				key1 = key2;
 				h.unpause(h, getLegend().first, getLegend().second);
 				checkInput = true;
@@ -601,6 +603,8 @@ void game::prepareForNewGame(map& h, pacman& player1, fruit& Dipsy, ghost& Tinky
 	frame = 0;
 	key1 = 's', key2 = 's';
 
+	clearScreen();
+
 	//Resets the map and the entities to their default locations
 	h.fillmap();
 	readEntities(h, player1, Tinky_Winky, Po);
@@ -609,6 +613,7 @@ void game::prepareForNewGame(map& h, pacman& player1, fruit& Dipsy, ghost& Tinky
 	player1.setDotsate(0);
 
 	if (getMode() != char(e_GameMode::LOAD_SILENT)) {
+		clearScreen();
 		h.ShowMap();
 		player1.displayLives(h, getLegend().first, getLegend().second);
 		player1.display();

@@ -41,17 +41,17 @@ public:
 	void setLastMove(int);
 	void setDefault(int, int);
 
-	////Get Methods////
+	//Get Methods
 	short getX() const;
 	short getY() const; 
 	short getLives() const;
 	char getSymbol() const;
 	int getLastMove();
 	
-	////Move Methods////
+	//Move Methods
 	void move_rand(map&);
 
-	////Location Methods////
+	//Location Methods
 	void gotoxy(short, short) const;
 	void replace() const;
 
@@ -60,7 +60,6 @@ public:
 
 	void reset(int x, int y);
 	void resetEntity();
-
 
 	//void setTextColor(Color);
 };

@@ -5,14 +5,14 @@ class fruit :public ghost{
 public:
 	fruit(char c='c');
 
-	//---------------SET----------------//
+	//Set Methods
 	void setRandomSymbol();
 	void setSleep(bool);
 
-	//---------------GET----------------//
+	//Get Methods
 	bool getSleep();
 
-	//-------------Methods------------//
+	//Methods
 	void sleepFruit(map&);
 	void wakeUpFruit(map&);
 	void resetLocation(map&);
