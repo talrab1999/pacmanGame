@@ -140,59 +140,6 @@ void map::fixLine(int& legendIndex, int& legendCounter, string& line) {
 	}
 }
 
-//void map::fillmap()
-//{
-//	//resetBoard
-//	setDots(0);
-//	map_vec.clear();
-//	ifstream INF(filename);
-//	string line = "";
-//	if (!INF) {
-//		cout << "ERROR map" << filename << ".screen COULD NOT BE OPENED!";
-//	}
-//	int z = 0;
-//	while (getline(INF, line)) {
-//		if (z == 0) {
-//			width = line.size() + 1;
-//		}
-//		for (short i = 0; i < width; i++) {
-//			if (line[i] == ' ') {
-//				line[i] = '.';
-//				dotCounter++;
-//			}
-//			if (line[0] == '&') {
-//				i = width;
-//			}
-//		}
-//		for (int j = 0; j < width; j++) {
-//			if (line[0] == '&') {
-//				board[z][j] = '&';
-//				j = width;
-//			}
-//			else
-//				board[z][j] = line[j];
-//		}
-//		for (short i = 0; i < width; i++) {
-//			if (line[i] == '%' || line[i] == '@')
-//				line[i] = ' ';
-//			else if (line[i] == '$') {
-//				line[i] = '.';
-//			}
-//			else if (line[i] == '&') {
-//				for (int i = 0; i < 3 * 20; i++) {
-//					map_vec.push_back(' ');
-//				}
-//				i = width;
-//				continue;
-//			}
-//			map_vec.push_back(line[i]);
-//		}
-//		z++;
-//	}
-//	height = z;
-//	length = width * height;
-//	INF.close();
-//}
 
 void map::freemap() {
 	map_vec.clear();

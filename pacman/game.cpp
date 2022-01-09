@@ -619,11 +619,7 @@ void game::prepareForNewGame(map& h, pacman& player1, fruit& Dipsy, ghost& Tinky
 		player1.display();
 
 	}
-	/*h.ShowMap();
-	player1.setDotsate(0);
-	player1.displayLives(h, getLegend().first, getLegend().second);
-	player1.resetEntity();
-	player1.display();*/
+	
 
 	h.setmapat(player1.getY(), player1.getX(), player1.getSymbol());
 
@@ -787,15 +783,29 @@ void game::readEntities(map& h, pacman& player1, ghost& ghost1, ghost& ghost2) {
 	int rows = h.getHeight();
 	int cols = h.getWidth();
 	int ghostCounter = 0;
+	int pacmanCounter = 0;
 	for (int i = 0; i <rows; i++) {
 		for (int j = 0; j < cols; j++) {
-			if (h.board[i][j] == '@')
-				player1.setDefault(j, i);
+			if (h.board[i][j] == '@') {
+				if (pacmanCounter == 0)
+					player1.setDefault(j, i);
+				else {
+					clearScreen();
+					cout << "The map has invalid number of pacmans, the game will now proceed to exit\n";
+					exit(0);
+				}
+				pacmanCounter++;
+			}
 			else if (h.board[i][j] == '$') {
 				if (ghostCounter == 0)
 					ghost1.setDefault(j, i);
-				else
+				else if (ghostCounter == 1)
 					ghost2.setDefault(j, i);
+				else {
+					clearScreen();
+					cout << "The map has invalid number of ghosts, the game will now proceed to exit\n";
+					exit(0);
+				}				
 				ghostCounter++;
 			}
 			else if (h.board[i][j] == '&') {
